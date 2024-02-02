@@ -1,0 +1,40 @@
+version: "3.8"
+
+
+
+services:
+
+  okr-db:
+    container_name: okr-db
+    hostname: okr-db
+    networks:
+      - backnet
+    image: postgres:16.1
+    restart: on-failure
+    volumes:
+      - okr-db:/var/lib/postgresql/data
+      - ./init/OKR-DB/00-init.sql:/docker-entrypoint-initdb.d/00-init.sql:ro
+      - ./init/OKR-DB/01-init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+      - ./init/OKR-DB/10-init.sql:/docker-entrypoint-initdb.d/10-init.sql:ro
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    environment:
+      POSTGRES_DB: okr-db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
+
+volumes:
+  okr-db:
+
+networks:
+  backnet:
+  frontnet:
+
+
+
+
+

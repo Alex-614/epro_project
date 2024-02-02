@@ -1,0 +1,247 @@
+
+
+CREATE SEQUENCE Company_ID_seq INCREMENT BY 1;
+CREATE SEQUENCE BuisinessUnit_ID_seq INCREMENT BY 1;
+CREATE SEQUENCE Unit_ID_seq INCREMENT BY 1;
+
+-- CREATE SEQUENCE Role_ID_seq INCREMENT BY 1;
+-- CREATE SEQUENCE Privilage_ID_seq INCREMENT BY 1;
+
+CREATE SEQUENCE Objective_ID_seq INCREMENT BY 1;
+CREATE SEQUENCE KeyResult_ID_seq INCREMENT BY 1;
+
+CREATE SEQUENCE User_ID_seq INCREMENT BY 1;
+
+
+CREATE TABLE tbl_Company
+(
+  Name VARCHAR(100) NOT NULL,
+  ID BIGINT NOT NULL,
+  PRIMARY KEY (ID)
+);
+
+CREATE TABLE tbl_BuisinessUnit
+(
+  Name VARCHAR(100) NOT NULL,
+  ID BIGINT NOT NULL,
+  Company_ID BIGINT NOT NULL,
+  PRIMARY KEY (ID),
+  FOREIGN KEY (Company_ID) REFERENCES tbl_Company(ID) 
+    ON DELETE CASCADE 
+    ON UPDATE CASCADE
+);
+
+CREATE TABLE tbl_Unit
+(
+  Name VARCHAR(100) NOT NULL,
+  ID BIGINT NOT NULL,
+  BuisinessUnit_ID BIGINT NOT NULL,
+  PRIMARY KEY (ID),
+  FOREIGN KEY (BuisinessUnit_ID) REFERENCES tbl_BuisinessUnit(ID)
+    ON DELETE CASCADE 
+    ON UPDATE CASCADE
+);
+
+CREATE TABLE tbl_Role
+(
+  Name VARCHAR(100) NOT NULL,
+  ID BIGINT NOT NULL,
+  PRIMARY KEY (ID)
+);
+
+CREATE TABLE tbl_User
+(
+  Username VARCHAR(100) NOT NULL,
+  Password VARCHAR(100) NOT NULL,
+  Surname VARCHAR(100) NOT NULL,
+  Firstname VARCHAR(100) NOT NULL,
+  ID BIGINT NOT NULL,
+  Company_ID BIGINT,
+  PRIMARY KEY (ID),
+  FOREIGN KEY (Company_ID) REFERENCES tbl_Company(ID)
+    ON DELETE SET NULL 
+    ON UPDATE CASCADE
+);
+
+CREATE TABLE tbl_Privilage
+(
+  Name VARCHAR(100) NOT NULL,
+  ID BIGINT NOT NULL,
+  PRIMARY KEY (ID)
+);
+
+CREATE TABLE tbl_Objective
+(
+  Deadline TIMESTAMP NOT NULL,
+  Title VARCHAR(100) NOT NULL,
+  Description VARCHAR(200) NOT NULL,
+  ID BIGINT NOT NULL,
+  User_ID BIGINT,
+  PRIMARY KEY (ID),
+  FOREIGN KEY (User_ID) REFERENCES tbl_User(ID)
+    ON DELETE SET NULL 
+    ON UPDATE CASCADE
+);
+
+CREATE TABLE tbl_CompanyObjective
+(
+  Objective_ID BIGINT NOT NULL,
+  Company_ID BIGINT NOT NULL,
+  PRIMARY KEY (Objective_ID),
+  FOREIGN KEY (Objective_ID) REFERENCES tbl_Objective(ID)
+    ON DELETE CASCADE 
+    ON UPDATE CASCADE,
+  FOREIGN KEY (Company_ID) REFERENCES tbl_Company(ID)
+    ON DELETE CASCADE 
+    ON UPDATE CASCADE
+);
+
+CREATE TABLE tbl_BuisinessUnitObjective
+(
+  Objective_ID BIGINT NOT NULL,
+  BuisinessUnit_ID BIGINT NOT NULL,
+  PRIMARY KEY (Objective_ID),
+  FOREIGN KEY (Objective_ID) REFERENCES tbl_Objective(ID)
+    ON DELETE CASCADE 
+    ON UPDATE CASCADE,
+  FOREIGN KEY (BuisinessUnit_ID) REFERENCES tbl_BuisinessUnit(ID)
+    ON DELETE CASCADE 
+    ON UPDATE CASCADE
+);
+
+CREATE TABLE tbl_User_is_Role
+(
+  User_ID BIGINT NOT NULL,
+  Role_ID BIGINT NOT NULL,
+  PRIMARY KEY (User_ID, Role_ID),
+  FOREIGN KEY (User_ID) REFERENCES tbl_User(ID)
+    ON DELETE CASCADE 
+    ON UPDATE CASCADE,
+  FOREIGN KEY (Role_ID) REFERENCES tbl_Role(ID)
+    ON DELETE CASCADE 
+    ON UPDATE CASCADE
+);
+
+CREATE TABLE tbl_Role_includes_Privilage
+(
+  Role_ID BIGINT NOT NULL,
+  Privilage_ID BIGINT NOT NULL,
+  PRIMARY KEY (Role_ID, Privilage_ID),
+  FOREIGN KEY (Role_ID) REFERENCES tbl_Role(ID)
+    ON DELETE CASCADE 
+    ON UPDATE CASCADE,
+  FOREIGN KEY (Privilage_ID) REFERENCES tbl_Privilage(ID)
+    ON DELETE CASCADE 
+    ON UPDATE CASCADE
+);
+
+CREATE TABLE tbl_Role_inherits_Role
+(
+  Role_ID BIGINT NOT NULL,
+  Inherit_ID BIGINT NOT NULL,
+  PRIMARY KEY (Role_ID, Inherit_ID),
+  FOREIGN KEY (Role_ID) REFERENCES tbl_Role(ID)
+    ON DELETE CASCADE 
+    ON UPDATE CASCADE,
+  FOREIGN KEY (Inherit_ID) REFERENCES tbl_Role(ID)
+    ON DELETE CASCADE 
+    ON UPDATE CASCADE
+);
+
+CREATE TABLE tbl_Type
+(
+  Name VARCHAR(100) NOT NULL,
+  PRIMARY KEY (Name)
+);
+
+CREATE TABLE tbl_KeyResult
+(
+  Goal INT NOT NULL,
+  Type VARCHAR(100) NOT NULL,
+  Title VARCHAR(100) NOT NULL,
+  Description VARCHAR(200) NOT NULL,
+  Current INT NOT NULL,
+  ConfidenceLevel INT NOT NULL,
+  ID BIGINT NOT NULL,
+  Objective_ID BIGINT NOT NULL,
+  PRIMARY KEY (ID),
+  FOREIGN KEY (Objective_ID) REFERENCES tbl_Objective(ID)
+    ON DELETE CASCADE 
+    ON UPDATE CASCADE, 
+  FOREIGN KEY (Type) REFERENCES tbl_Type(Name) 
+    ON DELETE CASCADE
+);
+
+CREATE TABLE tbl_UpdateHistory
+(
+  StatusUpdate VARCHAR(100) NOT NULL,
+  Timestamp TIMESTAMP NOT NULL,
+  KeyResult_ID BIGINT NOT NULL,
+  User_ID BIGINT NOT NULL,
+  PRIMARY KEY (KeyResult_ID, User_ID),
+  FOREIGN KEY (KeyResult_ID) REFERENCES tbl_KeyResult(ID)
+    ON DELETE CASCADE 
+    ON UPDATE CASCADE,
+  FOREIGN KEY (User_ID) REFERENCES tbl_User(ID)
+    ON DELETE SET NULL 
+    ON UPDATE CASCADE
+);
+
+CREATE TABLE tbl_BuisinessUnitKeyResult
+(
+  KeyResult_ID BIGINT NOT NULL,
+  PRIMARY KEY (KeyResult_ID),
+  FOREIGN KEY (KeyResult_ID) REFERENCES tbl_KeyResult(ID)
+    ON DELETE CASCADE 
+    ON UPDATE CASCADE
+);
+
+CREATE TABLE tbl_CompanyKeyResult
+(
+  KeyResult_ID BIGINT NOT NULL,
+  PRIMARY KEY (KeyResult_ID),
+  FOREIGN KEY (KeyResult_ID) REFERENCES tbl_KeyResult(ID)
+    ON DELETE CASCADE 
+    ON UPDATE CASCADE
+);
+
+CREATE TABLE tbl_Unit_contributes_KeyResult
+(
+  Unit_ID BIGINT NOT NULL,
+  KeyResult_ID BIGINT NOT NULL,
+  PRIMARY KEY (Unit_ID, KeyResult_ID),
+  FOREIGN KEY (Unit_ID) REFERENCES tbl_Unit(ID)
+    ON DELETE CASCADE 
+    ON UPDATE CASCADE,
+  FOREIGN KEY (KeyResult_ID) REFERENCES tbl_KeyResult(ID)
+    ON DELETE CASCADE 
+    ON UPDATE CASCADE
+);
+
+CREATE TABLE tbl_BuisinessUnit_contributes_KeyResult
+(
+  BuisinessUnit_ID BIGINT NOT NULL,
+  KeyResult_ID BIGINT NOT NULL,
+  PRIMARY KEY (BuisinessUnit_ID, KeyResult_ID),
+  FOREIGN KEY (BuisinessUnit_ID) REFERENCES tbl_BuisinessUnit(ID)
+    ON DELETE CASCADE 
+    ON UPDATE CASCADE,
+  FOREIGN KEY (KeyResult_ID) REFERENCES tbl_KeyResult(ID)
+    ON DELETE CASCADE 
+    ON UPDATE CASCADE
+);
+
+CREATE TABLE tbl_CompanyKeyResult_represents_BuisinessUnitObjective
+(
+  CompanyKeyResult_ID BIGINT NOT NULL,
+  BuisinessUnitObjective_ID BIGINT NOT NULL,
+  PRIMARY KEY (CompanyKeyResult_ID),
+  FOREIGN KEY (CompanyKeyResult_ID) REFERENCES tbl_CompanyKeyResult(KeyResult_ID)
+    ON DELETE CASCADE 
+    ON UPDATE CASCADE,
+  FOREIGN KEY (BuisinessUnitObjective_ID) REFERENCES tbl_BuisinessUnitObjective(Objective_ID)
+    ON DELETE CASCADE 
+    ON UPDATE CASCADE
+);
+
+
