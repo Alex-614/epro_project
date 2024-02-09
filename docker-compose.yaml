@@ -15,7 +15,6 @@ services:
       - okr-db:/var/lib/postgresql/data
       - ./init/OKR-DB/00-init.sql:/docker-entrypoint-initdb.d/00-init.sql:ro
       - ./init/OKR-DB/01-init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
-      - ./init/OKR-DB/10-init.sql:/docker-entrypoint-initdb.d/10-init.sql:ro
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U postgres" ]
       interval: 5s
@@ -25,6 +24,22 @@ services:
       POSTGRES_DB: okr-db
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+
+  okr-service:
+    container_name: okr-service
+    hostname: okr-service
+    networks:
+      - backnet
+    build:
+      context: ./okrservice
+      dockerfile: Dockerfile
+    image: epro_project-okr-service
+    restart: on-failure
+    depends_on:
+      okr-db:
+        condition: service_healthy
+    ports:
+      - "8081:8081"
 
 
 volumes:

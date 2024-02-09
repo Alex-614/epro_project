@@ -11,7 +11,7 @@ VALUES
 
 
 INSERT INTO
-  tbl_Privilage (id, name)
+  tbl_Privilege (id, name)
 VALUES
   (1, 'CO_READ'),
   (2, 'CO_WRITE'),
@@ -20,7 +20,7 @@ VALUES
 
 
 INSERT INTO
-  tbl_Role_includes_Privilage (role_id, privilage_id)
+  tbl_Role_includes_Privilege (role_id, privilege_id)
 VALUES
   (1, 2),
   (2, 4),
