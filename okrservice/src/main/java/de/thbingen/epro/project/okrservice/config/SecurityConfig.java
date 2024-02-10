@@ -16,14 +16,17 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import de.thbingen.epro.project.okrservice.Roles;
 import de.thbingen.epro.project.okrservice.jwt.JwtAuthEntryPoint;
 import de.thbingen.epro.project.okrservice.jwt.JwtAuthenticationFilter;
+import de.thbingen.epro.project.okrservice.repositories.RoleRepository;
 import de.thbingen.epro.project.okrservice.services.CustomUserDetailsService;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
+    private RoleRepository roleRepository;
 
     private JwtAuthEntryPoint authEntryPoint;
 
@@ -31,9 +34,10 @@ public class SecurityConfig {
     private CustomUserDetailsService userDetailsService;
 
     @Autowired
-    public SecurityConfig(CustomUserDetailsService userDetailsService, JwtAuthEntryPoint authEntryPoint) {
+    public SecurityConfig(CustomUserDetailsService userDetailsService, JwtAuthEntryPoint authEntryPoint, RoleRepository roleRepository) {
         this.userDetailsService = userDetailsService;
         this.authEntryPoint = authEntryPoint;
+        this.roleRepository = roleRepository;
     }
 
     @Bean
@@ -46,12 +50,25 @@ public class SecurityConfig {
             .authorizeHttpRequests(req -> req
                 .requestMatchers(HttpMethod.POST, "/user").permitAll()
                 .requestMatchers(HttpMethod.POST, "/login").permitAll()
+                .requestMatchers(HttpMethod.POST, "/company/{companyId}/user/{userId}**")
+                    .access(checkRoleAssignment(Roles.CO_OKR_ADMIN.getName()))
+                .requestMatchers(HttpMethod.POST, "/company/{companyId}/buisinessunit")
+                    .access(checkRoleAssignment(Roles.CO_OKR_ADMIN.getName()))
+                .requestMatchers(HttpMethod.POST, "/company/{companyId}/buisinessunit/{buisinessUnitId}/unit")
+                    .access(checkRoleAssignment(Roles.CO_OKR_ADMIN.getName()))
                 .anyRequest().authenticated())
             .httpBasic(Customizer.withDefaults());
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
+    private RoleAssignmentAuthorizationManager checkRoleAssignment(String role) {
+        return new RoleAssignmentAuthorizationManager(getRoleIdByName(role));
+    }
+
+    private Long getRoleIdByName(String name) {
+        return roleRepository.existsByName(name) ? roleRepository.findByName(name).getId() : 0;
+    }
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
@@ -63,17 +80,11 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    /*
-    @Bean
-    GrantedAuthorityDefaults grantedAuthorityDefaults() {
-        return new GrantedAuthorityDefaults(""); // Remove the 'ROLE_' prefix
-    }
-    */
 
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() {
         return new JwtAuthenticationFilter();
     }
-
+    
 
 }

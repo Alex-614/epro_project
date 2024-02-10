@@ -37,19 +37,21 @@ public class BuisinessUnitController {
             buisinessUnitDto.setName("Company not found!");
             return new ResponseEntity<>(buisinessUnitDto, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        if (buisinessUnitRepository.existsByNameAndCompanyIdEquals(buisinessUnitDto.getName(), companyId.longValue())) {
+        Company company = companyRepository.findById(companyId.longValue()).get();
+        if (buisinessUnitRepository.existsByNameAndCompanyIdEquals(buisinessUnitDto.getName(), company.getId())) {
             // "BuisinessUnit already exists!"
             buisinessUnitDto.setName("BuisinessUnit already exists!");
             return new ResponseEntity<>(buisinessUnitDto, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        Company company = companyRepository.findById(companyId.longValue()).get();
+
+
         BuisinessUnit buisinessUnit = new BuisinessUnit();
         buisinessUnit.setName(buisinessUnitDto.getName());
         buisinessUnit.setCompany(company);
         
         buisinessUnitRepository.save(buisinessUnit);
+
         buisinessUnitDto.setId(buisinessUnit.getId());
-        
         return new ResponseEntity<>(buisinessUnitDto, HttpStatus.OK);
     }
     

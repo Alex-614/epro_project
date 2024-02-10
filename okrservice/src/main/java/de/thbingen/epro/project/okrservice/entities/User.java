@@ -1,7 +1,6 @@
 package de.thbingen.epro.project.okrservice.entities;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.Column;
@@ -13,11 +12,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.MapKeyJoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -52,21 +49,18 @@ public class User {
     private String surname;
 
 
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "tbl_roleassignment")
-    @MapKeyJoinColumn(name = "company_id")
-    @Setter(AccessLevel.NONE)
-    @Getter(AccessLevel.NONE)
-    private Map<Company, Role> role = new HashMap<Company, Role>();
-    public Map<Company, Role> getRoleAssignments() {
-        return this.role;
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private List<RoleAssignment> roleAssignments;
+    public void addAllRoleAssignment(List<RoleAssignment> roleAssignments) {
+        this.roleAssignments.addAll(roleAssignments);
     }
-    public void setRoleAssignments(Map<Company, Role> roleAssignments) {
-        this.role = roleAssignments;
+    public void addRoleAssignment(RoleAssignment roleAssignment) {
+        roleAssignments.add(roleAssignment);
     }
-    public void addRoleAssignments(Map<Company, Role> roleAssignments) {
-        this.role.putAll(roleAssignments);
+    public void removeRoleAssignment(RoleAssignment roleAssignment) {
+        roleAssignments.remove(roleAssignment);
     }
+
 
 
 
@@ -83,6 +77,9 @@ public class User {
     private Set<Company> companys;
     public void addCompany(Company company) {
         this.companys.add(company);
+    }
+    public void removeCompany(Company company) {
+        this.companys.remove(company);
     }
 
 

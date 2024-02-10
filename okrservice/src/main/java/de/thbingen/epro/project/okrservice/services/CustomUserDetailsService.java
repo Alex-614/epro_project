@@ -3,7 +3,6 @@ package de.thbingen.epro.project.okrservice.services;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,9 +12,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import de.thbingen.epro.project.okrservice.entities.Company;
+import de.thbingen.epro.project.okrservice.config.SecurityConstants;
 import de.thbingen.epro.project.okrservice.entities.Privilege;
-import de.thbingen.epro.project.okrservice.entities.Role;
+import de.thbingen.epro.project.okrservice.entities.RoleAssignment;
 import de.thbingen.epro.project.okrservice.entities.User;
 import de.thbingen.epro.project.okrservice.repositories.UserRepository;
 
@@ -39,12 +38,13 @@ public class CustomUserDetailsService implements UserDetailsService {
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), mapRoleAssignmentsToAuthorities(user.getRoleAssignments()));
     }
 
-    private Collection<GrantedAuthority> mapRoleAssignmentsToAuthorities(Map<Company, Role> roleAssignments) {
+    private Collection<GrantedAuthority> mapRoleAssignmentsToAuthorities(List<RoleAssignment> roleAssignments) {
         List<GrantedAuthority> authorities = new ArrayList<>();
-        for (Map.Entry<Company, Role> assignment : roleAssignments.entrySet()) {
-            authorities.add(new SimpleGrantedAuthority("ROLE_" + assignment.getValue().getName() + "_" + assignment.getKey().getId()));
-            for (Privilege privilege : assignment.getValue().getPrivileges()) {
-                authorities.add(new SimpleGrantedAuthority(privilege.getName() + "_" + assignment.getKey().getId()));
+        for (RoleAssignment assignment : roleAssignments) {
+            String companyId = assignment.getCompany().getId().toString();
+            authorities.add(new SimpleGrantedAuthority(SecurityConstants.ROLE_PREFIX + assignment.getRole().getId() + "_" + companyId));
+            for (Privilege privilege : assignment.getRole().getPrivileges()) {
+                authorities.add(new SimpleGrantedAuthority(privilege.getId() + "_" + companyId));
             }
         }
         return authorities;

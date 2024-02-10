@@ -1,16 +1,12 @@
 package de.thbingen.epro.project.okrservice.entities;
 
-import java.io.Serializable;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
+import de.thbingen.epro.project.okrservice.entities.ids.RoleAssignmentId;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -24,8 +20,14 @@ import lombok.Setter;
 public class RoleAssignment {
 
     @EmbeddedId
-    private RoleAssignmentId id;
+    private RoleAssignmentId id = new RoleAssignmentId();
     
+    public RoleAssignment(User user, Role role, Company company) {
+        this.user = user;
+        this.role = role;
+        this.company = company;
+    }
+
     @ManyToOne
     @MapsId("userId")
     private User user;
@@ -38,33 +40,8 @@ public class RoleAssignment {
     @MapsId("companyId")
     private Company company;
 
-/* 
-    @ManyToOne(targetEntity = User.class)
-    @JoinColumn(name = "user_id", insertable = false, updatable = false)
-    private User user;
+
     
-    @ManyToOne(targetEntity = Role.class, fetch = FetchType.LAZY)
-    @JoinColumn(name = "role_id", insertable = false, updatable = false)
-    private Role role;
-    
-    @ManyToOne(targetEntity = Company.class, fetch = FetchType.LAZY)
-    @JoinColumn(name = "company_id", insertable = false, updatable = false)
-    private Company company;
- */
-
-
-    @Data
-    @Embeddable
-    public static class RoleAssignmentId implements Serializable {
-
-        @Column(name = "user_id")
-        private Long userId;
-        @Column(name = "role_id")
-        private Long roleId;
-        @Column(name = "company_id")
-        private Long companyId;
-
-    }
 
 
 }

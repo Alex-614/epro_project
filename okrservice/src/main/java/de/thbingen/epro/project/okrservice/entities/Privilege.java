@@ -1,12 +1,10 @@
 package de.thbingen.epro.project.okrservice.entities;
 
-import java.util.Collection;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
@@ -24,14 +22,13 @@ import lombok.Setter;
 public class Privilege {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
 
     @Column(name = "name")
     private String name;
 
-    @ManyToMany(mappedBy = "privileges", fetch = FetchType.LAZY)
-    private Collection<Role> roles;
+    @ManyToMany(mappedBy = "privileges", fetch = FetchType.EAGER)
+    private List<Role> roles;
 
 }
