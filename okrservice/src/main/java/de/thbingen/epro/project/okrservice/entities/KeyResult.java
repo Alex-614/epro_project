@@ -1,5 +1,5 @@
 package de.thbingen.epro.project.okrservice.entities;
 
-public class KeyResult {
+public abstract class KeyResult {
 
 }

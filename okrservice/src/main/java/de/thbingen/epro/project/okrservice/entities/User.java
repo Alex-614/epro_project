@@ -16,14 +16,12 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
 @Table(name = "tbl_user")
 @Entity
 public class User {
@@ -61,9 +59,11 @@ public class User {
         roleAssignments.remove(roleAssignment);
     }
 
+    @OneToMany(mappedBy = "owner")
+    private List<Objective> ownedObjectives;
 
 
-
+    
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
         name = "tbl_company_employs_user",

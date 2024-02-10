@@ -7,5 +7,7 @@ public class SecurityConstants {
     public static final String JWT_SECRET = "superdupersecretsecretkeyforthisastonishingokrbackendsystemthatnooneknows";
 
     public static final String ROLE_PREFIX = "ROLE_";
+    
+    public static final String TOKEN_TYPE = "Bearer ";
 
 }

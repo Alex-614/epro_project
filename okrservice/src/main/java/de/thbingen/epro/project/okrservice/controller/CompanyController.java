@@ -13,11 +13,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import de.thbingen.epro.project.okrservice.Roles;
 import de.thbingen.epro.project.okrservice.dtos.CompanyDto;
+import de.thbingen.epro.project.okrservice.dtos.ObjectiveDto;
 import de.thbingen.epro.project.okrservice.dtos.RolesDto;
 import de.thbingen.epro.project.okrservice.entities.Company;
+import de.thbingen.epro.project.okrservice.entities.CompanyObjective;
 import de.thbingen.epro.project.okrservice.entities.Role;
 import de.thbingen.epro.project.okrservice.entities.RoleAssignment;
 import de.thbingen.epro.project.okrservice.entities.User;
+import de.thbingen.epro.project.okrservice.repositories.CompanyObjectiveRepository;
 import de.thbingen.epro.project.okrservice.repositories.CompanyRepository;
 import de.thbingen.epro.project.okrservice.repositories.RoleAssignmentRepository;
 import de.thbingen.epro.project.okrservice.repositories.RoleRepository;
@@ -34,13 +37,17 @@ public class CompanyController {
 
     private RoleAssignmentRepository roleAssignmentRepository;
 
+    private CompanyObjectiveRepository companyObjectiveRepository;
+
     @Autowired
     public CompanyController(CompanyRepository companyRepository, UserRepository userRepository, 
-                            RoleRepository roleRepository, RoleAssignmentRepository roleAssignmentRepository) {
+                            RoleRepository roleRepository, RoleAssignmentRepository roleAssignmentRepository, 
+                            CompanyObjectiveRepository companyObjectiveRepository) {
         this.companyRepository = companyRepository;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.roleAssignmentRepository = roleAssignmentRepository;
+        this.companyObjectiveRepository = companyObjectiveRepository;
     }
 
 
@@ -105,8 +112,38 @@ public class CompanyController {
 
         return new ResponseEntity<>("User added to company", HttpStatus.OK);
     }
-    
 
+
+
+    
+    @SuppressWarnings("null") // objectiveDto is validated, cant be null
+    @PostMapping("/company/{companyId}/objective")
+    public ResponseEntity<ObjectiveDto> removeUser(@PathVariable @NonNull Number companyId, @RequestBody ObjectiveDto objectiveDto) {
+        if (!companyRepository.existsById(companyId.longValue())) {
+            // Company not found!
+            return new ResponseEntity<>(objectiveDto, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        if (!userRepository.existsById(objectiveDto.getOwnerId())) {
+            // User not found!
+            return new ResponseEntity<>(objectiveDto, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        Company company = companyRepository.findById(companyId.longValue()).get();
+        User owner = userRepository.findById(objectiveDto.getOwnerId()).get();
+
+        CompanyObjective objective = new CompanyObjective();
+        objective.setCompany(company);
+        objective.setDeadline(objectiveDto.getDeadline());
+        objective.setDescription(objectiveDto.getDescription());
+        objective.setOwner(owner);
+        objective.setTitle(objectiveDto.getTitle());
+
+        companyObjectiveRepository.save(objective);
+        
+        objectiveDto.setId(objective.getId());
+        return new ResponseEntity<>(objectiveDto, HttpStatus.OK);
+    }
+    
+    
 
 
 }

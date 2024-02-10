@@ -242,7 +242,7 @@ CREATE TABLE tbl_CompanyKeyResult
 
 
 
-CREATE TABLE tbl_UpdateHistory
+CREATE TABLE tbl_KeyResultUpdate
 (
   StatusUpdate VARCHAR(100) NOT NULL,
   Timestamp TIMESTAMP NOT NULL,
