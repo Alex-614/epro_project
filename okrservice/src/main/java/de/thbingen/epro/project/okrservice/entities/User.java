@@ -3,6 +3,7 @@ package de.thbingen.epro.project.okrservice.entities;
 import java.util.List;
 import java.util.Set;
 
+import de.thbingen.epro.project.okrservice.entities.company.Company;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -63,7 +64,7 @@ public class User {
     private List<Objective> ownedObjectives;
 
 
-    
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
         name = "tbl_company_employs_user",

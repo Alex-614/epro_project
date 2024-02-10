@@ -1,4 +1,4 @@
-package de.thbingen.epro.project.okrservice.entities;
+package de.thbingen.epro.project.okrservice.entities.company;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

@@ -11,7 +11,7 @@ import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.id.IdentifierGenerator;
 import org.hibernate.jdbc.ReturningWork;
 
-import de.thbingen.epro.project.okrservice.entities.BuisinessUnit;
+import de.thbingen.epro.project.okrservice.entities.buisinessunit.BuisinessUnit;
 
 public class BuisinessUnitIdGenerator implements IdentifierGenerator {
 

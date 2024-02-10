@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import de.thbingen.epro.project.okrservice.dtos.BuisinessUnitDto;
-import de.thbingen.epro.project.okrservice.entities.BuisinessUnit;
-import de.thbingen.epro.project.okrservice.entities.Company;
+import de.thbingen.epro.project.okrservice.entities.buisinessunit.BuisinessUnit;
+import de.thbingen.epro.project.okrservice.entities.company.Company;
 import de.thbingen.epro.project.okrservice.repositories.BuisinessUnitRepository;
 import de.thbingen.epro.project.okrservice.repositories.CompanyRepository;
 
