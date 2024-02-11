@@ -48,48 +48,93 @@ public class SecurityConfig {
             .sessionManagement(manager -> manager
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(req -> req
+                // register
                 .requestMatchers(HttpMethod.POST, "/user").permitAll()
+                // login
                 .requestMatchers(HttpMethod.POST, "/login").permitAll()
+                
+                /*
+                 *  CO_OKR_ADMIN
+                 */
+                // add User to Company
                 .requestMatchers(HttpMethod.POST, "/company/{companyId}/user/{userId}*")
-                    .access(hasRole(Roles.CO_OKR_ADMIN.getName()))
+                    .access(hasAnyCompanyAuthority(
+                        hasRole(Roles.CO_OKR_ADMIN.getName())))
+
+                // create BuisinessUnit
                 .requestMatchers("/company/{companyId}/buisinessunit")
-                    .access(hasRole(Roles.CO_OKR_ADMIN.getName()))
+                    .access(hasAnyCompanyAuthority(
+                        hasRole(Roles.CO_OKR_ADMIN.getName())
+                            .forMethods(HttpMethod.POST, HttpMethod.DELETE)))
+
+                // create Unit
                 .requestMatchers("/company/{companyId}/buisinessunit/{buisinessUnitId}/unit")
-                    .access(hasRole(Roles.CO_OKR_ADMIN.getName()))
+                    .access(hasAnyCompanyAuthority(
+                        hasRole(Roles.CO_OKR_ADMIN.getName())
+                            .forMethods(HttpMethod.POST, HttpMethod.DELETE)))
+
+                // CompanyObjective
                 .requestMatchers("/company/{companyId}/objective")
-                    .access(hasRole(Roles.CO_OKR_ADMIN.getName()))
+                    .access(hasAnyCompanyAuthority(
+                        hasRole(Roles.CO_OKR_ADMIN.getName())
+                           .forMethods(HttpMethod.POST, HttpMethod.PATCH, HttpMethod.DELETE)))
+                    
+                // CompanyKeyResult
+                .requestMatchers("/company/{companyId}/keyresult")
+                    .access(hasAnyCompanyAuthority(
+                        hasRole(Roles.CO_OKR_ADMIN.getName())
+                            .forMethods(HttpMethod.POST, HttpMethod.PATCH, HttpMethod.DELETE)))
+                
+                
+                /*
+                 *  BUO_OKR_ADMIN
+                 */
+                // BuisinessUnitObjective
                 .requestMatchers("/company/{companyId}/buisinessunit/{buisinessUnitId}/objective")
-                    .access(hasRole(Roles.BUO_OKR_ADMIN.getName()))
+                    .access(hasAnyCompanyAuthority(
+                        hasRole(Roles.BUO_OKR_ADMIN.getName())
+                            .ownsObjective(true)
+                            .forMethods(HttpMethod.POST, HttpMethod.PATCH, HttpMethod.DELETE)))
+
+                // BuisinessUnitKeyResult
+                .requestMatchers("/company/{companyId}/buisinessunit/{buisinessUnitId}/keyresult")
+                    .access(hasAnyCompanyAuthority(
+                        hasRole(Roles.BUO_OKR_ADMIN.getName())
+                            .ownsObjective(true)
+                            .forMethods(HttpMethod.POST, HttpMethod.PATCH, HttpMethod.DELETE)))
+                
+
+                /*
+                 *  READ_ONLY_USER
+                 */
+                // CompanyObjective
+                .requestMatchers(HttpMethod.GET, "/company/{companyId}/objective/{objectiveId}")
+                    .access(hasAnyCompanyAuthority(
+                        hasRole(Roles.READ_ONLY_USER.getName())))
+                
+                // BuisinessUnitObjective
+                .requestMatchers(HttpMethod.GET, "/company/{companyId}/objective/buisinessunit/{buisinessUnitId}/objective/{objectiveId}")
+                    .access(hasAnyCompanyAuthority(
+                        hasRole(Roles.READ_ONLY_USER.getName())))
+
+
                 .anyRequest().authenticated())
             .httpBasic(Customizer.withDefaults());
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
-    public CompanyAuthorizationManager hasRole(String role) {
-        return authorizationManager(AuthorityString.Role(role, "{companyId}"), false);
+    protected CompanyAuthority hasRole(String role) {
+        return new CompanyAuthority(AuthorityString.Role(role, "{companyId}"));
     }
-    public CompanyAuthorizationManager hasRoleAndOwnsObjective(String role) {
-        return authorizationManager(AuthorityString.Role(role, "{companyId}"), true);
+    protected CompanyAuthority hasPrivilege(String privilege) {
+        return new CompanyAuthority(AuthorityString.Privilege(privilege, "{companyId}"));
     }
-    
-    public CompanyAuthorizationManager hasPrivilege(String privilege) {
-        return authorizationManager(AuthorityString.Privilege(privilege, "{companyId}"), false);
-    }
-    public CompanyAuthorizationManager hasPrivilegeAndOwnsObjective(String privilege) {
-        return authorizationManager(AuthorityString.Privilege(privilege, "{companyId}"), true);
-    }
-    
     @Bean
     @Scope("prototype")
-    public CompanyAuthorizationManager authorizationManager(AuthorityString authorityString, boolean shouldOwnObjective) {
-        return new CompanyAuthorizationManager(authorityString, shouldOwnObjective);
+    public CompanyAuthorizationManager hasAnyCompanyAuthority(CompanyAuthority ... companyAuthorities) {
+        return new CompanyAuthorizationManager(companyAuthorities);
     }
-
-
-
-
-
 
 
 
