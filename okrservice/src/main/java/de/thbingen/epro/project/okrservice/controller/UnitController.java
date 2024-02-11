@@ -30,30 +30,30 @@ public class UnitController {
     }
 
 
-    @PostMapping("/company/{companyId}/buisinessunit/{buisinesssunitId}/unit")
+    @PostMapping("/company/{companyId}/buisinessunit/{buisinessUnitId}/unit")
     public ResponseEntity<UnitDto> createUnit(@PathVariable @NonNull Number companyId, 
-                                                                @PathVariable @NonNull Number buisinesssunitId, 
+                                                                @PathVariable @NonNull Number buisinessUnitId, 
                                                                 @RequestBody UnitDto unitDto) {
-        BuisinessUnitId buisinessUnitId = new BuisinessUnitId(buisinesssunitId.longValue(), companyId.longValue());
-        if (!buisinessUnitRepository.existsById(buisinessUnitId)) {
+        BuisinessUnitId buId = new BuisinessUnitId(buisinessUnitId.longValue(), companyId.longValue());
+        if (!buisinessUnitRepository.existsById(buId)) {
             // "BuisinessUnit not found!"
             unitDto.setName("BuisinessUnit not found!");
             return new ResponseEntity<>(unitDto, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        if (unitRepository.existsByNameAndBuisinessUnitIdEquals(unitDto.getName(), buisinessUnitId)) {
+        if (unitRepository.existsByNameAndBuisinessUnitIdEquals(unitDto.getName(), buId)) {
             // "Unit already exists!"
             unitDto.setName("Unit already exists!");
             return new ResponseEntity<>(unitDto, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        BuisinessUnit buisinessUnit = buisinessUnitRepository.findById(buisinessUnitId).get();
+        BuisinessUnit buisinessUnit = buisinessUnitRepository.findById(buId).get();
 
         Unit unit = new Unit();
         unit.setName(unitDto.getName());
         unit.setBuisinessUnit(buisinessUnit);
 
         unitRepository.save(unit);
+
         unitDto.setId(unit.getId());
-        
         return new ResponseEntity<>(unitDto, HttpStatus.OK);
     }
 

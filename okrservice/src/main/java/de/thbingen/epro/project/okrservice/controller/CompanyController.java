@@ -130,6 +130,11 @@ public class CompanyController {
         Company company = companyRepository.findById(companyId.longValue()).get();
         User owner = userRepository.findById(objectiveDto.getOwnerId()).get();
 
+        if (company.getObjectives().size() >= 5) {
+            // Reached Max Commpany Objectives
+            return new ResponseEntity<>(objectiveDto, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
         CompanyObjective objective = new CompanyObjective();
         objective.setCompany(company);
         objective.setDeadline(objectiveDto.getDeadline());

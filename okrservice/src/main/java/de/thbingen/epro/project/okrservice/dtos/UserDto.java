@@ -1,6 +1,6 @@
 package de.thbingen.epro.project.okrservice.dtos;
 
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
 @Data
@@ -8,14 +8,19 @@ public class UserDto {
 
     private Long id;
 
+    @NotEmpty(message = "'email' cannot be empty")
     private String email;
-    @NotNull
+
+    @NotEmpty(message = "'password' cannot be empty")
     private String password;
-    @NotNull
+
+    @NotEmpty(message = "'username' cannot be empty")
     private String username;
-    @NotNull
+
+    @NotEmpty(message = "'firstname' cannot be empty")
     private String firstname;
-    @NotNull
+
+    @NotEmpty(message = "'surname' cannot be empty")
     private String surname;
 
 

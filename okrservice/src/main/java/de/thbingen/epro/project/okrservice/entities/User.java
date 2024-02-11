@@ -3,7 +3,9 @@ package de.thbingen.epro.project.okrservice.entities;
 import java.util.List;
 import java.util.Set;
 
+import de.thbingen.epro.project.okrservice.entities.buisinessunit.BuisinessUnitObjective;
 import de.thbingen.epro.project.okrservice.entities.company.Company;
+import de.thbingen.epro.project.okrservice.entities.company.CompanyObjective;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -60,12 +62,19 @@ public class User {
         roleAssignments.remove(roleAssignment);
     }
 
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
     private List<Objective> ownedObjectives;
+    
+    @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
+    private List<CompanyObjective> ownedCompanyObjectives;
+    
+    @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
+    private List<BuisinessUnitObjective> ownedBuisinessUnitObjectives;
 
 
 
-    @ManyToMany(fetch = FetchType.LAZY)
+
+    @ManyToMany
     @JoinTable(
         name = "tbl_company_employs_user",
         joinColumns = @JoinColumn(

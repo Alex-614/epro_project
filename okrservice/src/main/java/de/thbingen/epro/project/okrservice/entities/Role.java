@@ -45,7 +45,7 @@ public class Role {
     )
     private List<Privilege> privileges;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "tbl_role_inherits_role",
         joinColumns = @JoinColumn(

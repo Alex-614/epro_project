@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 public class RolesDto {
 
-    @NotNull
+    @NotNull(message = "'roleIds' cannot be null")
     List<Number> roleIds;
 
 

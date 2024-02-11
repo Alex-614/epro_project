@@ -1,5 +1,7 @@
 package de.thbingen.epro.project.okrservice.entities.buisinessunit;
 
+import java.util.List;
+
 import org.hibernate.annotations.GenericGenerator;
 
 import de.thbingen.epro.project.okrservice.entities.company.Company;
@@ -12,6 +14,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -42,8 +45,8 @@ public class BuisinessUnit {
     @Column(name = "name")
     private String name;
 
-
-
+    @OneToMany(mappedBy = "buisinessunit")
+    private List<BuisinessUnitObjective> objectives;
 
 
 

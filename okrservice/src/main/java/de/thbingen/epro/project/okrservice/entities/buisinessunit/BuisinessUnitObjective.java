@@ -3,6 +3,7 @@ package de.thbingen.epro.project.okrservice.entities.buisinessunit;
 import de.thbingen.epro.project.okrservice.entities.Objective;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinColumns;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
@@ -20,8 +21,12 @@ import lombok.Setter;
 @PrimaryKeyJoinColumn(name = "objective_id")
 public class BuisinessUnitObjective extends Objective {
 
+
     @ManyToOne
-    @JoinColumn(name = "buisinessunit_id")
+    @JoinColumns( { 
+        @JoinColumn(name = "buisinessunit_id", referencedColumnName = "id"),
+        @JoinColumn(name = "company_id", referencedColumnName = "company_id")
+    })
     private BuisinessUnit buisinessunit;
 
 

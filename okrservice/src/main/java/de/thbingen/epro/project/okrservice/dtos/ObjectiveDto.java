@@ -9,17 +9,19 @@ import lombok.Data;
 public class ObjectiveDto {
 
     private Long id;
-
-    @NotNull
+    
+    @NotNull(message = "'deadline' cannot be null")
     private Instant deadline;
-
-    @NotNull
+    
+    @NotNull(message = "'title' cannot be null")
     private String title;
-
-    @NotNull
+    
+    @NotNull(message = "'description' cannot be null")
     private String description;
-
-    @NotNull
+    
+    @NotNull(message = "'ownerId' cannot be null")
     private Long ownerId;
+    
+
 
 }

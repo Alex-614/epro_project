@@ -3,6 +3,7 @@ package de.thbingen.epro.project.okrservice.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
@@ -16,17 +17,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import de.thbingen.epro.project.okrservice.AuthorityString;
 import de.thbingen.epro.project.okrservice.Roles;
 import de.thbingen.epro.project.okrservice.jwt.JwtAuthEntryPoint;
 import de.thbingen.epro.project.okrservice.jwt.JwtAuthenticationFilter;
-import de.thbingen.epro.project.okrservice.repositories.RoleRepository;
 import de.thbingen.epro.project.okrservice.services.CustomUserDetailsService;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-
-    private RoleRepository roleRepository;
 
     private JwtAuthEntryPoint authEntryPoint;
 
@@ -34,11 +33,12 @@ public class SecurityConfig {
     private CustomUserDetailsService userDetailsService;
 
     @Autowired
-    public SecurityConfig(CustomUserDetailsService userDetailsService, JwtAuthEntryPoint authEntryPoint, RoleRepository roleRepository) {
+    public SecurityConfig(CustomUserDetailsService userDetailsService, JwtAuthEntryPoint authEntryPoint) {
         this.userDetailsService = userDetailsService;
         this.authEntryPoint = authEntryPoint;
-        this.roleRepository = roleRepository;
     }
+
+
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -50,25 +50,49 @@ public class SecurityConfig {
             .authorizeHttpRequests(req -> req
                 .requestMatchers(HttpMethod.POST, "/user").permitAll()
                 .requestMatchers(HttpMethod.POST, "/login").permitAll()
-                .requestMatchers(HttpMethod.POST, "/company/{companyId}/user/{userId}**")
-                    .access(checkRoleAssignment(Roles.CO_OKR_ADMIN.getName()))
-                .requestMatchers(HttpMethod.POST, "/company/{companyId}/buisinessunit")
-                    .access(checkRoleAssignment(Roles.CO_OKR_ADMIN.getName()))
-                .requestMatchers(HttpMethod.POST, "/company/{companyId}/buisinessunit/{buisinessUnitId}/unit")
-                    .access(checkRoleAssignment(Roles.CO_OKR_ADMIN.getName()))
+                .requestMatchers(HttpMethod.POST, "/company/{companyId}/user/{userId}*")
+                    .access(hasRole(Roles.CO_OKR_ADMIN.getName()))
+                .requestMatchers("/company/{companyId}/buisinessunit")
+                    .access(hasRole(Roles.CO_OKR_ADMIN.getName()))
+                .requestMatchers("/company/{companyId}/buisinessunit/{buisinessUnitId}/unit")
+                    .access(hasRole(Roles.CO_OKR_ADMIN.getName()))
+                .requestMatchers("/company/{companyId}/objective")
+                    .access(hasRole(Roles.CO_OKR_ADMIN.getName()))
+                .requestMatchers("/company/{companyId}/buisinessunit/{buisinessUnitId}/objective")
+                    .access(hasRole(Roles.BUO_OKR_ADMIN.getName()))
                 .anyRequest().authenticated())
             .httpBasic(Customizer.withDefaults());
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
-    private RoleAssignmentAuthorizationManager checkRoleAssignment(String role) {
-        return new RoleAssignmentAuthorizationManager(getRoleIdByName(role));
+    public CompanyAuthorizationManager hasRole(String role) {
+        return authorizationManager(AuthorityString.Role(role, "{companyId}"), false);
+    }
+    public CompanyAuthorizationManager hasRoleAndOwnsObjective(String role) {
+        return authorizationManager(AuthorityString.Role(role, "{companyId}"), true);
+    }
+    
+    public CompanyAuthorizationManager hasPrivilege(String privilege) {
+        return authorizationManager(AuthorityString.Privilege(privilege, "{companyId}"), false);
+    }
+    public CompanyAuthorizationManager hasPrivilegeAndOwnsObjective(String privilege) {
+        return authorizationManager(AuthorityString.Privilege(privilege, "{companyId}"), true);
+    }
+    
+    @Bean
+    @Scope("prototype")
+    public CompanyAuthorizationManager authorizationManager(AuthorityString authorityString, boolean shouldOwnObjective) {
+        return new CompanyAuthorizationManager(authorityString, shouldOwnObjective);
     }
 
-    private Long getRoleIdByName(String name) {
-        return roleRepository.existsByName(name) ? roleRepository.findByName(name).getId() : 0;
-    }
+
+
+
+
+
+
+
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {

@@ -7,7 +7,6 @@ import de.thbingen.epro.project.okrservice.entities.ids.UnitId;
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.JoinColumn;
@@ -34,7 +33,7 @@ public class Unit {
     private UnitId id;
 
     @MapsId("buisinessUnitId")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumns( {
         @JoinColumn(name = "buisinessunit_id", referencedColumnName = "id"), 
         @JoinColumn(name = "company_id", referencedColumnName = "company_id")

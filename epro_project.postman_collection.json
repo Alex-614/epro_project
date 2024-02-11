@@ -13,7 +13,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"deadline\": \"\",\r\n    \"title\": \"\",\r\n    \"description\": \"\",\r\n    \"owner\": \"\"\r\n}",
+					"raw": "{\r\n    \"deadline\": \"2024-02-10T12:00:00Z\",\r\n    \"title\": \"CO1\",\r\n    \"description\": \"Erstes Company Objective\",\r\n    \"ownerId\": {{userId}}\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -21,13 +21,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{epro_project}}/company/{{company_id}}/objective",
+					"raw": "{{epro_project}}/company/{{companyId}}/objective",
 					"host": [
 						"{{epro_project}}"
 					],
 					"path": [
 						"company",
-						"{{company_id}}",
+						"{{companyId}}",
 						"objective"
 					]
 				}
@@ -41,7 +41,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"deadline\": \"\",\r\n    \"title\": \"\",\r\n    \"description\": \"\",\r\n    \"owner\": \"\"\r\n}",
+					"raw": "{\r\n    \"deadline\": \"\",\r\n    \"title\": \"\",\r\n    \"description\": \"\",\r\n    \"ownerId\": \"\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -49,13 +49,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{epro_project}}/company/{{company_id}}/objective/{id}",
+					"raw": "{{epro_project}}/company/{{companyId}}/objective/{id}",
 					"host": [
 						"{{epro_project}}"
 					],
 					"path": [
 						"company",
-						"{{company_id}}",
+						"{{companyId}}",
 						"objective",
 						"{id}"
 					]
@@ -81,13 +81,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{epro_project}}/company/{{company_id}}/objective/{id}",
+					"raw": "{{epro_project}}/company/{{companyId}}/objective/{id}",
 					"host": [
 						"{{epro_project}}"
 					],
 					"path": [
 						"company",
-						"{{company_id}}",
+						"{{companyId}}",
 						"objective",
 						"{id}"
 					]
@@ -110,13 +110,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{epro_project}}/company/{{company_id}}/objective/{id}",
+					"raw": "{{epro_project}}/company/{{companyId}}/objective/{id}",
 					"host": [
 						"{{epro_project}}"
 					],
 					"path": [
 						"company",
-						"{{company_id}}",
+						"{{companyId}}",
 						"objective",
 						"{id}"
 					]
@@ -131,7 +131,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"deadline\": \"\",\r\n    \"title\": \"\",\r\n    \"description\": \"\",\r\n    \"owner\": \"\",\r\n    \"companyKeyResult_ID\": \"\"\r\n}",
+					"raw": "{\r\n    \"deadline\": \"2024-02-10T12:00:00Z\",\r\n    \"title\": \"BUO1\",\r\n    \"description\": \"Erstes BuisinessUnit Objective\",\r\n    \"ownerId\": {{userId}},\r\n    \"companyKeyResult_ID\": \"\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -139,15 +139,15 @@
 					}
 				},
 				"url": {
-					"raw": "{{epro_project}}/company/{{company_id}}/buisinessunit/{buisinessunit_id}/objective",
+					"raw": "{{epro_project}}/company/{{companyId}}/buisinessunit/{{buisinessUnitId}}/objective",
 					"host": [
 						"{{epro_project}}"
 					],
 					"path": [
 						"company",
-						"{{company_id}}",
+						"{{companyId}}",
 						"buisinessunit",
-						"{buisinessunit_id}",
+						"{{buisinessUnitId}}",
 						"objective"
 					]
 				}
@@ -161,7 +161,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"deadline\": \"\",\r\n    \"title\": \"\",\r\n    \"description\": \"\",\r\n    \"owner\": \"\",\r\n    \"companyKeyResult_ID\": \"\"\r\n}",
+					"raw": "{\r\n    \"deadline\": \"\",\r\n    \"title\": \"\",\r\n    \"description\": \"\",\r\n    \"ownerId\": \"\",\r\n    \"companyKeyResult_ID\": \"\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -169,15 +169,15 @@
 					}
 				},
 				"url": {
-					"raw": "{{epro_project}}/company/{{company_id}}/buisinessunit/{buisinessunit_id}/objective/{o_id}",
+					"raw": "{{epro_project}}/company/{{companyId}}/buisinessunit/{{buisinessUnitId}}/objective/{o_id}",
 					"host": [
 						"{{epro_project}}"
 					],
 					"path": [
 						"company",
-						"{{company_id}}",
+						"{{companyId}}",
 						"buisinessunit",
-						"{buisinessunit_id}",
+						"{{buisinessUnitId}}",
 						"objective",
 						"{o_id}"
 					]
@@ -203,15 +203,15 @@
 					}
 				},
 				"url": {
-					"raw": "{{epro_project}}/company/{{company_id}}/buisinessunit/{buisinessunit_id}/objective/{id}",
+					"raw": "{{epro_project}}/company/{{companyId}}/buisinessunit/{{buisinessUnitId}}/objective/{id}",
 					"host": [
 						"{{epro_project}}"
 					],
 					"path": [
 						"company",
-						"{{company_id}}",
+						"{{companyId}}",
 						"buisinessunit",
-						"{buisinessunit_id}",
+						"{{buisinessUnitId}}",
 						"objective",
 						"{id}"
 					]
@@ -234,15 +234,15 @@
 					}
 				},
 				"url": {
-					"raw": "{{epro_project}}/company/{{company_id}}/buisinessunit/{buisinessunit_id}/objective/{id}",
+					"raw": "{{epro_project}}/company/{{companyId}}/buisinessunit/{{buisinessUnitId}}/objective/{id}",
 					"host": [
 						"{{epro_project}}"
 					],
 					"path": [
 						"company",
-						"{{company_id}}",
+						"{{companyId}}",
 						"buisinessunit",
-						"{buisinessunit_id}",
+						"{{buisinessUnitId}}",
 						"objective",
 						"{id}"
 					]
@@ -265,13 +265,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{epro_project}}/company/{{company_id}}/objective/{o_id}/keyresult",
+					"raw": "{{epro_project}}/company/{{companyId}}/objective/{o_id}/keyresult",
 					"host": [
 						"{{epro_project}}"
 					],
 					"path": [
 						"company",
-						"{{company_id}}",
+						"{{companyId}}",
 						"objective",
 						"{o_id}",
 						"keyresult"
@@ -295,13 +295,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{epro_project}}/company/{{company_id}}/objective/{o_id}/keyresult/{id}",
+					"raw": "{{epro_project}}/company/{{companyId}}/objective/{o_id}/keyresult/{id}",
 					"host": [
 						"{{epro_project}}"
 					],
 					"path": [
 						"company",
-						"{{company_id}}",
+						"{{companyId}}",
 						"objective",
 						"{o_id}",
 						"keyresult",
@@ -329,13 +329,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{epro_project}}/company/{{company_id}}/objective/{o_id}/keyresult/{id}",
+					"raw": "{{epro_project}}/company/{{companyId}}/objective/{o_id}/keyresult/{id}",
 					"host": [
 						"{{epro_project}}"
 					],
 					"path": [
 						"company",
-						"{{company_id}}",
+						"{{companyId}}",
 						"objective",
 						"{o_id}",
 						"keyresult",
@@ -360,13 +360,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{epro_project}}/company/{{company_id}}/objective/{o_id}/keyresult/{id}",
+					"raw": "{{epro_project}}/company/{{companyId}}/objective/{o_id}/keyresult/{id}",
 					"host": [
 						"{{epro_project}}"
 					],
 					"path": [
 						"company",
-						"{{company_id}}",
+						"{{companyId}}",
 						"objective",
 						"{o_id}",
 						"keyresult",
@@ -391,13 +391,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{epro_project}}/company/{{company_id}}/buisinessunit/object/{o_id}/keyresult",
+					"raw": "{{epro_project}}/company/{{companyId}}/buisinessunit/object/{o_id}/keyresult",
 					"host": [
 						"{{epro_project}}"
 					],
 					"path": [
 						"company",
-						"{{company_id}}",
+						"{{companyId}}",
 						"buisinessunit",
 						"object",
 						"{o_id}",
@@ -422,13 +422,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{epro_project}}/company/{{company_id}}/buisinessunit/object/{o_id}/keyresult/{id}",
+					"raw": "{{epro_project}}/company/{{companyId}}/buisinessunit/object/{o_id}/keyresult/{id}",
 					"host": [
 						"{{epro_project}}"
 					],
 					"path": [
 						"company",
-						"{{company_id}}",
+						"{{companyId}}",
 						"buisinessunit",
 						"object",
 						"{o_id}",
@@ -457,13 +457,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{epro_project}}/company/{{company_id}}/buisinessunit/object/{o_id}/keyresult/{id}",
+					"raw": "{{epro_project}}/company/{{companyId}}/buisinessunit/object/{o_id}/keyresult/{id}",
 					"host": [
 						"{{epro_project}}"
 					],
 					"path": [
 						"company",
-						"{{company_id}}",
+						"{{companyId}}",
 						"buisinessunit",
 						"object",
 						"{o_id}",
@@ -489,13 +489,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{epro_project}}/company/{{company_id}}/buisinessunit/object/{o_id}/keyresult/{id}",
+					"raw": "{{epro_project}}/company/{{companyId}}/buisinessunit/object/{o_id}/keyresult/{id}",
 					"host": [
 						"{{epro_project}}"
 					],
 					"path": [
 						"company",
-						"{{company_id}}",
+						"{{companyId}}",
 						"buisinessunit",
 						"object",
 						"{o_id}",
@@ -517,6 +517,19 @@
 						],
 						"type": "text/javascript"
 					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// set accessToken variable for further requests\r",
+							"var jsonData = pm.response.json();\r",
+							"pm.collectionVariables.set(\"userId\", jsonData.id);\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
 				}
 			],
 			"request": {
@@ -527,7 +540,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"email\": \"test@test.de\",\r\n    \"password\": \"test\",\r\n    \"username\": \"testuser\",\r\n    \"surname\": \"sur\",\r\n    \"firstname\": \"name\"\r\n}",
+					"raw": "{\r\n    \"email\": \"test@test.de\",\r\n    \"password\": \"test\",\r\n    \"username\": \"testuser\",\r\n    \"surname\": \"sur\",\r\n    \"firstname\": \"my first name\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -561,13 +574,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{epro_project}}/user/{id}",
+					"raw": "{{epro_project}}/user/{{userId}}",
 					"host": [
 						"{{epro_project}}"
 					],
 					"path": [
 						"user",
-						"{id}"
+						"{{userId}}"
 					]
 				}
 			},
@@ -591,13 +604,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{epro_project}}/user/{id}",
+					"raw": "{{epro_project}}/user/{{userId}}",
 					"host": [
 						"{{epro_project}}"
 					],
 					"path": [
 						"user",
-						"{id}"
+						"{{userId}}"
 					]
 				}
 			},
@@ -618,13 +631,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{epro_project}}/user/{id}",
+					"raw": "{{epro_project}}/user/{{userId}}",
 					"host": [
 						"{{epro_project}}"
 					],
 					"path": [
 						"user",
-						"{id}"
+						"{{userId}}"
 					]
 				}
 			},
@@ -637,7 +650,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"roles\": []\r\n}",
+					"raw": "{\r\n    \"roleIds\": []\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -645,15 +658,15 @@
 					}
 				},
 				"url": {
-					"raw": "{{epro_project}}/company/{{company_id}}/user/{user_id}/add",
+					"raw": "{{epro_project}}/company/{{companyId}}/user/{{userId}}/add",
 					"host": [
 						"{{epro_project}}"
 					],
 					"path": [
 						"company",
-						"{{company_id}}",
+						"{{companyId}}",
 						"user",
-						"{user_id}",
+						"{{userId}}",
 						"add"
 					]
 				}
@@ -675,15 +688,15 @@
 					}
 				},
 				"url": {
-					"raw": "{{epro_project}}/company/{{company_id}}/user/{user_id}/remove",
+					"raw": "{{epro_project}}/company/{{companyId}}/user/{{userId}}/remove",
 					"host": [
 						"{{epro_project}}"
 					],
 					"path": [
 						"company",
-						"{{company_id}}",
+						"{{companyId}}",
 						"user",
-						"{user_id}",
+						"{{userId}}",
 						"remove"
 					]
 				}
@@ -698,7 +711,7 @@
 					"script": {
 						"exec": [
 							"var jsonData = pm.response.json();\r",
-							"pm.collectionVariables.set(\"company_id\", jsonData.id);"
+							"pm.collectionVariables.set(\"companyId\", jsonData.id);"
 						],
 						"type": "text/javascript"
 					}
@@ -742,7 +755,7 @@
 					"script": {
 						"exec": [
 							"var jsonData = pm.response.json();\r",
-							"pm.collectionVariables.set(\"buisinessunit_id\", jsonData.id.id);\r",
+							"pm.collectionVariables.set(\"buisinessUnitId\", jsonData.id.id);\r",
 							""
 						],
 						"type": "text/javascript"
@@ -762,13 +775,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{epro_project}}/company/{{company_id}}/buisinessunit",
+					"raw": "{{epro_project}}/company/{{companyId}}/buisinessunit",
 					"host": [
 						"{{epro_project}}"
 					],
 					"path": [
 						"company",
-						"{{company_id}}",
+						"{{companyId}}",
 						"buisinessunit"
 					]
 				}
@@ -790,15 +803,15 @@
 					}
 				},
 				"url": {
-					"raw": "{{epro_project}}/company/{{company_id}}/buisinessunit/{id}",
+					"raw": "{{epro_project}}/company/{{companyId}}/buisinessunit/{{buisinessUnitId}}",
 					"host": [
 						"{{epro_project}}"
 					],
 					"path": [
 						"company",
-						"{{company_id}}",
+						"{{companyId}}",
 						"buisinessunit",
-						"{id}"
+						"{{buisinessUnitId}}"
 					]
 				}
 			},
@@ -812,7 +825,7 @@
 					"script": {
 						"exec": [
 							"var jsonData = pm.response.json();\r",
-							"pm.collectionVariables.set(\"unit_id\", jsonData.id.id);\r",
+							"pm.collectionVariables.set(\"unitId\", jsonData.id.id);\r",
 							"\r",
 							"\r",
 							""
@@ -834,15 +847,15 @@
 					}
 				},
 				"url": {
-					"raw": "{{epro_project}}/company/{{company_id}}/buisinessunit/{{buisinessunit_id}}/unit",
+					"raw": "{{epro_project}}/company/{{companyId}}/buisinessunit/{{buisinessUnitId}}/unit",
 					"host": [
 						"{{epro_project}}"
 					],
 					"path": [
 						"company",
-						"{{company_id}}",
+						"{{companyId}}",
 						"buisinessunit",
-						"{{buisinessunit_id}}",
+						"{{buisinessUnitId}}",
 						"unit"
 					]
 				}
@@ -864,17 +877,17 @@
 					}
 				},
 				"url": {
-					"raw": "{{epro_project}}/company/{{company_id}}/buisinessunit/{buisinessunit_id}/unit/{id}",
+					"raw": "{{epro_project}}/company/{{companyId}}/buisinessunit/{{buisinessUnitId}}/unit/{{unitId}}",
 					"host": [
 						"{{epro_project}}"
 					],
 					"path": [
 						"company",
-						"{{company_id}}",
+						"{{companyId}}",
 						"buisinessunit",
-						"{buisinessunit_id}",
+						"{{buisinessUnitId}}",
 						"unit",
-						"{id}"
+						"{{unitId}}"
 					]
 				}
 			},
@@ -992,16 +1005,21 @@
 			"type": "string"
 		},
 		{
-			"key": "company_id",
+			"key": "companyId",
 			"value": ""
 		},
 		{
-			"key": "buisinessunit_id",
+			"key": "buisinessUnitId",
 			"value": ""
 		},
 		{
-			"key": "unit_id",
+			"key": "unitId",
 			"value": ""
+		},
+		{
+			"key": "userId",
+			"value": "",
+			"type": "string"
 		}
 	]
 }
