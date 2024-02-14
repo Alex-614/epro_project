@@ -1,4 +1,4 @@
-package de.thbingen.epro.project.okrservice.entities;
+package de.thbingen.epro.project.okrservice.entities.keyresults;
 
 import de.thbingen.epro.project.okrservice.entities.ids.KeyResultUpdateId;
 import jakarta.persistence.EmbeddedId;

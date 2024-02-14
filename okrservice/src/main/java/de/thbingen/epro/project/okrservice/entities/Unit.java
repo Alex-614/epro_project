@@ -2,7 +2,6 @@ package de.thbingen.epro.project.okrservice.entities;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import de.thbingen.epro.project.okrservice.entities.buisinessunit.BuisinessUnit;
 import de.thbingen.epro.project.okrservice.entities.ids.UnitId;
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;

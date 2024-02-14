@@ -1,6 +1,5 @@
 package de.thbingen.epro.project.okrservice.entities;
 
-import de.thbingen.epro.project.okrservice.entities.company.Company;
 import de.thbingen.epro.project.okrservice.entities.ids.RoleAssignmentId;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;

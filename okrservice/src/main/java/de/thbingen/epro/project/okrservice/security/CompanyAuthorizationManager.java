@@ -1,4 +1,4 @@
-package de.thbingen.epro.project.okrservice.config;
+package de.thbingen.epro.project.okrservice.security;
 
 import java.util.Arrays;
 import java.util.List;
@@ -13,7 +13,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.access.intercept.RequestAuthorizationContext;
 
-import de.thbingen.epro.project.okrservice.AuthorityString;
 import de.thbingen.epro.project.okrservice.entities.User;
 import de.thbingen.epro.project.okrservice.repositories.PrivilegeRepository;
 import de.thbingen.epro.project.okrservice.repositories.RoleRepository;
@@ -44,8 +43,6 @@ public class CompanyAuthorizationManager implements AuthorizationManager<Request
     public AuthorizationDecision check(Supplier<Authentication> authentication, RequestAuthorizationContext context) {
         
         User user = userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
-        
-        //String[] authorities = new String[companyAuthorities.length];
 
         AuthorizationDecision decision = new AuthorizationDecision(false);
         int i = 0;
@@ -53,30 +50,31 @@ public class CompanyAuthorizationManager implements AuthorizationManager<Request
 
             CompanyAuthority companyAuthority = companyAuthorities[i];
             AuthorityString authorityString = companyAuthority.getAuthorityString();
-            boolean shouldOwnObjective = companyAuthority.isShouldOwnObjective();
             List<String> methods = Arrays.stream(companyAuthority.getMethods()).map(mapper -> mapper.name()).collect(Collectors.toList());
             
+            AuthorityString reproducedAuthorityString = new AuthorityString(authorityString.isRole(), null, null, null);
+
             if (methods.contains(context.getRequest().getMethod())) {    
                 // translate Role/Privilege name to Id
                 if (authorityString.isRole()) {
-                    authorityString.setAuthority(getRoleIdByName(authorityString.getAuthority()).toString());
+                    reproducedAuthorityString.setAuthority(getRoleIdByName(authorityString.getAuthority()).toString());
                 } else {
-                    authorityString.setAuthority(getPrivilegeIdByName(authorityString.getAuthority()).toString());
+                    reproducedAuthorityString.setAuthority(getPrivilegeIdByName(authorityString.getAuthority()).toString());
                 }
         
                 // set variables from URI
                 if (authorityString.getCompanyId().equals("{companyId}")) {
                     String companyId = context.getVariables().get("companyId"); // get URI variable
                     if (companyId == null) companyId = "";
-                    authorityString.setCompanyId(companyId);
+                    reproducedAuthorityString.setCompanyId(companyId);
                 }
                 if (authorityString.getBuisinessUnitId().equals("{buisinessUnitId}")) {
                     String buisinessUnitId = context.getVariables().get("buisinessUnitId"); // get URI variable
                     if (buisinessUnitId == null) buisinessUnitId = "";
-                    authorityString.setBuisinessUnitId(buisinessUnitId);
+                    reproducedAuthorityString.setBuisinessUnitId(buisinessUnitId);
                 }
                 
-                if (shouldOwnObjective) {
+                if (companyAuthority.isShouldOwnObjective()) {
                     // must be final to stream
                     final String objectiveId = context.getVariables().get("objectiveId") != null ? context.getVariables().get("objectiveId") : "";
     
@@ -85,53 +83,11 @@ public class CompanyAuthorizationManager implements AuthorizationManager<Request
                         return new AuthorizationDecision(false);
                     }
                 }
-                
-                decision = AuthorityAuthorizationManager.hasAuthority(authorityString.toString()).check(authentication, context);
+                decision = AuthorityAuthorizationManager.hasAuthority(reproducedAuthorityString.toString()).check(authentication, context);
             }
 
             i++;
         }
-
-/* 
-        for (int i = 0; i < companyAuthorities.length; i++) {
-            CompanyAuthority companyAuthority = companyAuthorities[i];
-            AuthorityString authorityString = companyAuthority.getAuthorityString();
-            boolean shouldOwnObjective = companyAuthority.isShouldOwnObjective();
-
-            // translate Role/Privilege name to Id
-            if (authorityString.isRole()) {
-                authorityString.setAuthority(getRoleIdByName(authorityString.getAuthority()).toString());
-            } else {
-                authorityString.setAuthority(getPrivilegeIdByName(authorityString.getAuthority()).toString());
-            }
-    
-            // set variables from URI
-            if (authorityString.getCompanyId().equals("{companyId}")) {
-                String companyId = context.getVariables().get("companyId"); // get URI variable
-                if (companyId == null) companyId = "";
-                authorityString.setCompanyId(companyId);
-            }
-            if (authorityString.getBuisinessUnitId().equals("{buisinessUnitId}")) {
-                String buisinessUnitId = context.getVariables().get("buisinessUnitId"); // get URI variable
-                if (buisinessUnitId == null) buisinessUnitId = "";
-                authorityString.setBuisinessUnitId(buisinessUnitId);
-            }
-    
-            if (shouldOwnObjective) {
-                // must be final to stream
-                final String objectiveId = context.getVariables().get("objectiveId") != null ? context.getVariables().get("objectiveId") : "";
-
-                // if userOwnedObjectives contains objectiveId
-                if (!user.getOwnedObjectives().stream().filter(obj -> obj.getId().toString() == objectiveId).findFirst().isPresent()) {
-                    return new AuthorizationDecision(false);
-                }
-            }
-
-            authorities[i] = authorityString.toString();
-        }
-        AuthorizationManager<RequestAuthorizationContext> delegate = AuthorityAuthorizationManager.hasAnyAuthority(authorities);
-        return delegate.check(authentication, context);
-*/
         return decision;
     }
 

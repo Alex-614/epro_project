@@ -200,7 +200,7 @@ CREATE TABLE tbl_RoleAssignment
 
 -- KeyResult
 
-CREATE TABLE tbl_Type
+CREATE TABLE tbl_KeyResultType
 (
   Name VARCHAR(100) NOT NULL,
   PRIMARY KEY (Name)
@@ -220,7 +220,7 @@ CREATE TABLE tbl_KeyResult
   FOREIGN KEY (Objective_ID) REFERENCES tbl_Objective(ID)
     ON DELETE CASCADE 
     ON UPDATE CASCADE, 
-  FOREIGN KEY (Type) REFERENCES tbl_Type(Name) 
+  FOREIGN KEY (Type) REFERENCES tbl_KeyResultType(Name) 
     ON DELETE CASCADE
 );
 CREATE TABLE tbl_BuisinessUnitKeyResult

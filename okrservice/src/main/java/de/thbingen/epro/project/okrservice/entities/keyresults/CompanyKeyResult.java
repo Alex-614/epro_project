@@ -1,6 +1,6 @@
-package de.thbingen.epro.project.okrservice.entities.company;
+package de.thbingen.epro.project.okrservice.entities.keyresults;
 
-import de.thbingen.epro.project.okrservice.entities.Objective;
+import de.thbingen.epro.project.okrservice.entities.Company;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -15,15 +15,13 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-@Table(name = "tbl_companyobjective")
+@Table(name = "tbl_companykeyresult")
 @Entity
-@PrimaryKeyJoinColumn(name = "objective_id")
-public class CompanyObjective extends Objective {
+@PrimaryKeyJoinColumn(name = "keyresult_id")
+public class CompanyKeyResult extends KeyResult {
 
     @ManyToOne
     @JoinColumn(name = "company_id")
     private Company company;
-
-
 
 }

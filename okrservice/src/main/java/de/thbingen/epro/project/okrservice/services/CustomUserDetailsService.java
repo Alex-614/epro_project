@@ -1,8 +1,9 @@
 package de.thbingen.epro.project.okrservice.services;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -12,12 +13,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import de.thbingen.epro.project.okrservice.AuthorityString;
 import de.thbingen.epro.project.okrservice.entities.Privilege;
 import de.thbingen.epro.project.okrservice.entities.Role;
 import de.thbingen.epro.project.okrservice.entities.RoleAssignment;
 import de.thbingen.epro.project.okrservice.entities.User;
 import de.thbingen.epro.project.okrservice.repositories.UserRepository;
+import de.thbingen.epro.project.okrservice.security.AuthorityString;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
@@ -40,26 +41,25 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     private Collection<GrantedAuthority> mapRoleAssignmentsToAuthorities(List<RoleAssignment> roleAssignments) {
-        List<GrantedAuthority> authorities = new ArrayList<>();
+        Set<GrantedAuthority> authorities = new HashSet<>();
         for (RoleAssignment assignment : roleAssignments) {
             String companyId = assignment.getCompany().getId().toString();
-            authorities.addAll(mapRoleToAuthorities(assignment.getRole(), companyId));
+            authorities.addAll(mapRoleToAuthoritiesRecursive(assignment.getRole(), companyId));
         }
         return authorities;
     }
     
-    private List<GrantedAuthority> mapRoleToAuthorities(Role role, String companyId) {
-        List<GrantedAuthority> authorities = new ArrayList<>();
+    private Set<GrantedAuthority> mapRoleToAuthoritiesRecursive(Role role, String companyId) {
+        Set<GrantedAuthority> authorities = new HashSet<>();
         authorities.add(new SimpleGrantedAuthority(AuthorityString.Role(role.getId().toString(), companyId).toString()));
         for (Role inheritedRole : role.getInheritedRoles()) {
-            authorities.addAll(mapRoleToAuthorities(inheritedRole, companyId));
+            authorities.addAll(mapRoleToAuthoritiesRecursive(inheritedRole, companyId));
         }
         for (Privilege privilege : role.getPrivileges()) {
             authorities.add(new SimpleGrantedAuthority(AuthorityString.Privilege(privilege.getId().toString(), companyId).toString()));
         }
         return authorities;
     }
-
 
 
 }

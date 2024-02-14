@@ -2,7 +2,7 @@ package de.thbingen.epro.project.okrservice.entities;
 
 import java.util.List;
 
-import de.thbingen.epro.project.okrservice.config.SecurityConstants;
+import de.thbingen.epro.project.okrservice.security.SecurityConstants;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

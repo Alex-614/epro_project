@@ -11,15 +11,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import de.thbingen.epro.project.okrservice.dtos.BuisinessUnitDto;
 import de.thbingen.epro.project.okrservice.dtos.ObjectiveDto;
+import de.thbingen.epro.project.okrservice.entities.BuisinessUnit;
+import de.thbingen.epro.project.okrservice.entities.Company;
 import de.thbingen.epro.project.okrservice.entities.User;
-import de.thbingen.epro.project.okrservice.entities.buisinessunit.BuisinessUnit;
-import de.thbingen.epro.project.okrservice.entities.buisinessunit.BuisinessUnitObjective;
-import de.thbingen.epro.project.okrservice.entities.company.Company;
 import de.thbingen.epro.project.okrservice.entities.ids.BuisinessUnitId;
+import de.thbingen.epro.project.okrservice.entities.objectives.BuisinessUnitObjective;
 import de.thbingen.epro.project.okrservice.repositories.BuisinessUnitObjectiveRepository;
 import de.thbingen.epro.project.okrservice.repositories.BuisinessUnitRepository;
 import de.thbingen.epro.project.okrservice.repositories.CompanyRepository;
 import de.thbingen.epro.project.okrservice.repositories.UserRepository;
+import jakarta.validation.Valid;
 
 @RestController
 public class BuisinessUnitController {
@@ -43,7 +44,8 @@ public class BuisinessUnitController {
 
 
     @PostMapping("/company/{companyId}/buisinessunit")
-    public ResponseEntity<BuisinessUnitDto> createBuisinessUnit(@PathVariable @NonNull Number companyId, @RequestBody BuisinessUnitDto buisinessUnitDto) {
+    public ResponseEntity<BuisinessUnitDto> createBuisinessUnit(@PathVariable @NonNull Number companyId, 
+                                                                @RequestBody @Valid BuisinessUnitDto buisinessUnitDto) {
         if (!companyRepository.existsById(companyId.longValue())) {
             // "Company not found!"
             buisinessUnitDto.setName("Company not found!");
@@ -69,9 +71,10 @@ public class BuisinessUnitController {
     
     
 
-    @SuppressWarnings("null") // objectiveDto is validated, cant be null
     @PostMapping("/company/{companyId}/buisinessunit/{buisinessUnitId}/objective")
-    public ResponseEntity<ObjectiveDto> createBuisinessUnitObjective(@PathVariable @NonNull Number companyId, @PathVariable @NonNull Number buisinessUnitId, @RequestBody ObjectiveDto objectiveDto) {
+    public ResponseEntity<ObjectiveDto> createBuisinessUnitObjective(@PathVariable @NonNull Number companyId, 
+                                                                        @PathVariable @NonNull Number buisinessUnitId, 
+                                                                        @RequestBody @Valid ObjectiveDto objectiveDto) {
         BuisinessUnitId buId = new BuisinessUnitId(buisinessUnitId.longValue(), companyId.longValue());
         if (!companyRepository.existsById(companyId.longValue())) {
             // Company not found!
@@ -81,12 +84,12 @@ public class BuisinessUnitController {
             // BuisinessUnit not found!
             return new ResponseEntity<>(objectiveDto, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        if (!userRepository.existsById(objectiveDto.getOwnerId())) {
+        if (!userRepository.existsById(objectiveDto.getOwnerId().longValue())) {
             // User not found!
             return new ResponseEntity<>(objectiveDto, HttpStatus.INTERNAL_SERVER_ERROR);
         }
         BuisinessUnit buisinessUnit = buisinessUnitRepository.findById(buId).get();
-        User owner = userRepository.findById(objectiveDto.getOwnerId()).get();
+        User owner = userRepository.findById(objectiveDto.getOwnerId().longValue()).get();
 
         if (buisinessUnit.getObjectives().size() >= 5) {
             // Reached Max Commpany Objectives

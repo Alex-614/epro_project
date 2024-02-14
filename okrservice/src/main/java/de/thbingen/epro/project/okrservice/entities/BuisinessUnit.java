@@ -1,11 +1,11 @@
-package de.thbingen.epro.project.okrservice.entities.buisinessunit;
+package de.thbingen.epro.project.okrservice.entities;
 
 import java.util.List;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import de.thbingen.epro.project.okrservice.entities.company.Company;
 import de.thbingen.epro.project.okrservice.entities.ids.BuisinessUnitId;
+import de.thbingen.epro.project.okrservice.entities.objectives.BuisinessUnitObjective;
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;

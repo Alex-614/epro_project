@@ -10,7 +10,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import de.thbingen.epro.project.okrservice.config.SecurityConstants;
+import de.thbingen.epro.project.okrservice.security.SecurityConstants;
 import de.thbingen.epro.project.okrservice.services.CustomUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

@@ -9,11 +9,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import de.thbingen.epro.project.okrservice.dtos.UnitDto;
+import de.thbingen.epro.project.okrservice.entities.BuisinessUnit;
 import de.thbingen.epro.project.okrservice.entities.Unit;
-import de.thbingen.epro.project.okrservice.entities.buisinessunit.BuisinessUnit;
 import de.thbingen.epro.project.okrservice.entities.ids.BuisinessUnitId;
 import de.thbingen.epro.project.okrservice.repositories.BuisinessUnitRepository;
 import de.thbingen.epro.project.okrservice.repositories.UnitRepository;
+import jakarta.validation.Valid;
 
 @RestController
 public class UnitController {
@@ -32,8 +33,8 @@ public class UnitController {
 
     @PostMapping("/company/{companyId}/buisinessunit/{buisinessUnitId}/unit")
     public ResponseEntity<UnitDto> createUnit(@PathVariable @NonNull Number companyId, 
-                                                                @PathVariable @NonNull Number buisinessUnitId, 
-                                                                @RequestBody UnitDto unitDto) {
+                                                @PathVariable @NonNull Number buisinessUnitId, 
+                                                @RequestBody @Valid UnitDto unitDto) {
         BuisinessUnitId buId = new BuisinessUnitId(buisinessUnitId.longValue(), companyId.longValue());
         if (!buisinessUnitRepository.existsById(buId)) {
             // "BuisinessUnit not found!"

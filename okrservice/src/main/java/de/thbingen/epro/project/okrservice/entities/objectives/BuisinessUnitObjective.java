@@ -1,6 +1,6 @@
-package de.thbingen.epro.project.okrservice.entities.buisinessunit;
+package de.thbingen.epro.project.okrservice.entities.objectives;
 
-import de.thbingen.epro.project.okrservice.entities.Objective;
+import de.thbingen.epro.project.okrservice.entities.BuisinessUnit;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinColumns;

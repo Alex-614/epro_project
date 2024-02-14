@@ -1,11 +1,10 @@
 package de.thbingen.epro.project.okrservice.entities;
 
 import java.util.List;
-import java.util.Set;
 
-import de.thbingen.epro.project.okrservice.entities.buisinessunit.BuisinessUnitObjective;
-import de.thbingen.epro.project.okrservice.entities.company.Company;
-import de.thbingen.epro.project.okrservice.entities.company.CompanyObjective;
+import de.thbingen.epro.project.okrservice.entities.objectives.BuisinessUnitObjective;
+import de.thbingen.epro.project.okrservice.entities.objectives.CompanyObjective;
+import de.thbingen.epro.project.okrservice.entities.objectives.Objective;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -74,7 +73,7 @@ public class User {
 
 
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "tbl_company_employs_user",
         joinColumns = @JoinColumn(
@@ -84,7 +83,7 @@ public class User {
             name = "company_id", referencedColumnName = "id"
         )
     )
-    private Set<Company> companys;
+    private List<Company> companys;
     public void addCompany(Company company) {
         this.companys.add(company);
     }

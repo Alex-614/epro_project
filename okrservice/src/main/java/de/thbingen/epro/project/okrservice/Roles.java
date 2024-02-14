@@ -1,6 +1,6 @@
 package de.thbingen.epro.project.okrservice;
 
-import de.thbingen.epro.project.okrservice.config.SecurityConstants;
+import de.thbingen.epro.project.okrservice.security.SecurityConstants;
 
 public enum Roles {
     CO_OKR_ADMIN("CO_OKR_Admin"),

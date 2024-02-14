@@ -38,7 +38,7 @@ VALUES
 
 
 INSERT INTO
-  tbl_Type (name)
+  tbl_KeyResultType (name)
 VALUES
   ('numeric'),
   ('percentual'),

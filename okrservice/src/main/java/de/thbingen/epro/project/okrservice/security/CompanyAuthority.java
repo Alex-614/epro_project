@@ -1,11 +1,10 @@
-package de.thbingen.epro.project.okrservice.config;
+package de.thbingen.epro.project.okrservice.security;
 
 import org.springframework.http.HttpMethod;
 
-import de.thbingen.epro.project.okrservice.AuthorityString;
-import lombok.Data;
+import lombok.Getter;
 
-@Data
+@Getter
 public class CompanyAuthority {
     
     private AuthorityString authorityString;

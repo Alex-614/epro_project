@@ -1,7 +1,8 @@
-package de.thbingen.epro.project.okrservice.entities.company;
+package de.thbingen.epro.project.okrservice.entities;
 
 import java.util.List;
 
+import de.thbingen.epro.project.okrservice.entities.objectives.CompanyObjective;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

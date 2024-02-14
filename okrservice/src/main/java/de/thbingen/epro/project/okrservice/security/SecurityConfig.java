@@ -1,9 +1,8 @@
-package de.thbingen.epro.project.okrservice.config;
+package de.thbingen.epro.project.okrservice.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
@@ -17,7 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import de.thbingen.epro.project.okrservice.AuthorityString;
+import de.thbingen.epro.project.okrservice.Privileges;
 import de.thbingen.epro.project.okrservice.Roles;
 import de.thbingen.epro.project.okrservice.jwt.JwtAuthEntryPoint;
 import de.thbingen.epro.project.okrservice.jwt.JwtAuthenticationFilter;
@@ -59,31 +58,31 @@ public class SecurityConfig {
                 // add User to Company
                 .requestMatchers(HttpMethod.POST, "/company/{companyId}/user/{userId}*")
                     .access(hasAnyCompanyAuthority(
-                        hasRole(Roles.CO_OKR_ADMIN.getName())))
+                        hasRole(Roles.CO_OKR_ADMIN)))
 
                 // create BuisinessUnit
                 .requestMatchers("/company/{companyId}/buisinessunit")
                     .access(hasAnyCompanyAuthority(
-                        hasRole(Roles.CO_OKR_ADMIN.getName())
-                            .forMethods(HttpMethod.POST, HttpMethod.DELETE)))
+                        hasRole(Roles.CO_OKR_ADMIN)
+                            .forMethods(HttpMethod.POST)))
 
                 // create Unit
                 .requestMatchers("/company/{companyId}/buisinessunit/{buisinessUnitId}/unit")
                     .access(hasAnyCompanyAuthority(
-                        hasRole(Roles.CO_OKR_ADMIN.getName())
-                            .forMethods(HttpMethod.POST, HttpMethod.DELETE)))
+                        hasRole(Roles.CO_OKR_ADMIN)
+                            .forMethods(HttpMethod.POST)))
 
                 // CompanyObjective
                 .requestMatchers("/company/{companyId}/objective")
                     .access(hasAnyCompanyAuthority(
-                        hasRole(Roles.CO_OKR_ADMIN.getName())
-                           .forMethods(HttpMethod.POST, HttpMethod.PATCH, HttpMethod.DELETE)))
+                        hasRole(Roles.CO_OKR_ADMIN)
+                           .forMethods(HttpMethod.POST)))
                     
                 // CompanyKeyResult
                 .requestMatchers("/company/{companyId}/keyresult")
                     .access(hasAnyCompanyAuthority(
-                        hasRole(Roles.CO_OKR_ADMIN.getName())
-                            .forMethods(HttpMethod.POST, HttpMethod.PATCH, HttpMethod.DELETE)))
+                        hasRole(Roles.CO_OKR_ADMIN)
+                            .forMethods(HttpMethod.POST)))
                 
                 
                 /*
@@ -92,16 +91,16 @@ public class SecurityConfig {
                 // BuisinessUnitObjective
                 .requestMatchers("/company/{companyId}/buisinessunit/{buisinessUnitId}/objective")
                     .access(hasAnyCompanyAuthority(
-                        hasRole(Roles.BUO_OKR_ADMIN.getName())
+                        hasRole(Roles.BUO_OKR_ADMIN)
                             .ownsObjective(true)
-                            .forMethods(HttpMethod.POST, HttpMethod.PATCH, HttpMethod.DELETE)))
+                            .forMethods(HttpMethod.POST)))
 
                 // BuisinessUnitKeyResult
                 .requestMatchers("/company/{companyId}/buisinessunit/{buisinessUnitId}/keyresult")
                     .access(hasAnyCompanyAuthority(
-                        hasRole(Roles.BUO_OKR_ADMIN.getName())
+                        hasRole(Roles.BUO_OKR_ADMIN)
                             .ownsObjective(true)
-                            .forMethods(HttpMethod.POST, HttpMethod.PATCH, HttpMethod.DELETE)))
+                            .forMethods(HttpMethod.POST)))
                 
 
                 /*
@@ -110,12 +109,12 @@ public class SecurityConfig {
                 // CompanyObjective
                 .requestMatchers(HttpMethod.GET, "/company/{companyId}/objective/{objectiveId}")
                     .access(hasAnyCompanyAuthority(
-                        hasRole(Roles.READ_ONLY_USER.getName())))
+                        hasRole(Roles.READ_ONLY_USER)))
                 
                 // BuisinessUnitObjective
                 .requestMatchers(HttpMethod.GET, "/company/{companyId}/objective/buisinessunit/{buisinessUnitId}/objective/{objectiveId}")
                     .access(hasAnyCompanyAuthority(
-                        hasRole(Roles.READ_ONLY_USER.getName())))
+                        hasRole(Roles.READ_ONLY_USER)))
 
 
                 .anyRequest().authenticated())
@@ -124,14 +123,19 @@ public class SecurityConfig {
         return http.build();
     }
 
+    protected CompanyAuthority hasRole(Roles role) {
+        return hasRole(role.getName());
+    }
     protected CompanyAuthority hasRole(String role) {
         return new CompanyAuthority(AuthorityString.Role(role, "{companyId}"));
+    }
+    protected CompanyAuthority hasPrivilege(Privileges privilege) {
+        return hasPrivilege(privilege.getName());
     }
     protected CompanyAuthority hasPrivilege(String privilege) {
         return new CompanyAuthority(AuthorityString.Privilege(privilege, "{companyId}"));
     }
     @Bean
-    @Scope("prototype")
     public CompanyAuthorizationManager hasAnyCompanyAuthority(CompanyAuthority ... companyAuthorities) {
         return new CompanyAuthorizationManager(companyAuthorities);
     }

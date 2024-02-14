@@ -15,16 +15,17 @@ import de.thbingen.epro.project.okrservice.Roles;
 import de.thbingen.epro.project.okrservice.dtos.CompanyDto;
 import de.thbingen.epro.project.okrservice.dtos.ObjectiveDto;
 import de.thbingen.epro.project.okrservice.dtos.RolesDto;
+import de.thbingen.epro.project.okrservice.entities.Company;
 import de.thbingen.epro.project.okrservice.entities.Role;
 import de.thbingen.epro.project.okrservice.entities.RoleAssignment;
 import de.thbingen.epro.project.okrservice.entities.User;
-import de.thbingen.epro.project.okrservice.entities.company.Company;
-import de.thbingen.epro.project.okrservice.entities.company.CompanyObjective;
+import de.thbingen.epro.project.okrservice.entities.objectives.CompanyObjective;
 import de.thbingen.epro.project.okrservice.repositories.CompanyObjectiveRepository;
 import de.thbingen.epro.project.okrservice.repositories.CompanyRepository;
 import de.thbingen.epro.project.okrservice.repositories.RoleAssignmentRepository;
 import de.thbingen.epro.project.okrservice.repositories.RoleRepository;
 import de.thbingen.epro.project.okrservice.repositories.UserRepository;
+import jakarta.validation.Valid;
 
 @RestController
 public class CompanyController {
@@ -52,9 +53,8 @@ public class CompanyController {
 
 
     @PostMapping("/company")
-    public ResponseEntity<CompanyDto> createCompany(@RequestBody CompanyDto companyDto, 
+    public ResponseEntity<CompanyDto> createCompany(@RequestBody @Valid CompanyDto companyDto, 
                                                 @AuthenticationPrincipal UserDetails userDetails) {
-        
         Company company = new Company();
         company.setName(companyDto.getName());
         companyRepository.save(company);
@@ -73,8 +73,9 @@ public class CompanyController {
     
     
     @PostMapping("/company/{companyId}/user/{userId}/add")
-    public ResponseEntity<String> addUser(@PathVariable @NonNull Number companyId, @PathVariable @NonNull Number userId, 
-                                            @RequestBody RolesDto roleDto) {
+    public ResponseEntity<String> addUser(@PathVariable @NonNull Number companyId, 
+                                            @PathVariable @NonNull Number userId, 
+                                            @RequestBody @Valid RolesDto roleDto) {
         if (!companyRepository.existsById(companyId.longValue())) {
             return new ResponseEntity<>("Company not found!", HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -96,7 +97,8 @@ public class CompanyController {
 
 
     @PostMapping("/company/{companyId}/user/{userId}/remove")
-    public ResponseEntity<String> removeUser(@PathVariable @NonNull Number companyId, @PathVariable @NonNull Number userId) {
+    public ResponseEntity<String> removeUser(@PathVariable @NonNull Number companyId, 
+                                                @PathVariable @NonNull Number userId) {
         if (!companyRepository.existsById(companyId.longValue())) {
             return new ResponseEntity<>("Company not found!", HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -118,7 +120,8 @@ public class CompanyController {
     
     @SuppressWarnings("null") // objectiveDto is validated, cant be null
     @PostMapping("/company/{companyId}/objective")
-    public ResponseEntity<ObjectiveDto> removeUser(@PathVariable @NonNull Number companyId, @RequestBody ObjectiveDto objectiveDto) {
+    public ResponseEntity<ObjectiveDto> removeUser(@PathVariable @NonNull Number companyId, 
+                                                    @RequestBody @Valid ObjectiveDto objectiveDto) {
         if (!companyRepository.existsById(companyId.longValue())) {
             // Company not found!
             return new ResponseEntity<>(objectiveDto, HttpStatus.INTERNAL_SERVER_ERROR);

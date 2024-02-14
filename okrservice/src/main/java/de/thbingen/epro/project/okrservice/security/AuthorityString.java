@@ -1,6 +1,5 @@
-package de.thbingen.epro.project.okrservice;
+package de.thbingen.epro.project.okrservice.security;
 
-import de.thbingen.epro.project.okrservice.config.SecurityConstants;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,7 +21,7 @@ public class AuthorityString {
     }
 
 
-
+    private static final String seperator = "_";
 
     private boolean isRole;
     private String authority;
@@ -32,12 +31,12 @@ public class AuthorityString {
     public AuthorityString fromString(String authorityString) {
         boolean isRole = authorityString.startsWith(SecurityConstants.ROLE_PREFIX);
 
-        String buisinessUnitId = authorityString.substring(authorityString.lastIndexOf("_") + 1);
+        String buisinessUnitId = authorityString.substring(authorityString.lastIndexOf(seperator) + 1);
 
-        authorityString = authorityString.substring(0, authorityString.lastIndexOf("_"));
-        String companyId = authorityString.substring(authorityString.lastIndexOf("_") + 1);
+        authorityString = authorityString.substring(0, authorityString.lastIndexOf(seperator));
+        String companyId = authorityString.substring(authorityString.lastIndexOf(seperator) + 1);
         
-        authorityString = authorityString.substring(0, authorityString.lastIndexOf("_"));
+        authorityString = authorityString.substring(0, authorityString.lastIndexOf(seperator));
         if (isRole) {
             authorityString = authorityString.substring(SecurityConstants.ROLE_PREFIX.length());
         }
@@ -50,10 +49,12 @@ public class AuthorityString {
         if (isRole) {
             authorityString += SecurityConstants.ROLE_PREFIX;
         }
-        authorityString += String.format("%s_%s_%s", 
-        authority, 
-        (companyId != null ? companyId.toString() : ""), 
-        (buisinessUnitId != null ? buisinessUnitId.toString() : ""));
+        authorityString += String.format("%s%s%s%s%s", 
+                                            authority, 
+                                            seperator,
+                                            (companyId != null ? companyId : ""), 
+                                            seperator,
+                                            (buisinessUnitId != null ? buisinessUnitId : ""));
         return authorityString;
     }
 

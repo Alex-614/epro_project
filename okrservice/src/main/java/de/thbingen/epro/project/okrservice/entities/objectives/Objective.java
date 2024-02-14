@@ -1,7 +1,8 @@
-package de.thbingen.epro.project.okrservice.entities;
+package de.thbingen.epro.project.okrservice.entities.objectives;
 
 import java.time.Instant;
 
+import de.thbingen.epro.project.okrservice.entities.User;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

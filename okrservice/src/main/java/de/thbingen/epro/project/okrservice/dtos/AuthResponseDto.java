@@ -1,6 +1,6 @@
 package de.thbingen.epro.project.okrservice.dtos;
 
-import de.thbingen.epro.project.okrservice.config.SecurityConstants;
+import de.thbingen.epro.project.okrservice.security.SecurityConstants;
 import lombok.Data;
 
 @Data
