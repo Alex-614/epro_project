@@ -8,6 +8,20 @@
 	"item": [
 		{
 			"name": "CompanyObjective",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"pm.collectionVariables.set(\"companyObjectiveId\", jsonData.id);\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -126,6 +140,19 @@
 		},
 		{
 			"name": "BuisinessUnitObjective",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"pm.collectionVariables.set(\"buisinessUnitObjectiveId\", jsonData.id);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -252,6 +279,19 @@
 		},
 		{
 			"name": "CompanyKeyResult",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"pm.collectionVariables.set(\"companyKeyResultId\", jsonData.id);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -378,6 +418,19 @@
 		},
 		{
 			"name": "BuisinessUnitKeyResult",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"pm.collectionVariables.set(\"buisinessUnitKeyResultId\", jsonData.id);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -522,7 +575,7 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"// set accessToken variable for further requests\r",
+							"\r",
 							"var jsonData = pm.response.json();\r",
 							"pm.collectionVariables.set(\"userId\", jsonData.id);\r",
 							"\r",
@@ -555,7 +608,8 @@
 					"path": [
 						"user"
 					]
-				}
+				},
+				"description": "Diese Anfrage legt einen neuen Benutzer an."
 			},
 			"response": []
 		},
@@ -899,13 +953,15 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{epro_project}}/okrset/{objective_id}",
+					"raw": "{{epro_project}}/company/{{companyId}}/okrset/",
 					"host": [
 						"{{epro_project}}"
 					],
 					"path": [
+						"company",
+						"{{companyId}}",
 						"okrset",
-						"{objective_id}"
+						""
 					]
 				}
 			},
@@ -1018,6 +1074,26 @@
 		},
 		{
 			"key": "userId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "companyObjectiveId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "buisinessUnitObjectiveId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "companyKeyResultId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "buisinessUnitKeyResultId",
 			"value": "",
 			"type": "string"
 		}
