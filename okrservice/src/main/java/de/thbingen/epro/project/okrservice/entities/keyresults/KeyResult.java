@@ -9,6 +9,7 @@ import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -46,4 +47,13 @@ public abstract class KeyResult {
     @JoinColumn(name = "type_id")
     private KeyResultType type;
     
+
+    @OneToOne(mappedBy = "newKeyResult")
+    private KeyResultUpdate lastUpdate;
+
+    // TODO change UpdateHistory pattern
+    // should be unidirectional
+
+
+
 }

@@ -16,7 +16,7 @@ VALUES
   (1, 'CO_READ'),
   (2, 'CO_WRITE'),
   (3, 'BUO_READ'),
-  (4, 'BUO_WRITE_OWN');
+  (4, 'BUO_WRITE');
 
 
 INSERT INTO

@@ -10,7 +10,7 @@ import lombok.Setter;
 public class AuthorityString {
 
     /*
-     *   Format: <ROLE_><privilege>_<companyId>_<buisinessUnitId>
+     *   Format: <ROLE_><privilege>_<companyId>_<businessUnitId>
      */
 
     public static AuthorityString Role(String authority, String companyId) {
@@ -26,12 +26,12 @@ public class AuthorityString {
     private boolean isRole;
     private String authority;
     private String companyId;
-    private String buisinessUnitId;
+    private String businessUnitId;
     
     public AuthorityString fromString(String authorityString) {
         boolean isRole = authorityString.startsWith(SecurityConstants.ROLE_PREFIX);
 
-        String buisinessUnitId = authorityString.substring(authorityString.lastIndexOf(seperator) + 1);
+        String businessUnitId = authorityString.substring(authorityString.lastIndexOf(seperator) + 1);
 
         authorityString = authorityString.substring(0, authorityString.lastIndexOf(seperator));
         String companyId = authorityString.substring(authorityString.lastIndexOf(seperator) + 1);
@@ -40,7 +40,7 @@ public class AuthorityString {
         if (isRole) {
             authorityString = authorityString.substring(SecurityConstants.ROLE_PREFIX.length());
         }
-        return new AuthorityString(isRole, authorityString, companyId, buisinessUnitId);
+        return new AuthorityString(isRole, authorityString, companyId, businessUnitId);
     }
 
     @Override
@@ -54,7 +54,7 @@ public class AuthorityString {
                                             seperator,
                                             (companyId != null ? companyId : ""), 
                                             seperator,
-                                            (buisinessUnitId != null ? buisinessUnitId : ""));
+                                            (businessUnitId != null ? businessUnitId : ""));
         return authorityString;
     }
 

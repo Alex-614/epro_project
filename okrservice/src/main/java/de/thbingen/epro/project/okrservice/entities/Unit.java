@@ -31,13 +31,13 @@ public class Unit {
         strategy = "de.thbingen.epro.project.okrservice.entities.ids.UnitIdGenerator")
     private UnitId id;
 
-    @MapsId("buisinessUnitId")
+    @MapsId("businessUnitId")
     @ManyToOne
     @JoinColumns( {
-        @JoinColumn(name = "buisinessunit_id", referencedColumnName = "id"), 
+        @JoinColumn(name = "businessunit_id", referencedColumnName = "id"), 
         @JoinColumn(name = "company_id", referencedColumnName = "company_id")
     })
-    private BuisinessUnit buisinessUnit;
+    private BusinessUnit businessUnit;
     
 
 

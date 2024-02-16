@@ -60,14 +60,14 @@ public class SecurityConfig {
                     .access(hasAnyCompanyAuthority(
                         hasRole(Roles.CO_OKR_ADMIN)))
 
-                // create BuisinessUnit
-                .requestMatchers("/company/{companyId}/buisinessunit")
+                // create BusinessUnit
+                .requestMatchers("/company/{companyId}/businessunit")
                     .access(hasAnyCompanyAuthority(
                         hasRole(Roles.CO_OKR_ADMIN)
                             .forMethods(HttpMethod.POST)))
 
                 // create Unit
-                .requestMatchers("/company/{companyId}/buisinessunit/{buisinessUnitId}/unit")
+                .requestMatchers("/company/{companyId}/businessunit/{businessUnitId}/unit")
                     .access(hasAnyCompanyAuthority(
                         hasRole(Roles.CO_OKR_ADMIN)
                             .forMethods(HttpMethod.POST)))
@@ -88,15 +88,15 @@ public class SecurityConfig {
                 /*
                  *  BUO_OKR_ADMIN
                  */
-                // BuisinessUnitObjective
-                .requestMatchers("/company/{companyId}/buisinessunit/{buisinessUnitId}/objective")
+                // BusinessUnitObjective
+                .requestMatchers("/company/{companyId}/businessunit/{businessUnitId}/objective")
                     .access(hasAnyCompanyAuthority(
                         hasRole(Roles.BUO_OKR_ADMIN)
                             .ownsObjective(true)
                             .forMethods(HttpMethod.POST)))
 
-                // BuisinessUnitKeyResult
-                .requestMatchers("/company/{companyId}/buisinessunit/{buisinessUnitId}/keyresult")
+                // BusinessUnitKeyResult
+                .requestMatchers("/company/{companyId}/businessunit/{businessUnitId}/keyresult")
                     .access(hasAnyCompanyAuthority(
                         hasRole(Roles.BUO_OKR_ADMIN)
                             .ownsObjective(true)
@@ -111,8 +111,8 @@ public class SecurityConfig {
                     .access(hasAnyCompanyAuthority(
                         hasRole(Roles.READ_ONLY_USER)))
                 
-                // BuisinessUnitObjective
-                .requestMatchers(HttpMethod.GET, "/company/{companyId}/objective/buisinessunit/{buisinessUnitId}/objective/{objectiveId}")
+                // BusinessUnitObjective
+                .requestMatchers(HttpMethod.GET, "/company/{companyId}/objective/businessunit/{businessUnitId}/objective/{objectiveId}")
                     .access(hasAnyCompanyAuthority(
                         hasRole(Roles.READ_ONLY_USER)))
 

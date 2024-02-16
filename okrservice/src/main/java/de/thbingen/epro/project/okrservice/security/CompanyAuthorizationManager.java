@@ -68,10 +68,10 @@ public class CompanyAuthorizationManager implements AuthorizationManager<Request
                     if (companyId == null) companyId = "";
                     reproducedAuthorityString.setCompanyId(companyId);
                 }
-                if (authorityString.getBuisinessUnitId().equals("{buisinessUnitId}")) {
-                    String buisinessUnitId = context.getVariables().get("buisinessUnitId"); // get URI variable
-                    if (buisinessUnitId == null) buisinessUnitId = "";
-                    reproducedAuthorityString.setBuisinessUnitId(buisinessUnitId);
+                if (authorityString.getBusinessUnitId().equals("{businessUnitId}")) {
+                    String businessUnitId = context.getVariables().get("businessUnitId"); // get URI variable
+                    if (businessUnitId == null) businessUnitId = "";
+                    reproducedAuthorityString.setBusinessUnitId(businessUnitId);
                 }
                 
                 if (companyAuthority.isShouldOwnObjective()) {

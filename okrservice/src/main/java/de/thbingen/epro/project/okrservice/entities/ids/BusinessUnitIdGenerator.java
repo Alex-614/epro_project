@@ -11,26 +11,26 @@ import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.id.IdentifierGenerator;
 import org.hibernate.jdbc.ReturningWork;
 
-import de.thbingen.epro.project.okrservice.entities.BuisinessUnit;
+import de.thbingen.epro.project.okrservice.entities.BusinessUnit;
 
-public class BuisinessUnitIdGenerator implements IdentifierGenerator {
+public class BusinessUnitIdGenerator implements IdentifierGenerator {
 
     @Override
     public Serializable generate(SharedSessionContractImplementor session, Object obj) throws HibernateException {
-        ReturningWork<BuisinessUnitId> maxReturningWork = new ReturningWork<BuisinessUnitId>() {
+        ReturningWork<BusinessUnitId> maxReturningWork = new ReturningWork<BusinessUnitId>() {
             @Override
-            public BuisinessUnitId execute(Connection connection) throws SQLException {
+            public BusinessUnitId execute(Connection connection) throws SQLException {
                 PreparedStatement preparedStatement = null;
                 ResultSet resultSet = null;
                 try {
-                    Long companyId = ((BuisinessUnit) obj).getCompany().getId();
-                    preparedStatement = connection.prepareStatement("SELECT MAX(id) AS Id FROM tbl_buisinessunit WHERE company_id = " + companyId);
+                    Long companyId = ((BusinessUnit) obj).getCompany().getId();
+                    preparedStatement = connection.prepareStatement("SELECT MAX(id) AS Id FROM tbl_businessunit WHERE company_id = " + companyId);
                     resultSet = preparedStatement.executeQuery();
                     Long max = 1L;
                     if (resultSet.next()) {
                         max += resultSet.getLong(1);
                     }
-                    return new BuisinessUnitId(max, companyId);
+                    return new BusinessUnitId(max, companyId);
                 }catch (SQLException e) {
                     throw e;
                 } finally {
@@ -43,7 +43,7 @@ public class BuisinessUnitIdGenerator implements IdentifierGenerator {
                 }
             }
         };
-        BuisinessUnitId result = session.doReturningWork(maxReturningWork);
+        BusinessUnitId result = session.doReturningWork(maxReturningWork);
         return result;
     }
 

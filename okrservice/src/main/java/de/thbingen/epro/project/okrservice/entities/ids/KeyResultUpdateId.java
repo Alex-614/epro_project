@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 public class KeyResultUpdateId {
 
 
+    @Column(name = "user_id")
     private Long userId;
 
     @Column(name = "old_keyresult_id")

@@ -9,48 +9,48 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import de.thbingen.epro.project.okrservice.dtos.UnitDto;
-import de.thbingen.epro.project.okrservice.entities.BuisinessUnit;
+import de.thbingen.epro.project.okrservice.entities.BusinessUnit;
 import de.thbingen.epro.project.okrservice.entities.Unit;
-import de.thbingen.epro.project.okrservice.entities.ids.BuisinessUnitId;
-import de.thbingen.epro.project.okrservice.repositories.BuisinessUnitRepository;
+import de.thbingen.epro.project.okrservice.entities.ids.BusinessUnitId;
+import de.thbingen.epro.project.okrservice.repositories.BusinessUnitRepository;
 import de.thbingen.epro.project.okrservice.repositories.UnitRepository;
 import jakarta.validation.Valid;
 
 @RestController
 public class UnitController {
 
-    private BuisinessUnitRepository buisinessUnitRepository;
+    private BusinessUnitRepository businessUnitRepository;
     
     private UnitRepository unitRepository;
 
 
     @Autowired
-    public UnitController(BuisinessUnitRepository buisinessUnitRepository, UnitRepository unitRepository) {
-        this.buisinessUnitRepository = buisinessUnitRepository;
+    public UnitController(BusinessUnitRepository businessUnitRepository, UnitRepository unitRepository) {
+        this.businessUnitRepository = businessUnitRepository;
         this.unitRepository = unitRepository;
     }
 
 
-    @PostMapping("/company/{companyId}/buisinessunit/{buisinessUnitId}/unit")
+    @PostMapping("/company/{companyId}/businessunit/{businessUnitId}/unit")
     public ResponseEntity<UnitDto> createUnit(@PathVariable @NonNull Number companyId, 
-                                                @PathVariable @NonNull Number buisinessUnitId, 
+                                                @PathVariable @NonNull Number businessUnitId, 
                                                 @RequestBody @Valid UnitDto unitDto) {
-        BuisinessUnitId buId = new BuisinessUnitId(buisinessUnitId.longValue(), companyId.longValue());
-        if (!buisinessUnitRepository.existsById(buId)) {
-            // "BuisinessUnit not found!"
-            unitDto.setName("BuisinessUnit not found!");
+        BusinessUnitId buId = new BusinessUnitId(businessUnitId.longValue(), companyId.longValue());
+        if (!businessUnitRepository.existsById(buId)) {
+            // "BusinessUnit not found!"
+            unitDto.setName("BusinessUnit not found!");
             return new ResponseEntity<>(unitDto, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        if (unitRepository.existsByNameAndBuisinessUnitIdEquals(unitDto.getName(), buId)) {
+        if (unitRepository.existsByNameAndBusinessUnitIdEquals(unitDto.getName(), buId)) {
             // "Unit already exists!"
             unitDto.setName("Unit already exists!");
             return new ResponseEntity<>(unitDto, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        BuisinessUnit buisinessUnit = buisinessUnitRepository.findById(buId).get();
+        BusinessUnit businessUnit = businessUnitRepository.findById(buId).get();
 
         Unit unit = new Unit();
         unit.setName(unitDto.getName());
-        unit.setBuisinessUnit(buisinessUnit);
+        unit.setBusinessUnit(businessUnit);
 
         unitRepository.save(unit);
 

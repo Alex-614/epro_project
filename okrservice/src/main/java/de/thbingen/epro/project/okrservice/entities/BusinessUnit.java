@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import de.thbingen.epro.project.okrservice.entities.ids.BuisinessUnitId;
-import de.thbingen.epro.project.okrservice.entities.objectives.BuisinessUnitObjective;
+import de.thbingen.epro.project.okrservice.entities.ids.BusinessUnitId;
+import de.thbingen.epro.project.okrservice.entities.objectives.BusinessUnitObjective;
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
@@ -23,19 +23,19 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "tbl_buisinessunit")
+@Table(name = "tbl_businessunit")
 @Entity
-public class BuisinessUnit {
+public class BusinessUnit {
 
 
 
 
     @EmbeddedId
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "buisinessunit_id_gen")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "businessunit_id_gen")
     @GenericGenerator(
-        name = "buisinessunit_id_gen", 
-        strategy = "de.thbingen.epro.project.okrservice.entities.ids.BuisinessUnitIdGenerator")
-    private BuisinessUnitId id;
+        name = "businessunit_id_gen", 
+        strategy = "de.thbingen.epro.project.okrservice.entities.ids.BusinessUnitIdGenerator")
+    private BusinessUnitId id;
 
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -45,8 +45,8 @@ public class BuisinessUnit {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "buisinessunit")
-    private List<BuisinessUnitObjective> objectives;
+    @OneToMany(mappedBy = "businessUnit")
+    private List<BusinessUnitObjective> objectives;
 
 
 

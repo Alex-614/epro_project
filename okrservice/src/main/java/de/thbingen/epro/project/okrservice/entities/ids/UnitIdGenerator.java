@@ -23,15 +23,15 @@ public class UnitIdGenerator implements IdentifierGenerator {
                 PreparedStatement preparedStatement = null;
                 ResultSet resultSet = null;
                 try {
-                    BuisinessUnitId buisinessUnitId = ((Unit) obj).getBuisinessUnit().getId();
-                    preparedStatement = connection.prepareStatement("SELECT MAX(id) AS Id FROM tbl_unit WHERE company_id = " + buisinessUnitId.getCompanyId()
-                                                                                                            + " AND buisinessunit_id = " + buisinessUnitId.getId());
+                    BusinessUnitId businessUnitId = ((Unit) obj).getBusinessUnit().getId();
+                    preparedStatement = connection.prepareStatement("SELECT MAX(id) AS Id FROM tbl_unit WHERE company_id = " + businessUnitId.getCompanyId()
+                                                                                                            + " AND businessunit_id = " + businessUnitId.getId());
                     resultSet = preparedStatement.executeQuery();
                     Long max = 1L;
                     if (resultSet.next()) {
                         max += resultSet.getLong(1);
                     }
-                    return new UnitId(max, buisinessUnitId);
+                    return new UnitId(max, businessUnitId);
                 }catch (SQLException e) {
                     throw e;
                 } finally {

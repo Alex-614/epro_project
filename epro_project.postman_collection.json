@@ -139,14 +139,14 @@
 			"response": []
 		},
 		{
-			"name": "BuisinessUnitObjective",
+			"name": "BusinessUnitObjective",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
 							"var jsonData = pm.response.json();\r",
-							"pm.collectionVariables.set(\"buisinessUnitObjectiveId\", jsonData.id);\r",
+							"pm.collectionVariables.set(\"businessUnitObjectiveId\", jsonData.id);\r",
 							""
 						],
 						"type": "text/javascript"
@@ -158,7 +158,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"deadline\": \"2024-02-10T12:00:00Z\",\r\n    \"title\": \"BUO1\",\r\n    \"description\": \"Erstes BuisinessUnit Objective\",\r\n    \"ownerId\": {{userId}},\r\n    \"companyKeyResult_ID\": \"\"\r\n}",
+					"raw": "{\r\n    \"deadline\": \"2024-02-10T12:00:00Z\",\r\n    \"title\": \"BUO1\",\r\n    \"description\": \"Erstes BusinessUnit Objective\",\r\n    \"ownerId\": {{userId}},\r\n    \"companyKeyResult_ID\": \"\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -166,15 +166,15 @@
 					}
 				},
 				"url": {
-					"raw": "{{epro_project}}/company/{{companyId}}/buisinessunit/{{buisinessUnitId}}/objective",
+					"raw": "{{epro_project}}/company/{{companyId}}/businessunit/{{businessUnitId}}/objective",
 					"host": [
 						"{{epro_project}}"
 					],
 					"path": [
 						"company",
 						"{{companyId}}",
-						"buisinessunit",
-						"{{buisinessUnitId}}",
+						"businessunit",
+						"{{businessUnitId}}",
 						"objective"
 					]
 				}
@@ -182,7 +182,7 @@
 			"response": []
 		},
 		{
-			"name": "BuisinessUnitObjective",
+			"name": "BusinessUnitObjective",
 			"request": {
 				"method": "PATCH",
 				"header": [],
@@ -196,15 +196,15 @@
 					}
 				},
 				"url": {
-					"raw": "{{epro_project}}/company/{{companyId}}/buisinessunit/{{buisinessUnitId}}/objective/{o_id}",
+					"raw": "{{epro_project}}/company/{{companyId}}/businessunit/{{businessUnitId}}/objective/{o_id}",
 					"host": [
 						"{{epro_project}}"
 					],
 					"path": [
 						"company",
 						"{{companyId}}",
-						"buisinessunit",
-						"{{buisinessUnitId}}",
+						"businessunit",
+						"{{businessUnitId}}",
 						"objective",
 						"{o_id}"
 					]
@@ -213,7 +213,7 @@
 			"response": []
 		},
 		{
-			"name": "BuisinessUnitObjective",
+			"name": "BusinessUnitObjective",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -230,15 +230,15 @@
 					}
 				},
 				"url": {
-					"raw": "{{epro_project}}/company/{{companyId}}/buisinessunit/{{buisinessUnitId}}/objective/{id}",
+					"raw": "{{epro_project}}/company/{{companyId}}/businessunit/{{businessUnitId}}/objective/{id}",
 					"host": [
 						"{{epro_project}}"
 					],
 					"path": [
 						"company",
 						"{{companyId}}",
-						"buisinessunit",
-						"{{buisinessUnitId}}",
+						"businessunit",
+						"{{businessUnitId}}",
 						"objective",
 						"{id}"
 					]
@@ -247,7 +247,7 @@
 			"response": []
 		},
 		{
-			"name": "BuisinessUnitObjective",
+			"name": "BusinessUnitObjective",
 			"request": {
 				"method": "DELETE",
 				"header": [],
@@ -261,15 +261,15 @@
 					}
 				},
 				"url": {
-					"raw": "{{epro_project}}/company/{{companyId}}/buisinessunit/{{buisinessUnitId}}/objective/{id}",
+					"raw": "{{epro_project}}/company/{{companyId}}/businessunit/{{businessUnitId}}/objective/{id}",
 					"host": [
 						"{{epro_project}}"
 					],
 					"path": [
 						"company",
 						"{{companyId}}",
-						"buisinessunit",
-						"{{buisinessUnitId}}",
+						"businessunit",
+						"{{businessUnitId}}",
 						"objective",
 						"{id}"
 					]
@@ -417,14 +417,14 @@
 			"response": []
 		},
 		{
-			"name": "BuisinessUnitKeyResult",
+			"name": "BusinessUnitKeyResult",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
 							"var jsonData = pm.response.json();\r",
-							"pm.collectionVariables.set(\"buisinessUnitKeyResultId\", jsonData.id);\r",
+							"pm.collectionVariables.set(\"businessUnitKeyResultId\", jsonData.id);\r",
 							""
 						],
 						"type": "text/javascript"
@@ -444,14 +444,14 @@
 					}
 				},
 				"url": {
-					"raw": "{{epro_project}}/company/{{companyId}}/buisinessunit/object/{o_id}/keyresult",
+					"raw": "{{epro_project}}/company/{{companyId}}/businessunit/object/{o_id}/keyresult",
 					"host": [
 						"{{epro_project}}"
 					],
 					"path": [
 						"company",
 						"{{companyId}}",
-						"buisinessunit",
+						"businessunit",
 						"object",
 						"{o_id}",
 						"keyresult"
@@ -461,7 +461,7 @@
 			"response": []
 		},
 		{
-			"name": "BuisinessUnitKeyResult",
+			"name": "BusinessUnitKeyResult",
 			"request": {
 				"method": "PATCH",
 				"header": [],
@@ -475,14 +475,14 @@
 					}
 				},
 				"url": {
-					"raw": "{{epro_project}}/company/{{companyId}}/buisinessunit/object/{o_id}/keyresult/{id}",
+					"raw": "{{epro_project}}/company/{{companyId}}/businessunit/object/{o_id}/keyresult/{id}",
 					"host": [
 						"{{epro_project}}"
 					],
 					"path": [
 						"company",
 						"{{companyId}}",
-						"buisinessunit",
+						"businessunit",
 						"object",
 						"{o_id}",
 						"keyresult",
@@ -493,7 +493,7 @@
 			"response": []
 		},
 		{
-			"name": "BuisinessUnitKeyResult",
+			"name": "BusinessUnitKeyResult",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -510,14 +510,14 @@
 					}
 				},
 				"url": {
-					"raw": "{{epro_project}}/company/{{companyId}}/buisinessunit/object/{o_id}/keyresult/{id}",
+					"raw": "{{epro_project}}/company/{{companyId}}/businessunit/object/{o_id}/keyresult/{id}",
 					"host": [
 						"{{epro_project}}"
 					],
 					"path": [
 						"company",
 						"{{companyId}}",
-						"buisinessunit",
+						"businessunit",
 						"object",
 						"{o_id}",
 						"keyresult",
@@ -528,7 +528,7 @@
 			"response": []
 		},
 		{
-			"name": "BuisinessUnitKeyResult",
+			"name": "BusinessUnitKeyResult",
 			"request": {
 				"method": "DELETE",
 				"header": [],
@@ -542,14 +542,14 @@
 					}
 				},
 				"url": {
-					"raw": "{{epro_project}}/company/{{companyId}}/buisinessunit/object/{o_id}/keyresult/{id}",
+					"raw": "{{epro_project}}/company/{{companyId}}/businessunit/object/{o_id}/keyresult/{id}",
 					"host": [
 						"{{epro_project}}"
 					],
 					"path": [
 						"company",
 						"{{companyId}}",
-						"buisinessunit",
+						"businessunit",
 						"object",
 						"{o_id}",
 						"keyresult",
@@ -802,14 +802,14 @@
 			"response": []
 		},
 		{
-			"name": "BuisinessUnit",
+			"name": "BusinessUnit",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
 							"var jsonData = pm.response.json();\r",
-							"pm.collectionVariables.set(\"buisinessUnitId\", jsonData.id.id);\r",
+							"pm.collectionVariables.set(\"businessUnitId\", jsonData.id.id);\r",
 							""
 						],
 						"type": "text/javascript"
@@ -829,21 +829,21 @@
 					}
 				},
 				"url": {
-					"raw": "{{epro_project}}/company/{{companyId}}/buisinessunit",
+					"raw": "{{epro_project}}/company/{{companyId}}/businessunit",
 					"host": [
 						"{{epro_project}}"
 					],
 					"path": [
 						"company",
 						"{{companyId}}",
-						"buisinessunit"
+						"businessunit"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "BuisinessUnit",
+			"name": "BusinessUnit",
 			"request": {
 				"method": "DELETE",
 				"header": [],
@@ -857,15 +857,15 @@
 					}
 				},
 				"url": {
-					"raw": "{{epro_project}}/company/{{companyId}}/buisinessunit/{{buisinessUnitId}}",
+					"raw": "{{epro_project}}/company/{{companyId}}/businessunit/{{businessUnitId}}",
 					"host": [
 						"{{epro_project}}"
 					],
 					"path": [
 						"company",
 						"{{companyId}}",
-						"buisinessunit",
-						"{{buisinessUnitId}}"
+						"businessunit",
+						"{{businessUnitId}}"
 					]
 				}
 			},
@@ -901,15 +901,15 @@
 					}
 				},
 				"url": {
-					"raw": "{{epro_project}}/company/{{companyId}}/buisinessunit/{{buisinessUnitId}}/unit",
+					"raw": "{{epro_project}}/company/{{companyId}}/businessunit/{{businessUnitId}}/unit",
 					"host": [
 						"{{epro_project}}"
 					],
 					"path": [
 						"company",
 						"{{companyId}}",
-						"buisinessunit",
-						"{{buisinessUnitId}}",
+						"businessunit",
+						"{{businessUnitId}}",
 						"unit"
 					]
 				}
@@ -931,15 +931,15 @@
 					}
 				},
 				"url": {
-					"raw": "{{epro_project}}/company/{{companyId}}/buisinessunit/{{buisinessUnitId}}/unit/{{unitId}}",
+					"raw": "{{epro_project}}/company/{{companyId}}/businessunit/{{businessUnitId}}/unit/{{unitId}}",
 					"host": [
 						"{{epro_project}}"
 					],
 					"path": [
 						"company",
 						"{{companyId}}",
-						"buisinessunit",
-						"{{buisinessUnitId}}",
+						"businessunit",
+						"{{businessUnitId}}",
 						"unit",
 						"{{unitId}}"
 					]
@@ -1065,10 +1065,6 @@
 			"value": ""
 		},
 		{
-			"key": "buisinessUnitId",
-			"value": ""
-		},
-		{
 			"key": "unitId",
 			"value": ""
 		},
@@ -1083,19 +1079,17 @@
 			"type": "string"
 		},
 		{
-			"key": "buisinessUnitObjectiveId",
-			"value": "",
-			"type": "string"
-		},
-		{
 			"key": "companyKeyResultId",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"key": "buisinessUnitKeyResultId",
-			"value": "",
-			"type": "string"
+			"key": "businessUnitId",
+			"value": ""
+		},
+		{
+			"key": "businessUnitObjectiveId",
+			"value": ""
 		}
 	]
 }

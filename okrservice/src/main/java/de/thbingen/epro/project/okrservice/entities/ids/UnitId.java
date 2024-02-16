@@ -15,7 +15,7 @@ public class UnitId implements Serializable {
 
     private Long id;
     
-    private BuisinessUnitId buisinessUnitId;
+    private BusinessUnitId businessUnitId;
 
 
 

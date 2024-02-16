@@ -1,5 +1,5 @@
 package de.thbingen.epro.project.okrservice.dtos;
 
-public class BuisinessUnitObjectiveDto {
+public class BusinessUnitObjectiveDto {
 
 }

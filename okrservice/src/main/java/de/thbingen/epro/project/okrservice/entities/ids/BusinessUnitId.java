@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Embeddable
-public class BuisinessUnitId implements Serializable {
+public class BusinessUnitId implements Serializable {
 
     private Long id;
     

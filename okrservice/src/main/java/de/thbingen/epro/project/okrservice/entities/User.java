@@ -2,7 +2,7 @@ package de.thbingen.epro.project.okrservice.entities;
 
 import java.util.List;
 
-import de.thbingen.epro.project.okrservice.entities.objectives.BuisinessUnitObjective;
+import de.thbingen.epro.project.okrservice.entities.objectives.BusinessUnitObjective;
 import de.thbingen.epro.project.okrservice.entities.objectives.CompanyObjective;
 import de.thbingen.epro.project.okrservice.entities.objectives.Objective;
 import jakarta.persistence.Column;
@@ -68,7 +68,7 @@ public class User {
     private List<CompanyObjective> ownedCompanyObjectives;
     
     @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
-    private List<BuisinessUnitObjective> ownedBuisinessUnitObjectives;
+    private List<BusinessUnitObjective> ownedBusinessUnitObjectives;
 
 
 

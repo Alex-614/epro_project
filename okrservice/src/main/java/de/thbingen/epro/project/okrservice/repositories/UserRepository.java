@@ -11,6 +11,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     
     //static final String EXP_STRING = "SELECT id FROM tbl_objective WHERE user_id = ?1";
     //@Query(value = EXP_STRING, nativeQuery = true)
-    //List<Long> findOwnedBuisinessUnitIdsById(Long id);
+    //List<Long> findOwnedBusinessUnitIdsById(Long id);
     
 }

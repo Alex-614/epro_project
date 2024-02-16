@@ -1,7 +1,7 @@
 
 
 CREATE SEQUENCE Company_ID_seq START WITH 1000 INCREMENT BY 1;
-CREATE SEQUENCE BuisinessUnit_ID_seq START WITH 1000 INCREMENT BY 1;
+CREATE SEQUENCE BusinessUnit_ID_seq START WITH 1000 INCREMENT BY 1;
 CREATE SEQUENCE Unit_ID_seq START WITH 1000 INCREMENT BY 1;
 
 -- CREATE SEQUENCE Role_ID_seq START WITH 1000 INCREMENT BY 1;
@@ -25,7 +25,7 @@ CREATE TABLE tbl_Company
   PRIMARY KEY (ID)
 );
 
-CREATE TABLE tbl_BuisinessUnit
+CREATE TABLE tbl_BusinessUnit
 (
   Name VARCHAR(100) NOT NULL,
   ID BIGINT NOT NULL,
@@ -40,10 +40,10 @@ CREATE TABLE tbl_Unit
 (
   Name VARCHAR(100) NOT NULL,
   ID BIGINT NOT NULL,
-  BuisinessUnit_ID BIGINT NOT NULL,
+  BusinessUnit_ID BIGINT NOT NULL,
   Company_ID BIGINT NOT NULL,
-  PRIMARY KEY (ID, BuisinessUnit_ID, Company_ID),
-  FOREIGN KEY (BuisinessUnit_ID, Company_ID) REFERENCES tbl_BuisinessUnit(ID, Company_ID)
+  PRIMARY KEY (ID, BusinessUnit_ID, Company_ID),
+  FOREIGN KEY (BusinessUnit_ID, Company_ID) REFERENCES tbl_BusinessUnit(ID, Company_ID)
     ON DELETE CASCADE 
     ON UPDATE CASCADE
 );
@@ -117,16 +117,16 @@ CREATE TABLE tbl_CompanyObjective
     ON UPDATE CASCADE
 );
 
-CREATE TABLE tbl_BuisinessUnitObjective
+CREATE TABLE tbl_BusinessUnitObjective
 (
   Objective_ID BIGINT NOT NULL,
   Company_ID BIGINT NOT NULL,
-  BuisinessUnit_ID BIGINT NOT NULL,
+  BusinessUnit_ID BIGINT NOT NULL,
   PRIMARY KEY (Objective_ID),
   FOREIGN KEY (Objective_ID) REFERENCES tbl_Objective(ID)
     ON DELETE CASCADE 
     ON UPDATE CASCADE,
-  FOREIGN KEY (BuisinessUnit_ID, Company_ID) REFERENCES tbl_BuisinessUnit(ID, Company_ID)
+  FOREIGN KEY (BusinessUnit_ID, Company_ID) REFERENCES tbl_BusinessUnit(ID, Company_ID)
     ON DELETE CASCADE 
     ON UPDATE CASCADE
 );
@@ -223,7 +223,7 @@ CREATE TABLE tbl_KeyResult
   FOREIGN KEY (Type) REFERENCES tbl_KeyResultType(Name) 
     ON DELETE CASCADE
 );
-CREATE TABLE tbl_BuisinessUnitKeyResult
+CREATE TABLE tbl_BusinessUnitKeyResult
 (
   KeyResult_ID BIGINT NOT NULL,
   PRIMARY KEY (KeyResult_ID),
@@ -268,24 +268,24 @@ CREATE TABLE tbl_KeyResultUpdate
 CREATE TABLE tbl_Unit_contributes_KeyResult
 (
   Unit_ID BIGINT NOT NULL,
-  BuisinessUnit_ID BIGINT NOT NULL,
+  BusinessUnit_ID BIGINT NOT NULL,
   Company_ID BIGINT NOT NULL,
   KeyResult_ID BIGINT NOT NULL,
-  PRIMARY KEY (Unit_ID, BuisinessUnit_ID, Company_ID, KeyResult_ID),
-  FOREIGN KEY (Unit_ID, BuisinessUnit_ID, Company_ID) REFERENCES tbl_Unit(ID, BuisinessUnit_ID, Company_ID)
+  PRIMARY KEY (Unit_ID, BusinessUnit_ID, Company_ID, KeyResult_ID),
+  FOREIGN KEY (Unit_ID, BusinessUnit_ID, Company_ID) REFERENCES tbl_Unit(ID, BusinessUnit_ID, Company_ID)
     ON DELETE CASCADE 
     ON UPDATE CASCADE,
   FOREIGN KEY (KeyResult_ID) REFERENCES tbl_KeyResult(ID)
     ON DELETE CASCADE 
     ON UPDATE CASCADE
 );
-CREATE TABLE tbl_BuisinessUnit_contributes_KeyResult
+CREATE TABLE tbl_BusinessUnit_contributes_KeyResult
 (
-  BuisinessUnit_ID BIGINT NOT NULL,
+  BusinessUnit_ID BIGINT NOT NULL,
   Company_ID BIGINT NOT NULL,
   KeyResult_ID BIGINT NOT NULL,
-  PRIMARY KEY (BuisinessUnit_ID, Company_ID, KeyResult_ID),
-  FOREIGN KEY (BuisinessUnit_ID, Company_ID) REFERENCES tbl_BuisinessUnit(ID, Company_ID)
+  PRIMARY KEY (BusinessUnit_ID, Company_ID, KeyResult_ID),
+  FOREIGN KEY (BusinessUnit_ID, Company_ID) REFERENCES tbl_BusinessUnit(ID, Company_ID)
     ON DELETE CASCADE 
     ON UPDATE CASCADE,
   FOREIGN KEY (KeyResult_ID) REFERENCES tbl_KeyResult(ID)
@@ -299,15 +299,15 @@ CREATE TABLE tbl_BuisinessUnit_contributes_KeyResult
 
 
 
-CREATE TABLE tbl_CompanyKeyResult_represents_BuisinessUnitObjective
+CREATE TABLE tbl_CompanyKeyResult_represents_BusinessUnitObjective
 (
   CompanyKeyResult_ID BIGINT NOT NULL,
-  BuisinessUnitObjective_ID BIGINT NOT NULL,
+  BusinessUnitObjective_ID BIGINT NOT NULL,
   PRIMARY KEY (CompanyKeyResult_ID),
   FOREIGN KEY (CompanyKeyResult_ID) REFERENCES tbl_CompanyKeyResult(KeyResult_ID)
     ON DELETE CASCADE 
     ON UPDATE CASCADE,
-  FOREIGN KEY (BuisinessUnitObjective_ID) REFERENCES tbl_BuisinessUnitObjective(Objective_ID)
+  FOREIGN KEY (BusinessUnitObjective_ID) REFERENCES tbl_BusinessUnitObjective(Objective_ID)
     ON DELETE CASCADE 
     ON UPDATE CASCADE
 );
