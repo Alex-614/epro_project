@@ -61,6 +61,7 @@ public class User {
         roleAssignments.remove(roleAssignment);
     }
 
+    
     @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
     private List<Objective> ownedObjectives;
     

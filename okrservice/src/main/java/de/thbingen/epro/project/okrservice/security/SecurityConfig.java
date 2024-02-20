@@ -154,7 +154,7 @@ public class SecurityConfig {
                                 hasRole(Roles.READ_ONLY_USER)))
 
                         // BusinessUnitObjective
-                        .requestMatchers(HttpMethod.GET, "/company/{companyId}/objective/businessunit/{businessUnitId}/objective/{objectiveId}")
+                        .requestMatchers(HttpMethod.GET, "/company/{companyId}/businessunit/{businessUnitId}/objective/{objectiveId}")
                         .access(hasAnyCompanyAuthority(
                                 hasRole(Roles.READ_ONLY_USER)))
 

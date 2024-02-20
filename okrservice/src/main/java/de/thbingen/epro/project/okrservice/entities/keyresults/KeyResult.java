@@ -1,6 +1,7 @@
 package de.thbingen.epro.project.okrservice.entities.keyresults;
 
 import de.thbingen.epro.project.okrservice.entities.objectives.Objective;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -37,6 +38,7 @@ public abstract class KeyResult {
 
     private int current;
 
+    @Column(name = "confidencelevel")
     private int confidenceLevel;
 
     @ManyToOne
@@ -47,12 +49,9 @@ public abstract class KeyResult {
     @JoinColumn(name = "type_name")
     private KeyResultType type;
     
+    @OneToOne(mappedBy = "newKeyResult")
+    private KeyResultUpdate lastUpdate;
 
-    /*@OneToOne(mappedBy = "newKeyResult")
-    private KeyResultUpdate lastUpdate;*/
-
-    // TODO change UpdateHistory pattern
-    // should be unidirectional
 
 
 

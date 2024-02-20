@@ -31,6 +31,8 @@ public class Unit {
         strategy = "de.thbingen.epro.project.okrservice.entities.ids.UnitIdGenerator")
     private UnitId id;
 
+
+    
     @MapsId("businessUnitId")
     @ManyToOne
     @JoinColumns( {

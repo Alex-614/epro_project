@@ -1,18 +1,32 @@
 package de.thbingen.epro.project.okrservice.controller;
 
-import de.thbingen.epro.project.okrservice.dtos.*;
-import de.thbingen.epro.project.okrservice.entities.*;
-import de.thbingen.epro.project.okrservice.entities.objectives.BusinessUnitObjective;
-import de.thbingen.epro.project.okrservice.exceptions.CompanyNotFoundException;
+import java.lang.reflect.Field;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import de.thbingen.epro.project.okrservice.Roles;
+import de.thbingen.epro.project.okrservice.dtos.CompanyDto;
+import de.thbingen.epro.project.okrservice.dtos.CompanyObjectiveDto;
+import de.thbingen.epro.project.okrservice.dtos.ObjectiveDto;
+import de.thbingen.epro.project.okrservice.dtos.RolesDto;
+import de.thbingen.epro.project.okrservice.entities.Company;
+import de.thbingen.epro.project.okrservice.entities.Role;
+import de.thbingen.epro.project.okrservice.entities.RoleAssignment;
+import de.thbingen.epro.project.okrservice.entities.User;
 import de.thbingen.epro.project.okrservice.entities.objectives.CompanyObjective;
 import de.thbingen.epro.project.okrservice.repositories.CompanyObjectiveRepository;
 import de.thbingen.epro.project.okrservice.repositories.CompanyRepository;
@@ -20,11 +34,6 @@ import de.thbingen.epro.project.okrservice.repositories.RoleAssignmentRepository
 import de.thbingen.epro.project.okrservice.repositories.RoleRepository;
 import de.thbingen.epro.project.okrservice.repositories.UserRepository;
 import jakarta.validation.Valid;
-
-import java.lang.reflect.Field;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 public class CompanyController {
@@ -74,7 +83,7 @@ public class CompanyController {
     @PatchMapping("/company/{companyId}")
     public ResponseEntity<CompanyDto> patchCompany(@PathVariable Number companyId,
                                                    @RequestBody CompanyDto companyDto) throws Exception {
-        Company oldCompany = Helper.getCompanyFromRepository(companyRepository, companyId);
+        Company oldCompany = Utils.getCompanyFromRepository(companyRepository, companyId);
         CompanyDto oldCompanyDto = new CompanyDto(oldCompany);
         Field[] fields = CompanyDto.class.getDeclaredFields();
         for (Field field : fields) {
@@ -100,13 +109,13 @@ public class CompanyController {
 
     @GetMapping("/company/{companyId}")
     public ResponseEntity<CompanyDto> createCompany(@PathVariable Number companyId) throws Exception {
-        Company company = Helper.getCompanyFromRepository(companyRepository, companyId);
+        Company company = Utils.getCompanyFromRepository(companyRepository, companyId);
         return new ResponseEntity<>(new CompanyDto(company), HttpStatus.OK);
     }
 
     @DeleteMapping("/company/{companyId}")
     public ResponseEntity<String> deleteCompany(@PathVariable Number companyId) throws Exception {
-        Company company = Helper.getCompanyFromRepository(companyRepository, companyId);
+        Company company = Utils.getCompanyFromRepository(companyRepository, companyId);
         companyRepository.deleteById(companyId.longValue());
         return new ResponseEntity<>(company.getName() + " deleted", HttpStatus.OK);
     }
@@ -163,8 +172,8 @@ public class CompanyController {
     public ResponseEntity<CompanyObjectiveDto> createCompanyObjective(@PathVariable @NonNull Number companyId,
                                                           @RequestBody @Valid CompanyObjectiveDto companyObjectiveDto)
             throws Exception {
-        Company company = Helper.getCompanyFromRepository(companyRepository, companyId);
-        User owner = Helper.getUserFromRepository(userRepository, companyObjectiveDto.getOwnerId());
+        Company company = Utils.getCompanyFromRepository(companyRepository, companyId);
+        User owner = Utils.getUserFromRepository(userRepository, companyObjectiveDto.getOwnerId());
 
         if (company.getObjectives().size() >= 5) {
             // Reached Max Commpany Objectives
@@ -189,10 +198,10 @@ public class CompanyController {
             @PathVariable Number companyId, @PathVariable Number objectiveId,
             @RequestBody CompanyObjectiveDto objectiveDto) throws Exception {
         CompanyObjective oldObjective =
-                Helper.getCompanyObjectiveFromRepository(companyRepository, companyId,
+                Utils.getCompanyObjectiveFromRepository(companyRepository, companyId,
                         companyObjectiveRepository, objectiveId.longValue());
         CompanyObjectiveDto oldObjectiveDto = new CompanyObjectiveDto(oldObjective);
-        User owner = Helper.getUserFromRepository(userRepository, objectiveDto.getOwnerId());
+        User owner = Utils.getUserFromRepository(userRepository, objectiveDto.getOwnerId());
 
 
         Field[] fields = ObjectiveDto.class.getDeclaredFields();
@@ -225,7 +234,7 @@ public class CompanyController {
     public ResponseEntity<CompanyObjectiveDto> getCompanyObjective(@PathVariable Number companyId,
                                                                    @PathVariable Number objectiveId) throws Exception {
         CompanyObjective companyObjective =
-                Helper.getCompanyObjectiveFromRepository(companyRepository, companyId, companyObjectiveRepository,
+                Utils.getCompanyObjectiveFromRepository(companyRepository, companyId, companyObjectiveRepository,
                         objectiveId);
         return new ResponseEntity<>(new CompanyObjectiveDto(companyObjective), HttpStatus.OK);
     }
@@ -234,7 +243,7 @@ public class CompanyController {
     public ResponseEntity<String> deleteCompanyObjective(@PathVariable Number companyId,
                                                          @PathVariable Number objectiveId) throws Exception {
         CompanyObjective companyObjective =
-                Helper.getCompanyObjectiveFromRepository(companyRepository, companyId, companyObjectiveRepository,
+                Utils.getCompanyObjectiveFromRepository(companyRepository, companyId, companyObjectiveRepository,
                         objectiveId);
         companyObjectiveRepository.deleteById(objectiveId.longValue());
         return new ResponseEntity<>(companyObjective.getTitle() + " deleted", HttpStatus.OK);

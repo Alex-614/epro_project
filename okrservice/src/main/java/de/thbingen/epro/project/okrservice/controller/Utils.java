@@ -1,7 +1,9 @@
 package de.thbingen.epro.project.okrservice.controller;
 
-import de.thbingen.epro.project.okrservice.dtos.BusinessUnitDto;
-import de.thbingen.epro.project.okrservice.dtos.BusinessUnitObjectiveDto;
+import java.util.Optional;
+
+import org.springframework.stereotype.Component;
+
 import de.thbingen.epro.project.okrservice.entities.BusinessUnit;
 import de.thbingen.epro.project.okrservice.entities.Company;
 import de.thbingen.epro.project.okrservice.entities.User;
@@ -12,14 +14,17 @@ import de.thbingen.epro.project.okrservice.exceptions.BusinessUnitNotFoundExcept
 import de.thbingen.epro.project.okrservice.exceptions.CompanyNotFoundException;
 import de.thbingen.epro.project.okrservice.exceptions.ObjectiveNotFoundException;
 import de.thbingen.epro.project.okrservice.exceptions.UserNotFoundException;
-import de.thbingen.epro.project.okrservice.repositories.*;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Repository;
+import de.thbingen.epro.project.okrservice.repositories.BusinessUnitObjectiveRepository;
+import de.thbingen.epro.project.okrservice.repositories.BusinessUnitRepository;
+import de.thbingen.epro.project.okrservice.repositories.CompanyObjectiveRepository;
+import de.thbingen.epro.project.okrservice.repositories.CompanyRepository;
+import de.thbingen.epro.project.okrservice.repositories.UserRepository;
 
-import java.util.Optional;
+@Component
+public class Utils {
 
-public class Helper {
+    
+
     public static Company getCompanyFromRepository(CompanyRepository companyRepository, Number companyId) throws Exception {
         Optional<Company> optionalCompany = companyRepository.findById(companyId.longValue());
         if(optionalCompany.isPresent()) {

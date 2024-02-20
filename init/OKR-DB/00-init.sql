@@ -246,10 +246,14 @@ CREATE TABLE tbl_KeyResultUpdate
 (
   StatusUpdate VARCHAR(100) NOT NULL,
   Timestamp TIMESTAMP NOT NULL,
+  KeyResult_ID BIGINT NOT NULL,
   Old_KeyResult_ID BIGINT NOT NULL,
   New_KeyResult_ID BIGINT NOT NULL,
   User_ID BIGINT NOT NULL,
-  PRIMARY KEY (Old_KeyResult_ID, New_KeyResult_ID, User_ID),
+  PRIMARY KEY (KeyResult_ID, Old_KeyResult_ID),
+  FOREIGN KEY (KeyResult_ID) REFERENCES tbl_KeyResult(ID)
+    ON DELETE CASCADE 
+    ON UPDATE CASCADE,
   FOREIGN KEY (Old_KeyResult_ID) REFERENCES tbl_KeyResult(ID)
     ON DELETE CASCADE 
     ON UPDATE CASCADE,

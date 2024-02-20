@@ -1,7 +1,6 @@
 package de.thbingen.epro.project.okrservice.dtos;
 
 import de.thbingen.epro.project.okrservice.entities.objectives.BusinessUnitObjective;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
