@@ -1,22 +1,5 @@
 package de.thbingen.epro.project.okrservice.controller;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.lang.NonNull;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-
 import de.thbingen.epro.project.okrservice.dtos.BusinessUnitDto;
 import de.thbingen.epro.project.okrservice.dtos.BusinessUnitObjectiveDto;
 import de.thbingen.epro.project.okrservice.dtos.ObjectiveDto;
@@ -34,6 +17,15 @@ import de.thbingen.epro.project.okrservice.repositories.BusinessUnitRepository;
 import de.thbingen.epro.project.okrservice.repositories.CompanyRepository;
 import de.thbingen.epro.project.okrservice.repositories.UserRepository;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.lang.NonNull;
+import org.springframework.web.bind.annotation.*;
+
+import java.lang.reflect.Field;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class BusinessUnitController {
@@ -109,8 +101,8 @@ public class BusinessUnitController {
     }
 
     @GetMapping("/company/{companyId}/businessunit")
-    public ResponseEntity<List<BusinessUnitDto>> getAllBusinessUnit(){
-        List<BusinessUnit> businessUnits = businessUnitRepository.findAll();
+    public ResponseEntity<List<BusinessUnitDto>> getAllBusinessUnit(@PathVariable @NonNull Number companyId){
+        List<BusinessUnit> businessUnits = businessUnitRepository.findByCompanyId(companyId.longValue());
         return new ResponseEntity<>(businessUnits.stream()
                 .map(BusinessUnitDto::new)
                 .collect(Collectors.toList()), HttpStatus.OK);
@@ -207,10 +199,12 @@ public class BusinessUnitController {
 
 
     @GetMapping("/company/{companyId}/businessunit/{businessUnitId}/objective")
-    public ResponseEntity<List<BusinessUnitObjectiveDto>> getAllBusinessUnitObjectives(@PathVariable @NonNull Number companyId,
-    @PathVariable @NonNull Number businessUnitId){
-        //TODO just objectives from company and business unit given
-        List<BusinessUnitObjective> businessUnitsObjectives = businessUnitObjectiveRepository.findAll();
+    public ResponseEntity<List<BusinessUnitObjectiveDto>> getAllBusinessUnitObjectives(
+            @PathVariable @NonNull Number companyId,
+            @PathVariable @NonNull Number businessUnitId){
+        BusinessUnitId businessUnitIdObject = new BusinessUnitId(businessUnitId.longValue(), companyId.longValue());
+        List<BusinessUnitObjective> businessUnitsObjectives =
+                businessUnitObjectiveRepository.findByBusinessUnitId(businessUnitIdObject);
         return new ResponseEntity<>(businessUnitsObjectives.stream()
                 .map(BusinessUnitObjectiveDto::new)
                 .collect(Collectors.toList()), HttpStatus.OK);
