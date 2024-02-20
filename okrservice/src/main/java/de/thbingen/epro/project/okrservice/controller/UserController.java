@@ -62,7 +62,7 @@ public class UserController {
 
     @PatchMapping("/user/{userId}")
     public ResponseEntity<UserDto> patchUser(@PathVariable @NonNull Number userId, @RequestBody UserDto userDto) throws Exception {
-        User oldUser = Helper.getUserFromRepository(userRepository, userId);
+        User oldUser = Utils.getUserFromRepository(userRepository, userId);
         UserDto oldUserDto = new UserDto(oldUser);
 
         Field[] fields = UserDto.class.getDeclaredFields();
@@ -95,13 +95,13 @@ public class UserController {
 
     @GetMapping("/user/{userId}")
     public ResponseEntity<UserDto> getUser(@PathVariable @NonNull Number userId) throws Exception {
-        User user = Helper.getUserFromRepository(userRepository, userId.longValue());
+        User user = Utils.getUserFromRepository(userRepository, userId.longValue());
         return new ResponseEntity<>(new UserDto(user), HttpStatus.OK);
     }
 
     @DeleteMapping("/user/{userId}")
     public ResponseEntity<String> deleteUser(@PathVariable @NonNull Number userId) throws Exception {
-        User user = Helper.getUserFromRepository(userRepository, userId.longValue());
+        User user = Utils.getUserFromRepository(userRepository, userId.longValue());
         userRepository.deleteById(user.getId());
         return new ResponseEntity<>(user.getUsername() + " deleted!", HttpStatus.OK);
     }
