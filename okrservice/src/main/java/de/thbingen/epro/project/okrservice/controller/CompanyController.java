@@ -1,24 +1,18 @@
 package de.thbingen.epro.project.okrservice.controller;
 
+import de.thbingen.epro.project.okrservice.dtos.*;
+import de.thbingen.epro.project.okrservice.entities.*;
+import de.thbingen.epro.project.okrservice.entities.objectives.BusinessUnitObjective;
+import de.thbingen.epro.project.okrservice.exceptions.CompanyNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import de.thbingen.epro.project.okrservice.Roles;
-import de.thbingen.epro.project.okrservice.dtos.CompanyDto;
-import de.thbingen.epro.project.okrservice.dtos.ObjectiveDto;
-import de.thbingen.epro.project.okrservice.dtos.RolesDto;
-import de.thbingen.epro.project.okrservice.entities.Company;
-import de.thbingen.epro.project.okrservice.entities.Role;
-import de.thbingen.epro.project.okrservice.entities.RoleAssignment;
-import de.thbingen.epro.project.okrservice.entities.User;
 import de.thbingen.epro.project.okrservice.entities.objectives.CompanyObjective;
 import de.thbingen.epro.project.okrservice.repositories.CompanyObjectiveRepository;
 import de.thbingen.epro.project.okrservice.repositories.CompanyRepository;
@@ -26,6 +20,11 @@ import de.thbingen.epro.project.okrservice.repositories.RoleAssignmentRepository
 import de.thbingen.epro.project.okrservice.repositories.RoleRepository;
 import de.thbingen.epro.project.okrservice.repositories.UserRepository;
 import jakarta.validation.Valid;
+
+import java.lang.reflect.Field;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 public class CompanyController {
@@ -52,6 +51,7 @@ public class CompanyController {
     }
 
 
+
     @PostMapping("/company")
     public ResponseEntity<CompanyDto> createCompany(@RequestBody @Valid CompanyDto companyDto, 
                                                 @AuthenticationPrincipal UserDetails userDetails) {
@@ -69,6 +69,46 @@ public class CompanyController {
 
         companyDto.setId(company.getId());
         return new ResponseEntity<>(companyDto, HttpStatus.OK);
+    }
+
+    @PatchMapping("/company/{companyId}")
+    public ResponseEntity<CompanyDto> patchCompany(@PathVariable Number companyId,
+                                                   @RequestBody CompanyDto companyDto) throws Exception {
+        Company oldCompany = Helper.getCompanyFromRepository(companyRepository, companyId);
+        CompanyDto oldCompanyDto = new CompanyDto(oldCompany);
+        Field[] fields = CompanyDto.class.getDeclaredFields();
+        for (Field field : fields) {
+            field.setAccessible(true); // Allow access to private fields
+            Object value = field.get(companyDto);
+            if(value != null) {
+                field.set(oldCompanyDto, value);
+            }
+            field.setAccessible(false);
+        }
+        oldCompany.setName(oldCompanyDto.getName());
+        companyRepository.save(oldCompany);
+        return new ResponseEntity<>(oldCompanyDto, HttpStatus.OK);
+    }
+
+    @GetMapping("/company")
+    public ResponseEntity<List<CompanyDto>> getAllBusinessUnit(){
+        List<Company> companies = companyRepository.findAll();
+        return new ResponseEntity<>(companies.stream()
+                .map(CompanyDto::new)
+                .collect(Collectors.toList()), HttpStatus.OK);
+    }
+
+    @GetMapping("/company/{companyId}")
+    public ResponseEntity<CompanyDto> createCompany(@PathVariable Number companyId) throws Exception {
+        Company company = Helper.getCompanyFromRepository(companyRepository, companyId);
+        return new ResponseEntity<>(new CompanyDto(company), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/company/{companyId}")
+    public ResponseEntity<String> deleteCompany(@PathVariable Number companyId) throws Exception {
+        Company company = Helper.getCompanyFromRepository(companyRepository, companyId);
+        companyRepository.deleteById(companyId.longValue());
+        return new ResponseEntity<>(company.getName() + " deleted", HttpStatus.OK);
     }
     
     
@@ -120,38 +160,83 @@ public class CompanyController {
     
     @SuppressWarnings("null") // objectiveDto is validated, cant be null
     @PostMapping("/company/{companyId}/objective")
-    public ResponseEntity<ObjectiveDto> removeUser(@PathVariable @NonNull Number companyId, 
-                                                    @RequestBody @Valid ObjectiveDto objectiveDto) {
-        if (!companyRepository.existsById(companyId.longValue())) {
-            // Company not found!
-            return new ResponseEntity<>(objectiveDto, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        if (!userRepository.existsById(objectiveDto.getOwnerId())) {
-            // User not found!
-            return new ResponseEntity<>(objectiveDto, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        Company company = companyRepository.findById(companyId.longValue()).get();
-        User owner = userRepository.findById(objectiveDto.getOwnerId()).get();
+    public ResponseEntity<CompanyObjectiveDto> createCompanyObjective(@PathVariable @NonNull Number companyId,
+                                                          @RequestBody @Valid CompanyObjectiveDto companyObjectiveDto)
+            throws Exception {
+        Company company = Helper.getCompanyFromRepository(companyRepository, companyId);
+        User owner = Helper.getUserFromRepository(userRepository, companyObjectiveDto.getOwnerId());
 
         if (company.getObjectives().size() >= 5) {
             // Reached Max Commpany Objectives
-            return new ResponseEntity<>(objectiveDto, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(companyObjectiveDto, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         CompanyObjective objective = new CompanyObjective();
         objective.setCompany(company);
-        objective.setDeadline(objectiveDto.getDeadline());
-        objective.setDescription(objectiveDto.getDescription());
+        objective.setDeadline(companyObjectiveDto.getDeadline());
+        objective.setDescription(companyObjectiveDto.getDescription());
         objective.setOwner(owner);
-        objective.setTitle(objectiveDto.getTitle());
+        objective.setTitle(companyObjectiveDto.getTitle());
 
         companyObjectiveRepository.save(objective);
-        
-        objectiveDto.setId(objective.getId());
-        return new ResponseEntity<>(objectiveDto, HttpStatus.OK);
+
+        companyObjectiveDto.setId(objective.getId());
+        return new ResponseEntity<>(companyObjectiveDto, HttpStatus.OK);
     }
     
-    
+    @PatchMapping("/company/{companyId}/objective/{objectiveId}")
+    public ResponseEntity<CompanyObjectiveDto> patchCompanyObjective(
+            @PathVariable Number companyId, @PathVariable Number objectiveId,
+            @RequestBody CompanyObjectiveDto objectiveDto) throws Exception {
+        CompanyObjective oldObjective =
+                Helper.getCompanyObjectiveFromRepository(companyRepository, companyId,
+                        companyObjectiveRepository, objectiveId.longValue());
+        CompanyObjectiveDto oldObjectiveDto = new CompanyObjectiveDto(oldObjective);
+        User owner = Helper.getUserFromRepository(userRepository, objectiveDto.getOwnerId());
 
 
+        Field[] fields = ObjectiveDto.class.getDeclaredFields();
+        for (Field field : fields) {
+            field.setAccessible(true); // Allow access to private fields
+            Object value = field.get(objectiveDto);
+            if(value != null) {
+                field.set(oldObjectiveDto, value);
+            }
+            field.setAccessible(false);
+        }
+
+        oldObjective.setDeadline(oldObjectiveDto.getDeadline());
+        oldObjective.setTitle(oldObjectiveDto.getTitle());
+        oldObjective.setDescription(oldObjectiveDto.getDescription());
+        oldObjective.setOwner(owner);
+        companyObjectiveRepository.save(oldObjective);
+        return new ResponseEntity<>(oldObjectiveDto, HttpStatus.OK);
+    }
+
+    @GetMapping("/company/{companyId}/objective")
+    public ResponseEntity<List<CompanyObjectiveDto>> getAllCompanyObjectives(@PathVariable Number companyId) {
+        List<CompanyObjective> companyObjectives = companyObjectiveRepository.findAll();
+        return new ResponseEntity<>(companyObjectives.stream()
+                .map(CompanyObjectiveDto::new)
+                .collect(Collectors.toList()), HttpStatus.OK);
+    }
+
+    @GetMapping("/company/{companyId}/objective/{objectiveId}")
+    public ResponseEntity<CompanyObjectiveDto> getCompanyObjective(@PathVariable Number companyId,
+                                                                   @PathVariable Number objectiveId) throws Exception {
+        CompanyObjective companyObjective =
+                Helper.getCompanyObjectiveFromRepository(companyRepository, companyId, companyObjectiveRepository,
+                        objectiveId);
+        return new ResponseEntity<>(new CompanyObjectiveDto(companyObjective), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/company/{companyId}/objective/{objectiveId}")
+    public ResponseEntity<String> deleteCompanyObjective(@PathVariable Number companyId,
+                                                         @PathVariable Number objectiveId) throws Exception {
+        CompanyObjective companyObjective =
+                Helper.getCompanyObjectiveFromRepository(companyRepository, companyId, companyObjectiveRepository,
+                        objectiveId);
+        companyObjectiveRepository.deleteById(objectiveId.longValue());
+        return new ResponseEntity<>(companyObjective.getTitle() + " deleted", HttpStatus.OK);
+    }
 }

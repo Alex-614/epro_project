@@ -209,7 +209,7 @@ CREATE TABLE tbl_KeyResultType
 CREATE TABLE tbl_KeyResult
 (
   Goal INT NOT NULL,
-  Type VARCHAR(100) NOT NULL,
+  Type_Name VARCHAR(100) NOT NULL,
   Title VARCHAR(100) NOT NULL,
   Description VARCHAR(200) NOT NULL,
   Current INT NOT NULL,
@@ -220,7 +220,7 @@ CREATE TABLE tbl_KeyResult
   FOREIGN KEY (Objective_ID) REFERENCES tbl_Objective(ID)
     ON DELETE CASCADE 
     ON UPDATE CASCADE, 
-  FOREIGN KEY (Type) REFERENCES tbl_KeyResultType(Name) 
+  FOREIGN KEY (Type_Name) REFERENCES tbl_KeyResultType(Name)
     ON DELETE CASCADE
 );
 CREATE TABLE tbl_BusinessUnitKeyResult

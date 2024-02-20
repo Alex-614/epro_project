@@ -8,7 +8,7 @@ spring:
     password: postgres
     driverClassName: org.postgresql.Driver
   jpa:
-    show-sql: false
+    show-sql: true
     properties:
       format_sql: true
 

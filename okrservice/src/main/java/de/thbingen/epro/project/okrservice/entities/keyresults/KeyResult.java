@@ -44,12 +44,12 @@ public abstract class KeyResult {
     private Objective objective;
 
     @ManyToOne
-    @JoinColumn(name = "type_id")
+    @JoinColumn(name = "type_name")
     private KeyResultType type;
     
 
-    @OneToOne(mappedBy = "newKeyResult")
-    private KeyResultUpdate lastUpdate;
+    /*@OneToOne(mappedBy = "newKeyResult")
+    private KeyResultUpdate lastUpdate;*/
 
     // TODO change UpdateHistory pattern
     // should be unidirectional

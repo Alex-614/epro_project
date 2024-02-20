@@ -24,6 +24,8 @@ services:
       POSTGRES_DB: okr-db
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
 
   okr-service:
     container_name: okr-service
