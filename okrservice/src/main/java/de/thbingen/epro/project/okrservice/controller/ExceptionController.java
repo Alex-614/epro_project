@@ -9,6 +9,17 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
 public class ExceptionController {
+    @ExceptionHandler(UnitAlreadyExistsException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ResponseEntity<String> unitAlreadyExistsException(UnitAlreadyExistsException  ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body("Unit not found!");
+    }
+
+    @ExceptionHandler(UnitNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseEntity<String> unitNotFoundException(UnitNotFoundException  ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Unit already exists!");
+    }
 
     //BusinessUnitAlreadyExistsException
     @ExceptionHandler(BusinessUnitAlreadyExistsException.class)
@@ -47,9 +58,9 @@ public class ExceptionController {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Maximal company objectives reached!");
     }
 
-    @ExceptionHandler(Exception.class)
+    /*@ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity<String> exception(Exception  ex) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error!");
-    }
+    }*/
 }

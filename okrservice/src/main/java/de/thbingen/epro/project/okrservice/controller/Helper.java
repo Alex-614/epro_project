@@ -1,21 +1,15 @@
 package de.thbingen.epro.project.okrservice.controller;
 
-import de.thbingen.epro.project.okrservice.dtos.BusinessUnitDto;
-import de.thbingen.epro.project.okrservice.dtos.BusinessUnitObjectiveDto;
 import de.thbingen.epro.project.okrservice.entities.BusinessUnit;
 import de.thbingen.epro.project.okrservice.entities.Company;
+import de.thbingen.epro.project.okrservice.entities.Unit;
 import de.thbingen.epro.project.okrservice.entities.User;
 import de.thbingen.epro.project.okrservice.entities.ids.BusinessUnitId;
+import de.thbingen.epro.project.okrservice.entities.ids.UnitId;
 import de.thbingen.epro.project.okrservice.entities.objectives.BusinessUnitObjective;
 import de.thbingen.epro.project.okrservice.entities.objectives.CompanyObjective;
-import de.thbingen.epro.project.okrservice.exceptions.BusinessUnitNotFoundException;
-import de.thbingen.epro.project.okrservice.exceptions.CompanyNotFoundException;
-import de.thbingen.epro.project.okrservice.exceptions.ObjectiveNotFoundException;
-import de.thbingen.epro.project.okrservice.exceptions.UserNotFoundException;
+import de.thbingen.epro.project.okrservice.exceptions.*;
 import de.thbingen.epro.project.okrservice.repositories.*;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
@@ -109,6 +103,33 @@ public class Helper {
         }
         else if (!companyObjectiveRepository.existsById(companyObjectiveId.longValue())) {
             throw new ObjectiveNotFoundException();
+        }
+        else {
+            throw new Exception();
+        }
+    }
+
+    public static Unit getUnitFromRepository(
+            CompanyRepository companyRepository, Number companyId, BusinessUnitRepository businessUnitRepository,
+            Number businessUnitId, UnitRepository unitRepository, Number unitId
+    ) throws Exception {
+        BusinessUnitId businessUnitIdObject = new BusinessUnitId(businessUnitId.longValue(), companyId.longValue());
+        UnitId unitIdObject = new UnitId(unitId.longValue(), businessUnitIdObject);
+        Optional<Unit> optionalUnit = unitRepository.findById(unitIdObject);
+        if(optionalUnit.isPresent()) {
+            return optionalUnit.get();
+        }
+        else if (!companyRepository.existsById(companyId.longValue())) {
+            // "Company not found!"
+            throw new CompanyNotFoundException();
+        }
+        else if (!businessUnitRepository.existsById(businessUnitIdObject)) {
+            // "Business unit not found!"
+            throw new BusinessUnitNotFoundException();
+        }
+        else if (!unitRepository.existsById(unitIdObject)) {
+            // "Unit not found!"
+            throw new UnitNotFoundException();
         }
         else {
             throw new Exception();

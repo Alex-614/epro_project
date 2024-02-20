@@ -1,9 +1,17 @@
 package de.thbingen.epro.project.okrservice.controller;
 
-import de.thbingen.epro.project.okrservice.dtos.*;
-import de.thbingen.epro.project.okrservice.entities.*;
-import de.thbingen.epro.project.okrservice.entities.objectives.BusinessUnitObjective;
-import de.thbingen.epro.project.okrservice.exceptions.CompanyNotFoundException;
+import de.thbingen.epro.project.okrservice.Roles;
+import de.thbingen.epro.project.okrservice.dtos.CompanyDto;
+import de.thbingen.epro.project.okrservice.dtos.CompanyObjectiveDto;
+import de.thbingen.epro.project.okrservice.dtos.ObjectiveDto;
+import de.thbingen.epro.project.okrservice.dtos.RolesDto;
+import de.thbingen.epro.project.okrservice.entities.Company;
+import de.thbingen.epro.project.okrservice.entities.Role;
+import de.thbingen.epro.project.okrservice.entities.RoleAssignment;
+import de.thbingen.epro.project.okrservice.entities.User;
+import de.thbingen.epro.project.okrservice.entities.objectives.CompanyObjective;
+import de.thbingen.epro.project.okrservice.repositories.*;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,18 +20,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-import de.thbingen.epro.project.okrservice.Roles;
-import de.thbingen.epro.project.okrservice.entities.objectives.CompanyObjective;
-import de.thbingen.epro.project.okrservice.repositories.CompanyObjectiveRepository;
-import de.thbingen.epro.project.okrservice.repositories.CompanyRepository;
-import de.thbingen.epro.project.okrservice.repositories.RoleAssignmentRepository;
-import de.thbingen.epro.project.okrservice.repositories.RoleRepository;
-import de.thbingen.epro.project.okrservice.repositories.UserRepository;
-import jakarta.validation.Valid;
-
 import java.lang.reflect.Field;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -91,7 +89,7 @@ public class CompanyController {
     }
 
     @GetMapping("/company")
-    public ResponseEntity<List<CompanyDto>> getAllBusinessUnit(){
+    public ResponseEntity<List<CompanyDto>> getAllCompanies() {
         List<Company> companies = companyRepository.findAll();
         return new ResponseEntity<>(companies.stream()
                 .map(CompanyDto::new)
@@ -215,7 +213,7 @@ public class CompanyController {
 
     @GetMapping("/company/{companyId}/objective")
     public ResponseEntity<List<CompanyObjectiveDto>> getAllCompanyObjectives(@PathVariable Number companyId) {
-        List<CompanyObjective> companyObjectives = companyObjectiveRepository.findAll();
+        List<CompanyObjective> companyObjectives = companyObjectiveRepository.findByCompanyId(companyId.longValue());
         return new ResponseEntity<>(companyObjectives.stream()
                 .map(CompanyObjectiveDto::new)
                 .collect(Collectors.toList()), HttpStatus.OK);

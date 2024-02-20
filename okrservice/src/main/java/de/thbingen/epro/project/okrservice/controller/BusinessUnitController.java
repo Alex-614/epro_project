@@ -1,30 +1,30 @@
 package de.thbingen.epro.project.okrservice.controller;
 
-import de.thbingen.epro.project.okrservice.dtos.BusinessUnitObjectiveDto;
-import de.thbingen.epro.project.okrservice.entities.objectives.Objective;
-import de.thbingen.epro.project.okrservice.exceptions.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.lang.NonNull;
-import org.springframework.web.bind.annotation.*;
-
 import de.thbingen.epro.project.okrservice.dtos.BusinessUnitDto;
+import de.thbingen.epro.project.okrservice.dtos.BusinessUnitObjectiveDto;
 import de.thbingen.epro.project.okrservice.dtos.ObjectiveDto;
 import de.thbingen.epro.project.okrservice.entities.BusinessUnit;
 import de.thbingen.epro.project.okrservice.entities.Company;
 import de.thbingen.epro.project.okrservice.entities.User;
 import de.thbingen.epro.project.okrservice.entities.ids.BusinessUnitId;
 import de.thbingen.epro.project.okrservice.entities.objectives.BusinessUnitObjective;
+import de.thbingen.epro.project.okrservice.exceptions.BusinessUnitAlreadyExistsException;
+import de.thbingen.epro.project.okrservice.exceptions.BusinessUnitNotFoundException;
+import de.thbingen.epro.project.okrservice.exceptions.CompanyNotFoundException;
+import de.thbingen.epro.project.okrservice.exceptions.MaxCompanyObjectivesReachedException;
 import de.thbingen.epro.project.okrservice.repositories.BusinessUnitObjectiveRepository;
 import de.thbingen.epro.project.okrservice.repositories.BusinessUnitRepository;
 import de.thbingen.epro.project.okrservice.repositories.CompanyRepository;
 import de.thbingen.epro.project.okrservice.repositories.UserRepository;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.lang.NonNull;
+import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Field;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -95,8 +95,8 @@ public class BusinessUnitController {
     }
 
     @GetMapping("/company/{companyId}/businessunit")
-    public ResponseEntity<List<BusinessUnitDto>> getAllBusinessUnit(){
-        List<BusinessUnit> businessUnits = businessUnitRepository.findAll();
+    public ResponseEntity<List<BusinessUnitDto>> getAllBusinessUnit(@PathVariable @NonNull Number companyId){
+        List<BusinessUnit> businessUnits = businessUnitRepository.findByCompanyId(companyId.longValue());
         return new ResponseEntity<>(businessUnits.stream()
                 .map(BusinessUnitDto::new)
                 .collect(Collectors.toList()), HttpStatus.OK);
@@ -180,9 +180,12 @@ public class BusinessUnitController {
     }
 
     @GetMapping("/company/{companyId}/businessunit/{businessUnitId}/objective")
-    public ResponseEntity<List<BusinessUnitObjectiveDto>> getAllBusinessUnitObjectives(){
-        //toDO just objectives from company and business unit given
-        List<BusinessUnitObjective> businessUnitsObjectives = businessUnitObjectiveRepository.findAll();
+    public ResponseEntity<List<BusinessUnitObjectiveDto>> getAllBusinessUnitObjectives(
+            @PathVariable @NonNull Number companyId,
+            @PathVariable @NonNull Number businessUnitId){
+        BusinessUnitId businessUnitIdObject = new BusinessUnitId(businessUnitId.longValue(), companyId.longValue());
+        List<BusinessUnitObjective> businessUnitsObjectives =
+                businessUnitObjectiveRepository.findByBusinessUnitId(businessUnitIdObject);
         return new ResponseEntity<>(businessUnitsObjectives.stream()
                 .map(BusinessUnitObjectiveDto::new)
                 .collect(Collectors.toList()), HttpStatus.OK);
