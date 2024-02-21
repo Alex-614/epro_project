@@ -8,19 +8,13 @@ import de.thbingen.epro.project.okrservice.entities.Unit;
 import de.thbingen.epro.project.okrservice.entities.User;
 import de.thbingen.epro.project.okrservice.entities.ids.BusinessUnitId;
 import de.thbingen.epro.project.okrservice.entities.ids.UnitId;
+import de.thbingen.epro.project.okrservice.entities.keyresults.BusinessUnitKeyResult;
+import de.thbingen.epro.project.okrservice.entities.keyresults.CompanyKeyResult;
+import de.thbingen.epro.project.okrservice.entities.keyresults.KeyResult;
 import de.thbingen.epro.project.okrservice.entities.objectives.BusinessUnitObjective;
 import de.thbingen.epro.project.okrservice.entities.objectives.CompanyObjective;
-import de.thbingen.epro.project.okrservice.exceptions.BusinessUnitNotFoundException;
-import de.thbingen.epro.project.okrservice.exceptions.CompanyNotFoundException;
-import de.thbingen.epro.project.okrservice.exceptions.ObjectiveNotFoundException;
-import de.thbingen.epro.project.okrservice.exceptions.UnitNotFoundException;
-import de.thbingen.epro.project.okrservice.exceptions.UserNotFoundException;
-import de.thbingen.epro.project.okrservice.repositories.BusinessUnitObjectiveRepository;
-import de.thbingen.epro.project.okrservice.repositories.BusinessUnitRepository;
-import de.thbingen.epro.project.okrservice.repositories.CompanyObjectiveRepository;
-import de.thbingen.epro.project.okrservice.repositories.CompanyRepository;
-import de.thbingen.epro.project.okrservice.repositories.UnitRepository;
-import de.thbingen.epro.project.okrservice.repositories.UserRepository;
+import de.thbingen.epro.project.okrservice.exceptions.*;
+import de.thbingen.epro.project.okrservice.repositories.*;
 
 public class Utils {
     public static Company getCompanyFromRepository(CompanyRepository companyRepository, Number companyId) throws Exception {
@@ -145,6 +139,60 @@ public class Utils {
         }
     }
 
+    public static CompanyKeyResult getCompanyKeyResultFromRepository(
+            CompanyRepository companyRepository, Number companyId,
+            CompanyObjectiveRepository companyObjectiveRepository, Number companyObjectiveId,
+            CompanyKeyResultRepository companyKeyResultRepository, Number companyKeyResultId) throws Exception {
+        Optional<CompanyKeyResult> optionalCompanyKeyResult =
+                companyKeyResultRepository.findById(companyKeyResultId.longValue());
+        if(optionalCompanyKeyResult.isPresent()) {
+            return optionalCompanyKeyResult.get();
+        }
+        else if (!companyRepository.existsById(companyId.longValue())) {
+            // "Company not found!"
+            throw new CompanyNotFoundException();
+        }
+        else if (!companyObjectiveRepository.existsById(companyObjectiveId.longValue())) {
+            // "Company objective not found!"
+            throw new ObjectiveNotFoundException();
+        }
+        else if (!companyKeyResultRepository.existsById(companyKeyResultId.longValue())) {
+            // "Company key result not found!"
+            throw new KeyResultNotFoundException();
+        }
+        else {
+            throw new Exception();
+        }
+    }
 
-
+    public static BusinessUnitKeyResult getBusinessUnitKeyResultFromRepository(
+            CompanyRepository companyRepository, Number companyId,
+            BusinessUnitRepository businessUnitRepository, Number businessUnitId,
+            BusinessUnitObjectiveRepository businessUnitObjectiveRepository, Number businessUnitObjectiveId,
+            BusinessUnitKeyResultRepository businessUnitKeyResultRepository, Number businessUnitKeyResultId
+    ) throws Exception {
+        BusinessUnitId businessUnitIdObject = new BusinessUnitId(businessUnitId.longValue(), companyId.longValue());
+        Optional<BusinessUnitKeyResult> optionalBusinessUnitKeyResult =
+                businessUnitKeyResultRepository.findById(businessUnitKeyResultId.longValue());
+        if(optionalBusinessUnitKeyResult.isPresent()) {
+            return optionalBusinessUnitKeyResult.get();
+        }
+        else if (!companyRepository.existsById(companyId.longValue())) {
+            // "Company not found!"
+            throw new CompanyNotFoundException();
+        }
+        else if(!businessUnitRepository.existsById(businessUnitIdObject)) {
+            // "Business unit not found!"
+            throw new BusinessUnitNotFoundException();
+        }
+        else if (!businessUnitObjectiveRepository.existsById(businessUnitObjectiveId.longValue())) {
+            throw new ObjectiveNotFoundException();
+        }
+        else if(!businessUnitKeyResultRepository.existsById(businessUnitKeyResultId.longValue())) {
+            throw new KeyResultNotFoundException();
+        }
+        else {
+            throw new Exception();
+        }
+    }
 }

@@ -5,6 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import de.thbingen.epro.project.okrservice.dtos.*;
+import de.thbingen.epro.project.okrservice.entities.keyresults.BusinessUnitKeyResult;
+import de.thbingen.epro.project.okrservice.entities.keyresults.KeyResultType;
+import de.thbingen.epro.project.okrservice.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +21,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import de.thbingen.epro.project.okrservice.dtos.BusinessUnitDto;
-import de.thbingen.epro.project.okrservice.dtos.BusinessUnitObjectiveDto;
-import de.thbingen.epro.project.okrservice.dtos.ObjectiveDto;
 import de.thbingen.epro.project.okrservice.entities.BusinessUnit;
 import de.thbingen.epro.project.okrservice.entities.Company;
 import de.thbingen.epro.project.okrservice.entities.User;
@@ -30,10 +31,6 @@ import de.thbingen.epro.project.okrservice.exceptions.BusinessUnitAlreadyExistsE
 import de.thbingen.epro.project.okrservice.exceptions.BusinessUnitNotFoundException;
 import de.thbingen.epro.project.okrservice.exceptions.CompanyNotFoundException;
 import de.thbingen.epro.project.okrservice.exceptions.MaxCompanyObjectivesReachedException;
-import de.thbingen.epro.project.okrservice.repositories.BusinessUnitObjectiveRepository;
-import de.thbingen.epro.project.okrservice.repositories.BusinessUnitRepository;
-import de.thbingen.epro.project.okrservice.repositories.CompanyRepository;
-import de.thbingen.epro.project.okrservice.repositories.UserRepository;
 import jakarta.validation.Valid;
 
 @RestController
@@ -44,16 +41,20 @@ public class BusinessUnitController {
     private BusinessUnitRepository businessUnitRepository;
     private BusinessUnitObjectiveRepository businessUnitObjectiveRepository;
 
+    private BusinessUnitKeyResultRepository businessUnitKeyResultRepository;
+
     private UserRepository userRepository;
 
 
     @Autowired
     public BusinessUnitController(CompanyRepository companyRepository, BusinessUnitRepository businessUnitRepository, 
-                                    BusinessUnitObjectiveRepository businessUnitObjectiveRepository, UserRepository userRepository) {
+                                  BusinessUnitObjectiveRepository businessUnitObjectiveRepository,
+                                  UserRepository userRepository, BusinessUnitKeyResultRepository businessUnitKeyResultRepository) {
         this.companyRepository = companyRepository;
         this.businessUnitRepository = businessUnitRepository;
         this.businessUnitObjectiveRepository = businessUnitObjectiveRepository;
         this.userRepository = userRepository;
+        this.businessUnitKeyResultRepository = businessUnitKeyResultRepository;
     }
 
 
@@ -247,5 +248,116 @@ public class BusinessUnitController {
                         businessUnitId, businessUnitObjectiveRepository, objectiveId);
         businessUnitObjectiveRepository.deleteById(objectiveId.longValue());
         return new ResponseEntity<>(businessUnitObjective.getTitle() + " deleted", HttpStatus.OK);
+    }
+
+    @PostMapping("/company/{companyId}/businessunit/{businessUnitId}/objective/{objectiveId}/keyresult")
+    public ResponseEntity<KeyResultDto> createBusinessUnitKeyResult(@PathVariable @NonNull Number companyId,
+                                                                    @PathVariable @NonNull Number businessUnitId,
+                                                                    @PathVariable @NonNull Number objectiveId,
+                                                                    @RequestBody @Valid KeyResultDto keyResultDto) throws Exception {
+        BusinessUnitObjective objective =
+                Utils.getBusinessUnitObjectiveFromRepository(companyRepository, companyId, businessUnitRepository,
+                        businessUnitId, businessUnitObjectiveRepository, objectiveId);
+        KeyResultType keyResultType = new KeyResultType(keyResultDto.getType());
+        BusinessUnitKeyResult businessUnitKeyResult = new BusinessUnitKeyResult();
+        businessUnitKeyResult.setGoal(keyResultDto.getGoal());
+        businessUnitKeyResult.setTitle(keyResultDto.getTitle());
+        businessUnitKeyResult.setDescription(keyResultDto.getDescription());
+        businessUnitKeyResult.setCurrent(keyResultDto.getCurrent());
+        businessUnitKeyResult.setConfidenceLevel(keyResultDto.getConfidenceLevel());
+        businessUnitKeyResult.setObjective(objective);
+        businessUnitKeyResult.setType(keyResultType);
+
+        businessUnitKeyResultRepository.save(businessUnitKeyResult);
+        keyResultDto.setId(businessUnitKeyResult.getId());
+        return new ResponseEntity<>(keyResultDto, HttpStatus.OK);
+    }
+
+    @PatchMapping("/company/{companyId}/businessunit/{businessUnitId}/objective/{objectiveId}/keyresult/{keyResultId}")
+    public ResponseEntity<KeyResultDto> patchBusinessUnitKeyResult(@PathVariable @NonNull Number companyId,
+                                                                    @PathVariable @NonNull Number businessUnitId,
+                                                                    @PathVariable @NonNull Number objectiveId,
+                                                                    @PathVariable @NonNull Number keyResultId,
+                                                                    @RequestBody BusinessUnitKeyResultDto keyResultDto)
+            throws Exception {
+        BusinessUnitKeyResult oldBusinessUnitKeyResult =
+                Utils.getBusinessUnitKeyResultFromRepository(companyRepository, companyId, businessUnitRepository,
+                        businessUnitId, businessUnitObjectiveRepository, objectiveId, businessUnitKeyResultRepository,
+                        keyResultId);
+        BusinessUnitKeyResultDto oldKeyResultDto =
+                new BusinessUnitKeyResultDto(oldBusinessUnitKeyResult);
+
+        Field[] fields = KeyResultDto.class.getDeclaredFields();
+        for (Field field : fields) {
+            field.setAccessible(true); // Allow access to private fields
+            Object value = field.get(keyResultDto);
+            if(value != null) {
+                field.set(oldKeyResultDto, value);
+            }
+            field.setAccessible(false);
+        }
+        fields = BusinessUnitKeyResultDto.class.getDeclaredFields();
+        for (Field field : fields) {
+            field.setAccessible(true); // Allow access to private fields
+            Object value = field.get(keyResultDto);
+            if(value != null) {
+                field.set(oldKeyResultDto, value);
+            }
+            field.setAccessible(false);
+        }
+
+        BusinessUnitObjective objective =
+                Utils.getBusinessUnitObjectiveFromRepository(companyRepository, companyId, businessUnitRepository,
+                        businessUnitId, businessUnitObjectiveRepository, objectiveId);
+        KeyResultType keyResultType = new KeyResultType(oldKeyResultDto.getType());
+        oldBusinessUnitKeyResult.setGoal(oldKeyResultDto.getGoal());
+        oldBusinessUnitKeyResult.setTitle(oldKeyResultDto.getTitle());
+        oldBusinessUnitKeyResult.setDescription(oldKeyResultDto.getDescription());
+        oldBusinessUnitKeyResult.setCurrent(oldKeyResultDto.getCurrent());
+        oldBusinessUnitKeyResult.setConfidenceLevel(oldKeyResultDto.getConfidenceLevel());
+        oldBusinessUnitKeyResult.setObjective(objective);
+        oldBusinessUnitKeyResult.setType(keyResultType);
+
+        businessUnitKeyResultRepository.save(oldBusinessUnitKeyResult);
+        return new ResponseEntity<>(oldKeyResultDto, HttpStatus.OK);
+    }
+
+    @GetMapping("/company/{companyId}/businessunit/{businessUnitId}/objective/{objectiveId}/keyresult")
+    public ResponseEntity<List<BusinessUnitKeyResultDto>> getAllBusinessUnitKeyResults(@PathVariable @NonNull Number companyId,
+                                                                    @PathVariable @NonNull Number businessUnitId,
+                                                                    @PathVariable @NonNull Number objectiveId)
+        throws Exception {
+        List<BusinessUnitKeyResult> businessUnitKeyResults =
+                businessUnitKeyResultRepository.findAllByObjectiveId(objectiveId.longValue());
+        return new ResponseEntity<>(businessUnitKeyResults.stream()
+                .map(BusinessUnitKeyResultDto::new)
+                .collect(Collectors.toList()), HttpStatus.OK);
+    }
+
+    @GetMapping("/company/{companyId}/businessunit/{businessUnitId}/objective/{objectiveId}/keyresult/{keyResultId}")
+    public ResponseEntity<BusinessUnitKeyResultDto> getBusinessUnitKeyResult(@PathVariable @NonNull Number companyId,
+                                                                                       @PathVariable @NonNull Number businessUnitId,
+                                                                                       @PathVariable @NonNull Number objectiveId,
+                                                                                   @PathVariable @NonNull Number keyResultId)
+            throws Exception {
+        BusinessUnitKeyResult businessUnitKeyResult =
+                Utils.getBusinessUnitKeyResultFromRepository(companyRepository, companyId, businessUnitRepository,
+                        businessUnitId, businessUnitObjectiveRepository, objectiveId, businessUnitKeyResultRepository,
+                        keyResultId);
+        return new ResponseEntity<>(new BusinessUnitKeyResultDto(businessUnitKeyResult), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/company/{companyId}/businessunit/{businessUnitId}/objective/{objectiveId}/keyresult/{keyResultId}")
+    public ResponseEntity<BusinessUnitKeyResultDto> deleteBusinessUnitKeyResult(@PathVariable @NonNull Number companyId,
+                                                                             @PathVariable @NonNull Number businessUnitId,
+                                                                             @PathVariable @NonNull Number objectiveId,
+                                                                             @PathVariable @NonNull Number keyResultId)
+            throws Exception {
+        BusinessUnitKeyResult businessUnitKeyResult =
+                Utils.getBusinessUnitKeyResultFromRepository(companyRepository, companyId, businessUnitRepository,
+                        businessUnitId, businessUnitObjectiveRepository, objectiveId, businessUnitKeyResultRepository,
+                        keyResultId);
+        businessUnitKeyResultRepository.deleteById(businessUnitKeyResult.getId());
+        return new ResponseEntity<>(new BusinessUnitKeyResultDto(businessUnitKeyResult), HttpStatus.OK);
     }
 }

@@ -52,6 +52,12 @@ public class ExceptionController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Objective not found!");
     }
 
+    @ExceptionHandler(KeyResultNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseEntity<String> keyResultNotFoundException(KeyResultNotFoundException  ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Key result not found!");
+    }
+
     @ExceptionHandler(MaxCompanyObjectivesReachedException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ResponseEntity<String> maxCompanyObjectivesReachedException(MaxCompanyObjectivesReachedException  ex) {
