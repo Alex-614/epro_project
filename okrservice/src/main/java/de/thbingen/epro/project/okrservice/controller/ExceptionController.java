@@ -1,14 +1,28 @@
 package de.thbingen.epro.project.okrservice.controller;
 
 import de.thbingen.epro.project.okrservice.exceptions.*;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
 public class ExceptionController {
+    @ExceptionHandler(NotAuthenticatedException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ResponseEntity<String> notAuthenticatedException(NotAuthenticatedException  ex) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("You have not authenticated yet!");
+    }
+
+    @ExceptionHandler(AuthenticationExpiredException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ResponseEntity<String> authenticationExpiredException(AuthenticationExpiredException  ex) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Your authentication is expired! Please login again.");
+    }
+
     @ExceptionHandler(UnitAlreadyExistsException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     public ResponseEntity<String> unitAlreadyExistsException(UnitAlreadyExistsException  ex) {
