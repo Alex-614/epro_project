@@ -4,7 +4,6 @@ import java.util.Date;
 
 import javax.crypto.SecretKey;
 
-import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
@@ -42,14 +41,14 @@ public class JwtGenerator {
         return claims.getSubject();
     }
 
-    public boolean validateToken(String token) throws AuthenticationCredentialsNotFoundException, ExpiredJwtException {
-        //try {
+    public boolean validateToken(String token) {
+        try {
             Jwts.parser().verifyWith(key)
                 .build().parseSignedClaims(token);
             return true;
-        /*} catch (Exception ex) {
+        } catch (Exception ex) {
             throw new AuthenticationCredentialsNotFoundException("JWT was expired or incorrect!", ex.fillInStackTrace());
-        }*/
+        }
     }
 
 }
