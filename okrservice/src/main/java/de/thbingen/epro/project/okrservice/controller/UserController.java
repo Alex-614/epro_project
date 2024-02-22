@@ -1,6 +1,5 @@
 package de.thbingen.epro.project.okrservice.controller;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -83,7 +82,7 @@ public class UserController {
         User user = Utils.getUserFromRepository(userRepository, userId);
 
         if (userDto.getEmail() != null) user.setEmail(userDto.getEmail());
-        if (userDto.getPassword() != null) user.setPassword(userDto.getPassword());
+        if (userDto.getPassword() != null) user.setPassword(passwordEncoder.encode(userDto.getPassword()));
         if (userDto.getUsername() != null) user.setUsername(userDto.getUsername());
         if (userDto.getFirstname() != null) user.setFirstname(userDto.getFirstname());
         if (userDto.getSurname() != null) user.setSurname(userDto.getSurname());
