@@ -91,9 +91,9 @@ public class CompanyController {
 
     @PatchMapping("{companyId}")
     public ResponseEntity<CompanyDto> patchCompany(@PathVariable Number companyId,
-                                                   @RequestBody @Valid CompanyDto companyDto) throws Exception {
+                                                   @RequestBody CompanyDto companyDto) throws Exception {
         Company company = Utils.getCompanyFromRepository(companyRepository, companyId);
-        company.setName(companyDto.getName());
+        if (companyDto.getName() != null) company.setName(companyDto.getName());
         companyRepository.save(company);
         return new ResponseEntity<>(new CompanyDto(company), HttpStatus.OK);
     }

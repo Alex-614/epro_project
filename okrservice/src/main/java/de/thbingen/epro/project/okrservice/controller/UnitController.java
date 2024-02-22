@@ -1,6 +1,5 @@
 package de.thbingen.epro.project.okrservice.controller;
 
-import java.lang.reflect.Field;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -93,11 +92,12 @@ public class UnitController {
     public ResponseEntity<UnitDto> patchUnit(@PathVariable @NonNull Number companyId,
                                              @PathVariable @NonNull Number businessUnitId,
                                              @PathVariable @NonNull Number unitId,
-                                             @RequestBody @Valid UnitDto unitDto) throws Exception {
+                                             @RequestBody UnitDto unitDto) throws Exception {
         Unit unit = Utils.getUnitFromRepository(companyRepository, companyId, businessUnitRepository,
                         businessUnitId, unitRepository, unitId);
 
-        unit.setName(unitDto.getName());
+        if (unitDto.getName() != null) unit.setName(unitDto.getName());
+
         unitRepository.save(unit);
         return new ResponseEntity<>(new UnitDto(unit), HttpStatus.OK);
     }

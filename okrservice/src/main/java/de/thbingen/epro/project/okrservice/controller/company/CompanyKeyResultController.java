@@ -1,5 +1,6 @@
 package de.thbingen.epro.project.okrservice.controller.company;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -21,8 +22,11 @@ import de.thbingen.epro.project.okrservice.controller.Utils;
 import de.thbingen.epro.project.okrservice.dtos.CompanyKeyResultDto;
 import de.thbingen.epro.project.okrservice.entities.keyresults.CompanyKeyResult;
 import de.thbingen.epro.project.okrservice.entities.keyresults.KeyResultType;
+import de.thbingen.epro.project.okrservice.entities.objectives.BusinessUnitObjective;
 import de.thbingen.epro.project.okrservice.entities.objectives.CompanyObjective;
 import de.thbingen.epro.project.okrservice.exceptions.KeyResultNotFoundException;
+import de.thbingen.epro.project.okrservice.repositories.BusinessUnitObjectiveRepository;
+import de.thbingen.epro.project.okrservice.repositories.BusinessUnitRepository;
 import de.thbingen.epro.project.okrservice.repositories.CompanyKeyResultRepository;
 import de.thbingen.epro.project.okrservice.repositories.CompanyObjectiveRepository;
 import de.thbingen.epro.project.okrservice.repositories.CompanyRepository;
@@ -43,15 +47,21 @@ public class CompanyKeyResultController {
 
     private CompanyKeyResultRepository companyKeyResultRepository;
 
+    private BusinessUnitObjectiveRepository businessUnitObjectiveRepository;
+    private BusinessUnitRepository businessUnitRepository;
+
     private KeyResultTypeRepository keyResultTypeRepository;
 
     @Autowired
     public CompanyKeyResultController(CompanyRepository companyRepository, CompanyKeyResultRepository companyKeyResultRepository,
-                                        CompanyObjectiveRepository companyObjectiveRepository, KeyResultTypeRepository keyResultTypeRepository) {
+                                        CompanyObjectiveRepository companyObjectiveRepository, KeyResultTypeRepository keyResultTypeRepository, 
+                                        BusinessUnitObjectiveRepository businessUnitObjectiveRepository, BusinessUnitRepository businessUnitRepository) {
         this.companyRepository = companyRepository;
         this.companyKeyResultRepository = companyKeyResultRepository;
         this.companyObjectiveRepository = companyObjectiveRepository;
         this.keyResultTypeRepository = keyResultTypeRepository;
+        this.businessUnitObjectiveRepository = businessUnitObjectiveRepository;
+        this.businessUnitRepository = businessUnitRepository;
     }
 
 
@@ -110,21 +120,31 @@ public class CompanyKeyResultController {
     public ResponseEntity<CompanyKeyResultDto> patchCompanyKeyResult(@PathVariable @NonNull Number companyId,
                                                                @PathVariable @NonNull Number objectiveId,
                                                                @PathVariable @NonNull Number keyResultId,
-                                                               @RequestBody @Valid CompanyKeyResultDto keyResultDto)
+                                                               @RequestBody CompanyKeyResultDto keyResultDto)
             throws Exception {
         CompanyKeyResult keyResult = Utils.getCompanyKeyResultFromRepository(companyRepository, companyId, companyObjectiveRepository,
                         objectiveId, companyKeyResultRepository, keyResultId);
-        Optional<KeyResultType> keyResultType = keyResultTypeRepository.findByName(keyResultDto.getType());
-        if (!keyResultType.isPresent()) {
-            throw new KeyResultNotFoundException();
+        Optional<KeyResultType> keyResultType = null;
+        if (keyResultDto.getType() != null) {
+            keyResultType = keyResultTypeRepository.findByName(keyResultDto.getType());
+            if (!keyResultType.isPresent()) {
+                throw new KeyResultNotFoundException();
+            }
         }
-        keyResult.setGoal(keyResultDto.getGoal());
-        keyResult.setTitle(keyResultDto.getTitle());
-        keyResult.setDescription(keyResultDto.getDescription());
-        keyResult.setCurrent(keyResultDto.getCurrent());
-        keyResult.setConfidenceLevel(keyResultDto.getConfidenceLevel());
-        keyResult.setType(keyResultType.get());
-        keyResult.setRepresenters(keyResultDto.getRepresenters());
+        if (keyResultDto.getGoal() != null) keyResult.setGoal(keyResultDto.getGoal());
+        if (keyResultDto.getTitle() != null) keyResult.setTitle(keyResultDto.getTitle());
+        if (keyResultDto.getDescription() != null) keyResult.setDescription(keyResultDto.getDescription());
+        if (keyResultDto.getCurrent() != null) keyResult.setCurrent(keyResultDto.getCurrent());
+        if (keyResultDto.getConfidenceLevel() != null) keyResult.setConfidenceLevel(keyResultDto.getConfidenceLevel());
+        if (keyResultType != null) keyResult.setType(keyResultType.get());
+        if (keyResultDto.getRepresenters() != null) {
+            List<BusinessUnitObjective> businessUnitObjectives = new ArrayList<>();
+            for (Long id : keyResultDto.getRepresenters()) {
+                businessUnitObjectives.add(Utils.getBusinessUnitObjectiveFromRepository(companyRepository, companyId, businessUnitRepository, 
+                                            id, businessUnitObjectiveRepository, objectiveId));
+            }
+            keyResult.setRepresenters(businessUnitObjectives);
+        }
 
         companyKeyResultRepository.save(keyResult);
         return new ResponseEntity<>(new CompanyKeyResultDto(keyResult), HttpStatus.OK);

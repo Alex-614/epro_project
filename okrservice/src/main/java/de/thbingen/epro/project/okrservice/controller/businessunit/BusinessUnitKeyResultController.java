@@ -1,6 +1,5 @@
 package de.thbingen.epro.project.okrservice.controller.businessunit;
 
-import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -122,23 +121,26 @@ public class BusinessUnitKeyResultController {
                                                                     @PathVariable @NonNull Number businessUnitId,
                                                                     @PathVariable @NonNull Number objectiveId,
                                                                     @PathVariable @NonNull Number keyResultId,
-                                                                    @RequestBody @Valid BusinessUnitKeyResultDto keyResultDto)
+                                                                    @RequestBody BusinessUnitKeyResultDto keyResultDto)
             throws Exception {
         BusinessUnitKeyResult keyResult =
                 Utils.getBusinessUnitKeyResultFromRepository(companyRepository, companyId, businessUnitRepository,
                         businessUnitId, businessUnitObjectiveRepository, objectiveId, businessUnitKeyResultRepository,
                         keyResultId);
 
-        Optional<KeyResultType> keyResultType = keyResultTypeRepository.findByName(keyResultDto.getType());
-        if (!keyResultType.isPresent()) {
-            throw new KeyResultNotFoundException();
+        Optional<KeyResultType> keyResultType = null;
+        if (keyResultDto.getType() != null) {
+            keyResultType = keyResultTypeRepository.findByName(keyResultDto.getType());
+            if (!keyResultType.isPresent()) {
+                throw new KeyResultNotFoundException();
+            }
         }
-        keyResult.setGoal(keyResultDto.getGoal());
-        keyResult.setTitle(keyResultDto.getTitle());
-        keyResult.setDescription(keyResultDto.getDescription());
-        keyResult.setCurrent(keyResultDto.getCurrent());
-        keyResult.setConfidenceLevel(keyResultDto.getConfidenceLevel());
-        keyResult.setType(keyResultType.get());
+        if (keyResultDto.getGoal() != null) keyResult.setGoal(keyResultDto.getGoal());
+        if (keyResultDto.getTitle() != null) keyResult.setTitle(keyResultDto.getTitle());
+        if (keyResultDto.getDescription() != null) keyResult.setDescription(keyResultDto.getDescription());
+        if (keyResultDto.getCurrent() != null) keyResult.setCurrent(keyResultDto.getCurrent());
+        if (keyResultDto.getConfidenceLevel() != null) keyResult.setConfidenceLevel(keyResultDto.getConfidenceLevel());
+        if (keyResultType != null) keyResult.setType(keyResultType.get());
 
         businessUnitKeyResultRepository.save(keyResult);
         return new ResponseEntity<>(new BusinessUnitKeyResultDto(keyResult), HttpStatus.OK);

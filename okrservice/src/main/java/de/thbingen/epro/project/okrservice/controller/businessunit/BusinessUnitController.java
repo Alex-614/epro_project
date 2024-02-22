@@ -93,11 +93,13 @@ public class BusinessUnitController {
     @PatchMapping("{businessUnitId}")
     public ResponseEntity<BusinessUnitDto> patchBusinessUnit(@PathVariable @NonNull Number companyId,
                                                               @PathVariable @NonNull Number businessUnitId,
-                                                              @RequestBody @Valid BusinessUnitDto businessUnitDto
+                                                              @RequestBody BusinessUnitDto businessUnitDto
     ) throws Exception {
         BusinessUnit businessUnit = Utils.getBusinessUnitFromRepository(companyRepository, companyId,
                 businessUnitRepository, businessUnitId);
-        businessUnit.setName(businessUnitDto.getName());
+
+        if (businessUnitDto.getName() != null) businessUnit.setName(businessUnitDto.getName());
+        
         businessUnitRepository.save(businessUnit);
         return new ResponseEntity<>(new BusinessUnitDto(businessUnit), HttpStatus.OK);
     }

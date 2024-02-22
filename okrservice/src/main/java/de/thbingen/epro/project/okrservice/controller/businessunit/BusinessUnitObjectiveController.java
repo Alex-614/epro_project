@@ -110,16 +110,20 @@ public class BusinessUnitObjectiveController {
     public ResponseEntity<ObjectiveDto> patchBusinessUnitObjective(@PathVariable @NonNull Number companyId,
                                                                     @PathVariable @NonNull Number businessUnitId,
                                                                     @PathVariable @NonNull Number objectiveId,
-                                                                    @RequestBody @Valid BusinessUnitObjectiveDto objectiveDto
+                                                                    @RequestBody BusinessUnitObjectiveDto objectiveDto
     ) throws Exception {
         BusinessUnitObjective objective = Utils.getBusinessUnitObjectiveFromRepository(companyRepository, companyId, businessUnitRepository,
                         businessUnitId, businessUnitObjectiveRepository, objectiveId);
-        User owner = Utils.getUserFromRepository(userRepository, objectiveDto.getOwnerId());
+        User owner = null;
+        if (objectiveDto.getOwnerId() != null) {
+            owner = Utils.getUserFromRepository(userRepository, objectiveDto.getOwnerId());
+        }
 
-        objective.setDeadline(objectiveDto.getDeadline());
-        objective.setTitle(objectiveDto.getTitle());
-        objective.setDescription(objectiveDto.getDescription());
-        objective.setOwner(owner);
+        if (objectiveDto.getDeadline() != null) objective.setDeadline(objectiveDto.getDeadline());
+        if (objectiveDto.getTitle() != null) objective.setTitle(objectiveDto.getTitle());
+        if (objectiveDto.getDescription() != null) objective.setDescription(objectiveDto.getDescription());
+        if (owner != null) objective.setOwner(owner);
+
         businessUnitObjectiveRepository.save(objective);
         return new ResponseEntity<>(new BusinessUnitObjectiveDto(objective), HttpStatus.OK);
     }

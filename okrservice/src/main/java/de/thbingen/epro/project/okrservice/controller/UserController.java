@@ -80,27 +80,16 @@ public class UserController {
 
     @PatchMapping("{userId}")
     public ResponseEntity<UserDto> patchUser(@PathVariable @NonNull Number userId, @RequestBody @Valid UserDto userDto) throws Exception {
-        User oldUser = Utils.getUserFromRepository(userRepository, userId);
-        UserDto oldUserDto = new UserDto(oldUser);
+        User user = Utils.getUserFromRepository(userRepository, userId);
 
-        Field[] fields = UserDto.class.getDeclaredFields();
-        for (Field field : fields) {
-            field.setAccessible(true); // Allow access to private fields
-            Object value = field.get(userDto);
-            if(value != null) {
-                field.set(oldUserDto, value);
-            }
-            field.setAccessible(false);
-        }
+        if (userDto.getEmail() != null) user.setEmail(userDto.getEmail());
+        if (userDto.getPassword() != null) user.setPassword(userDto.getPassword());
+        if (userDto.getUsername() != null) user.setUsername(userDto.getUsername());
+        if (userDto.getFirstname() != null) user.setFirstname(userDto.getFirstname());
+        if (userDto.getSurname() != null) user.setSurname(userDto.getSurname());
 
-        oldUser.setEmail(oldUserDto.getEmail());
-        oldUser.setPassword(oldUserDto.getPassword());
-        oldUser.setUsername(oldUserDto.getUsername());
-        oldUser.setFirstname(oldUserDto.getFirstname());
-        oldUser.setSurname(oldUserDto.getSurname());
-
-        userRepository.save(oldUser);
-        return new ResponseEntity<>(oldUserDto, HttpStatus.OK);
+        userRepository.save(user);
+        return new ResponseEntity<>(new UserDto(user), HttpStatus.OK);
     }
 
 

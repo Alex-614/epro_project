@@ -98,16 +98,17 @@ public class CompanyObjectiveController {
     @PatchMapping("{objectiveId}")
     public ResponseEntity<CompanyObjectiveDto> patchCompanyObjective(
             @PathVariable Number companyId, @PathVariable Number objectiveId,
-            @RequestBody @Valid CompanyObjectiveDto objectiveDto) throws Exception {
+            @RequestBody CompanyObjectiveDto objectiveDto) throws Exception {
         CompanyObjective objective = Utils.getCompanyObjectiveFromRepository(companyRepository, companyId,
                                                 companyObjectiveRepository, objectiveId.longValue());
-        User owner = Utils.getUserFromRepository(userRepository, objectiveDto.getOwnerId());
+        User owner = null;
+        if (objectiveDto.getOwnerId() != null) owner = Utils.getUserFromRepository(userRepository, objectiveDto.getOwnerId());
         
-        objective.setDeadline(objectiveDto.getDeadline());
-        objective.setTitle(objectiveDto.getTitle());
-        objective.setDescription(objectiveDto.getDescription());
-        objective.setOwner(owner);
-        
+        if (objectiveDto.getDeadline() != null) objective.setDeadline(objectiveDto.getDeadline());
+        if (objectiveDto.getTitle() != null) objective.setTitle(objectiveDto.getTitle());
+        if (objectiveDto.getDescription() != null) objective.setDescription(objectiveDto.getDescription());
+        if (owner != null) objective.setOwner(owner);
+
         companyObjectiveRepository.save(objective);
         return new ResponseEntity<>(new CompanyObjectiveDto(objective), HttpStatus.OK);
     }
