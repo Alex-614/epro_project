@@ -1,6 +1,5 @@
 package de.thbingen.epro.project.okrservice.controller;
 
-import java.lang.reflect.Field;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -94,23 +93,13 @@ public class UnitController {
                                              @PathVariable @NonNull Number businessUnitId,
                                              @PathVariable @NonNull Number unitId,
                                              @RequestBody UnitDto unitDto) throws Exception {
-        Unit oldUnit =
-                Utils.getUnitFromRepository(companyRepository, companyId, businessUnitRepository,
+        Unit unit = Utils.getUnitFromRepository(companyRepository, companyId, businessUnitRepository,
                         businessUnitId, unitRepository, unitId);
-        UnitDto oldUnitDto = new UnitDto(oldUnit);
 
-        Field[] fields = UnitDto.class.getDeclaredFields();
-        for (Field field : fields) {
-            field.setAccessible(true); // Allow access to private fields
-            Object value = field.get(unitDto);
-            if(value != null) {
-                field.set(oldUnitDto, value);
-            }
-            field.setAccessible(false);
-        }
-        oldUnit.setName(oldUnitDto.getName());
-        unitRepository.save(oldUnit);
-        return new ResponseEntity<>(oldUnitDto, HttpStatus.OK);
+        if (unitDto.getName() != null) unit.setName(unitDto.getName());
+
+        unitRepository.save(unit);
+        return new ResponseEntity<>(new UnitDto(unit), HttpStatus.OK);
     }
 
 

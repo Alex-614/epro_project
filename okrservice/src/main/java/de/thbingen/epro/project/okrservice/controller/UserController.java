@@ -1,6 +1,5 @@
 package de.thbingen.epro.project.okrservice.controller;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,6 +23,7 @@ import de.thbingen.epro.project.okrservice.dtos.UserDto;
 import de.thbingen.epro.project.okrservice.entities.Company;
 import de.thbingen.epro.project.okrservice.entities.User;
 import de.thbingen.epro.project.okrservice.repositories.UserRepository;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/user")
@@ -41,7 +41,7 @@ public class UserController {
 
 
     @PostMapping
-    public ResponseEntity<UserDto> register(@RequestBody UserDto userDto) {
+    public ResponseEntity<UserDto> register(@RequestBody @Valid UserDto userDto) {
         if (userRepository.existsByEmail(userDto.getEmail())) {
             // "Email already exists!"
             userDto.setEmail("Email already exists!");
@@ -79,27 +79,16 @@ public class UserController {
 
     @PatchMapping("{userId}")
     public ResponseEntity<UserDto> patchUser(@PathVariable @NonNull Number userId, @RequestBody UserDto userDto) throws Exception {
-        User oldUser = Utils.getUserFromRepository(userRepository, userId);
-        UserDto oldUserDto = new UserDto(oldUser);
+        User user = Utils.getUserFromRepository(userRepository, userId);
 
-        Field[] fields = UserDto.class.getDeclaredFields();
-        for (Field field : fields) {
-            field.setAccessible(true); // Allow access to private fields
-            Object value = field.get(userDto);
-            if(value != null) {
-                field.set(oldUserDto, value);
-            }
-            field.setAccessible(false);
-        }
+        if (userDto.getEmail() != null) user.setEmail(userDto.getEmail());
+        if (userDto.getPassword() != null) user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        if (userDto.getUsername() != null) user.setUsername(userDto.getUsername());
+        if (userDto.getFirstname() != null) user.setFirstname(userDto.getFirstname());
+        if (userDto.getSurname() != null) user.setSurname(userDto.getSurname());
 
-        oldUser.setEmail(oldUserDto.getEmail());
-        oldUser.setPassword(oldUserDto.getPassword());
-        oldUser.setUsername(oldUserDto.getUsername());
-        oldUser.setFirstname(oldUserDto.getFirstname());
-        oldUser.setSurname(oldUserDto.getSurname());
-
-        userRepository.save(oldUser);
-        return new ResponseEntity<>(oldUserDto, HttpStatus.OK);
+        userRepository.save(user);
+        return new ResponseEntity<>(new UserDto(user), HttpStatus.OK);
     }
 
 

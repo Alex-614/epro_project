@@ -7,6 +7,248 @@
 	},
 	"item": [
 		{
+			"name": "Company",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"pm.collectionVariables.set(\"companyId\", jsonData.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QHRlc3QuZGUiLCJpYXQiOjE3MDczOTk0ODcsImV4cCI6MTcwNzM5OTg0N30.stFq-UISIKFhsDPKAG9jcmhFEuwr2fQQN6Ar1UGhjwtWctAhKir5HRPTuW51p6fH",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Firma XY\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{epro_project}}/company",
+					"host": [
+						"{{epro_project}}"
+					],
+					"path": [
+						"company"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Company",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"pm.collectionVariables.set(\"companyId\", jsonData.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QHRlc3QuZGUiLCJpYXQiOjE3MDczOTk0ODcsImV4cCI6MTcwNzM5OTg0N30.stFq-UISIKFhsDPKAG9jcmhFEuwr2fQQN6Ar1UGhjwtWctAhKir5HRPTuW51p6fH",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{epro_project}}/company/{{companyId}}",
+					"host": [
+						"{{epro_project}}"
+					],
+					"path": [
+						"company",
+						"{{companyId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Company",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"pm.collectionVariables.set(\"companyId\", jsonData.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QHRlc3QuZGUiLCJpYXQiOjE3MDczOTk0ODcsImV4cCI6MTcwNzM5OTg0N30.stFq-UISIKFhsDPKAG9jcmhFEuwr2fQQN6Ar1UGhjwtWctAhKir5HRPTuW51p6fH",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Firma AWD\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{epro_project}}/company/{{companyId}}",
+					"host": [
+						"{{epro_project}}"
+					],
+					"path": [
+						"company",
+						"{{companyId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Company",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"pm.collectionVariables.set(\"companyId\", jsonData.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QHRlc3QuZGUiLCJpYXQiOjE3MDczOTk0ODcsImV4cCI6MTcwNzM5OTg0N30.stFq-UISIKFhsDPKAG9jcmhFEuwr2fQQN6Ar1UGhjwtWctAhKir5HRPTuW51p6fH",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{epro_project}}/company/{{companyId}}",
+					"host": [
+						"{{epro_project}}"
+					],
+					"path": [
+						"company",
+						"{{companyId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Company add User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"roleIds\": [1, 2, 3]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{epro_project}}/company/{{companyId}}/user/{{userId}}/add",
+					"host": [
+						"{{epro_project}}"
+					],
+					"path": [
+						"company",
+						"{{companyId}}",
+						"user",
+						"{{userId}}",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Company remove User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{epro_project}}/company/{{companyId}}/user/{{userId}}/remove",
+					"host": [
+						"{{epro_project}}"
+					],
+					"path": [
+						"company",
+						"{{companyId}}",
+						"user",
+						"{{userId}}",
+						"remove"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "CompanyObjective",
 			"event": [
 				{
@@ -50,35 +292,6 @@
 		},
 		{
 			"name": "CompanyObjective",
-			"request": {
-				"method": "PATCH",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"deadline\": \"\",\r\n    \"title\": \"\",\r\n    \"description\": \"\",\r\n    \"ownerId\": \"\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{epro_project}}/company/{{companyId}}/objective/{id}",
-					"host": [
-						"{{epro_project}}"
-					],
-					"path": [
-						"company",
-						"{{companyId}}",
-						"objective",
-						"{id}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "CompanyObjective",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -95,7 +308,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{epro_project}}/company/{{companyId}}/objective/{id}",
+					"raw": "{{epro_project}}/company/{{companyId}}/objective/{{companyObjectiveId}}",
 					"host": [
 						"{{epro_project}}"
 					],
@@ -103,7 +316,36 @@
 						"company",
 						"{{companyId}}",
 						"objective",
-						"{id}"
+						"{{companyObjectiveId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CompanyObjective",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"deadline\": \"2024-02-10T12:00:00Z\",\r\n    \"title\": \"Co1\",\r\n    \"description\": \"Erstes Company Objective, bearbeitet\",\r\n    \"ownerId\": {{userId}}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{epro_project}}/company/{{companyId}}/objective/{{companyObjectiveId}}",
+					"host": [
+						"{{epro_project}}"
+					],
+					"path": [
+						"company",
+						"{{companyId}}",
+						"objective",
+						"{{companyObjectiveId}}"
 					]
 				}
 			},
@@ -124,7 +366,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{epro_project}}/company/{{companyId}}/objective/{id}",
+					"raw": "{{epro_project}}/company/{{companyId}}/objective/{{companyObjectiveId}}",
 					"host": [
 						"{{epro_project}}"
 					],
@@ -132,146 +374,7 @@
 						"company",
 						"{{companyId}}",
 						"objective",
-						"{id}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "BusinessUnitObjective",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"var jsonData = pm.response.json();\r",
-							"pm.collectionVariables.set(\"businessUnitObjectiveId\", jsonData.id);\r",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"deadline\": \"2024-02-10T12:00:00Z\",\r\n    \"title\": \"BUO1\",\r\n    \"description\": \"Erstes BusinessUnit Objective\",\r\n    \"ownerId\": {{userId}},\r\n    \"companyKeyResult_ID\": \"\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{epro_project}}/company/{{companyId}}/businessunit/{{businessUnitId}}/objective",
-					"host": [
-						"{{epro_project}}"
-					],
-					"path": [
-						"company",
-						"{{companyId}}",
-						"businessunit",
-						"{{businessUnitId}}",
-						"objective"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "BusinessUnitObjective",
-			"request": {
-				"method": "PATCH",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"deadline\": \"\",\r\n    \"title\": \"\",\r\n    \"description\": \"\",\r\n    \"ownerId\": \"\",\r\n    \"companyKeyResult_ID\": \"\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{epro_project}}/company/{{companyId}}/businessunit/{{businessUnitId}}/objective/{o_id}",
-					"host": [
-						"{{epro_project}}"
-					],
-					"path": [
-						"company",
-						"{{companyId}}",
-						"businessunit",
-						"{{businessUnitId}}",
-						"objective",
-						"{o_id}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "BusinessUnitObjective",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{epro_project}}/company/{{companyId}}/businessunit/{{businessUnitId}}/objective/{id}",
-					"host": [
-						"{{epro_project}}"
-					],
-					"path": [
-						"company",
-						"{{companyId}}",
-						"businessunit",
-						"{{businessUnitId}}",
-						"objective",
-						"{id}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "BusinessUnitObjective",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{epro_project}}/company/{{companyId}}/businessunit/{{businessUnitId}}/objective/{id}",
-					"host": [
-						"{{epro_project}}"
-					],
-					"path": [
-						"company",
-						"{{companyId}}",
-						"businessunit",
-						"{{businessUnitId}}",
-						"objective",
-						"{id}"
+						"{{companyObjectiveId}}"
 					]
 				}
 			},
@@ -297,7 +400,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"goal\": \"\",\r\n    \"type\": \"\",\r\n    \"description\": \"\",\r\n    \"current\": \"\",\r\n    \"confidenceLevel\": \"\"\r\n}",
+					"raw": "{\r\n    \"title\": \"KR1\",\r\n    \"goal\": \"100\",\r\n    \"type\": \"numeric\",\r\n    \"description\": \"Erstes Company Key Result\",\r\n    \"current\": \"15\",\r\n    \"confidenceLevel\": \"50\",\r\n    \"representers\": []\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -305,7 +408,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{epro_project}}/company/{{companyId}}/objective/{o_id}/keyresult",
+					"raw": "{{epro_project}}/company/{{companyId}}/objective/{{companyObjectiveId}}/keyresult",
 					"host": [
 						"{{epro_project}}"
 					],
@@ -313,39 +416,8 @@
 						"company",
 						"{{companyId}}",
 						"objective",
-						"{o_id}",
+						"{{companyObjectiveId}}",
 						"keyresult"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "CompanyKeyResult",
-			"request": {
-				"method": "PATCH",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"current\": \"\",\r\n    \"confidenceLevel\": \"\",\r\n    \"statusUpdate\": \"\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{epro_project}}/company/{{companyId}}/objective/{o_id}/keyresult/{id}",
-					"host": [
-						"{{epro_project}}"
-					],
-					"path": [
-						"company",
-						"{{companyId}}",
-						"objective",
-						"{o_id}",
-						"keyresult",
-						"{id}"
 					]
 				}
 			},
@@ -369,7 +441,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{epro_project}}/company/{{companyId}}/objective/{o_id}/keyresult/{id}",
+					"raw": "{{epro_project}}/company/{{companyId}}/objective/{{companyObjectiveId}}/keyresult/{{companyKeyResultId}}",
 					"host": [
 						"{{epro_project}}"
 					],
@@ -377,9 +449,40 @@
 						"company",
 						"{{companyId}}",
 						"objective",
-						"{o_id}",
+						"{{companyObjectiveId}}",
 						"keyresult",
-						"{id}"
+						"{{companyKeyResultId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CompanyKeyResult",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\r\n    \"title\": \"KR1\",\r\n    \"goal\": \"100\",\r\n    \"type\": \"numeric\",\r\n    \"description\": \"Erstes Company Key Result\",\r\n    \"representers\": [],\r\n\r\n    \"current\": \"60\",\r\n    \"confidenceLevel\": \"70\",\r\n    \"statusUpdate\": \"Das ist ein Status Update\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{epro_project}}/company/{{companyId}}/objective/{{companyObjectiveId}}/keyresult/{{companyKeyResultId}}",
+					"host": [
+						"{{epro_project}}"
+					],
+					"path": [
+						"company",
+						"{{companyId}}",
+						"objective",
+						"{{companyObjectiveId}}",
+						"keyresult",
+						"{{companyKeyResultId}}"
 					]
 				}
 			},
@@ -400,7 +503,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{epro_project}}/company/{{companyId}}/objective/{o_id}/keyresult/{id}",
+					"raw": "{{epro_project}}/company/{{companyId}}/objective/{{companyObjectiveId}}/keyresult/{{companyKeyResultId}}",
 					"host": [
 						"{{epro_project}}"
 					],
@@ -408,9 +511,279 @@
 						"company",
 						"{{companyId}}",
 						"objective",
-						"{o_id}",
+						"{{companyObjectiveId}}",
 						"keyresult",
-						"{id}"
+						"{{companyKeyResultId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "BusinessUnit",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"pm.collectionVariables.set(\"businessUnitId\", jsonData.id.id);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Development\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{epro_project}}/company/{{companyId}}/businessunit",
+					"host": [
+						"{{epro_project}}"
+					],
+					"path": [
+						"company",
+						"{{companyId}}",
+						"businessunit"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "BusinessUnit",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{epro_project}}/company/{{companyId}}/businessunit/{{businessUnitId}}",
+					"host": [
+						"{{epro_project}}"
+					],
+					"path": [
+						"company",
+						"{{companyId}}",
+						"businessunit",
+						"{{businessUnitId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "BusinessUnit",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Marketing\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{epro_project}}/company/{{companyId}}/businessunit/{{businessUnitId}}",
+					"host": [
+						"{{epro_project}}"
+					],
+					"path": [
+						"company",
+						"{{companyId}}",
+						"businessunit",
+						"{{businessUnitId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "BusinessUnit",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{epro_project}}/company/{{companyId}}/businessunit/{{businessUnitId}}",
+					"host": [
+						"{{epro_project}}"
+					],
+					"path": [
+						"company",
+						"{{companyId}}",
+						"businessunit",
+						"{{businessUnitId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "BusinessUnitObjective",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"pm.collectionVariables.set(\"businessUnitObjectiveId\", jsonData.id);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"deadline\": \"2024-02-10T12:00:00Z\",\r\n    \"title\": \"BU1\",\r\n    \"description\": \"Erstes BusinessUnit Objective\",\r\n    \"ownerId\": {{userId}},\r\n    \"companyKeyResult_ID\": \"\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{epro_project}}/company/{{companyId}}/businessunit/{{businessUnitId}}/objective",
+					"host": [
+						"{{epro_project}}"
+					],
+					"path": [
+						"company",
+						"{{companyId}}",
+						"businessunit",
+						"{{businessUnitId}}",
+						"objective"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "BusinessUnitObjective",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{epro_project}}/company/{{companyId}}/businessunit/{{businessUnitId}}/objective/{{businessUnitObjectiveId}}",
+					"host": [
+						"{{epro_project}}"
+					],
+					"path": [
+						"company",
+						"{{companyId}}",
+						"businessunit",
+						"{{businessUnitId}}",
+						"objective",
+						"{{businessUnitObjectiveId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "BusinessUnitObjective",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"deadline\": \"2024-02-10T12:00:00Z\",\r\n    \"title\": \"BU1\",\r\n    \"description\": \"Erstes BusinessUnit Objective, bearbeitet\",\r\n    \"ownerId\": {{userId}},\r\n    \"companyKeyResult_ID\": \"\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{epro_project}}/company/{{companyId}}/businessunit/{{businessUnitId}}/objective/{{businessUnitObjectiveId}}",
+					"host": [
+						"{{epro_project}}"
+					],
+					"path": [
+						"company",
+						"{{companyId}}",
+						"businessunit",
+						"{{businessUnitId}}",
+						"objective",
+						"{{businessUnitObjectiveId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "BusinessUnitObjective",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{epro_project}}/company/{{companyId}}/businessunit/{{businessUnitId}}/objective/{{businessUnitObjectiveId}}",
+					"host": [
+						"{{epro_project}}"
+					],
+					"path": [
+						"company",
+						"{{companyId}}",
+						"businessunit",
+						"{{businessUnitId}}",
+						"objective",
+						"{{businessUnitObjectiveId}}"
 					]
 				}
 			},
@@ -436,7 +809,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"goal\": \"\",\r\n    \"type\": \"\",\r\n    \"description\": \"\",\r\n    \"current\": \"\",\r\n    \"confidenceLevel\": \"\"\r\n}",
+					"raw": "{\r\n    \"title\": \"KR1\",\r\n    \"goal\": \"100\",\r\n    \"type\": \"numeric\",\r\n    \"description\": \"Erstes BusinessUnit Key Result\",\r\n    \"current\": \"15\",\r\n    \"confidenceLevel\": \"50\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -444,7 +817,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{epro_project}}/company/{{companyId}}/businessunit/object/{o_id}/keyresult",
+					"raw": "{{epro_project}}/company/{{companyId}}/businessunit/{{businessUnitId}}/objective/{{businessUnitObjectiveId}}/keyresult",
 					"host": [
 						"{{epro_project}}"
 					],
@@ -452,41 +825,10 @@
 						"company",
 						"{{companyId}}",
 						"businessunit",
-						"object",
-						"{o_id}",
+						"{{businessUnitId}}",
+						"objective",
+						"{{businessUnitObjectiveId}}",
 						"keyresult"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "BusinessUnitKeyResult",
-			"request": {
-				"method": "PATCH",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"current\": \"\",\r\n    \"confidenceLevel\": \"\",\r\n    \"statusUpdate\": \"\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{epro_project}}/company/{{companyId}}/businessunit/object/{o_id}/keyresult/{id}",
-					"host": [
-						"{{epro_project}}"
-					],
-					"path": [
-						"company",
-						"{{companyId}}",
-						"businessunit",
-						"object",
-						"{o_id}",
-						"keyresult",
-						"{id}"
 					]
 				}
 			},
@@ -510,7 +852,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{epro_project}}/company/{{companyId}}/businessunit/object/{o_id}/keyresult/{id}",
+					"raw": "{{epro_project}}/company/{{companyId}}/businessunit/{{businessUnitObjectiveId}}/objective/{{businessUnitObjectiveId}}/keyresult/{{businessUnitKeyResultId}}",
 					"host": [
 						"{{epro_project}}"
 					],
@@ -518,10 +860,44 @@
 						"company",
 						"{{companyId}}",
 						"businessunit",
-						"object",
-						"{o_id}",
+						"{{businessUnitObjectiveId}}",
+						"objective",
+						"{{businessUnitObjectiveId}}",
 						"keyresult",
-						"{id}"
+						"{{businessUnitKeyResultId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "BusinessUnitKeyResult",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"current\": \"50\",\r\n    \"confidenceLevel\": \"50\",\r\n    \"statusUpdate\": \"Das ist ein Status Update\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{epro_project}}/company/{{companyId}}/businessunit/{{businessUnitObjectiveId}}/objective/{{businessUnitObjectiveId}}/keyresult/{{businessUnitKeyResultId}}",
+					"host": [
+						"{{epro_project}}"
+					],
+					"path": [
+						"company",
+						"{{companyId}}",
+						"businessunit",
+						"{{businessUnitObjectiveId}}",
+						"objective",
+						"{{businessUnitObjectiveId}}",
+						"keyresult",
+						"{{businessUnitKeyResultId}}"
 					]
 				}
 			},
@@ -542,7 +918,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{epro_project}}/company/{{companyId}}/businessunit/object/{o_id}/keyresult/{id}",
+					"raw": "{{epro_project}}/company/{{companyId}}/businessunit/{{businessUnitObjectiveId}}/objective/{{businessUnitObjectiveId}}/keyresult/{{businessUnitKeyResultId}}",
 					"host": [
 						"{{epro_project}}"
 					],
@@ -550,10 +926,172 @@
 						"company",
 						"{{companyId}}",
 						"businessunit",
-						"object",
-						"{o_id}",
+						"{{businessUnitObjectiveId}}",
+						"objective",
+						"{{businessUnitObjectiveId}}",
 						"keyresult",
-						"{id}"
+						"{{businessUnitKeyResultId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Unit",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"pm.collectionVariables.set(\"unitId\", jsonData.id.id);\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Frontend\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{epro_project}}/company/{{companyId}}/businessunit/{{businessUnitId}}/unit",
+					"host": [
+						"{{epro_project}}"
+					],
+					"path": [
+						"company",
+						"{{companyId}}",
+						"businessunit",
+						"{{businessUnitId}}",
+						"unit"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Unit",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{epro_project}}/company/{{companyId}}/businessunit/{{businessUnitId}}/unit/{{unitId}}",
+					"host": [
+						"{{epro_project}}"
+					],
+					"path": [
+						"company",
+						"{{companyId}}",
+						"businessunit",
+						"{{businessUnitId}}",
+						"unit",
+						"{{unitId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Unit",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Backend\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{epro_project}}/company/{{companyId}}/businessunit/{{businessUnitId}}/unit/{{unitId}}",
+					"host": [
+						"{{epro_project}}"
+					],
+					"path": [
+						"company",
+						"{{companyId}}",
+						"businessunit",
+						"{{businessUnitId}}",
+						"unit",
+						"{{unitId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Unit",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{epro_project}}/company/{{companyId}}/businessunit/{{businessUnitId}}/unit/{{unitId}}",
+					"host": [
+						"{{epro_project}}"
+					],
+					"path": [
+						"company",
+						"{{companyId}}",
+						"businessunit",
+						"{{businessUnitId}}",
+						"unit",
+						"{{unitId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "OKR-Set",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{epro_project}}/company/{{companyId}}/okrset/",
+					"host": [
+						"{{epro_project}}"
+					],
+					"path": [
+						"company",
+						"{{companyId}}",
+						"okrset",
+						""
 					]
 				}
 			},
@@ -615,33 +1153,6 @@
 		},
 		{
 			"name": "User",
-			"request": {
-				"method": "PATCH",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"\",\r\n    \"password\": \"\",\r\n    \"surname\": \"\",\r\n    \"firstname\": \"\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{epro_project}}/user/{{userId}}",
-					"host": [
-						"{{epro_project}}"
-					],
-					"path": [
-						"user",
-						"{{userId}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "User",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -671,6 +1182,64 @@
 			"response": []
 		},
 		{
+			"name": "User Companies",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{epro_project}}/user/{{userId}}/companies",
+					"host": [
+						"{{epro_project}}"
+					],
+					"path": [
+						"user",
+						"{{userId}}",
+						"companies"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"\",\r\n    \"password\": \"\",\r\n    \"surname\": \"\",\r\n    \"firstname\": \"\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{epro_project}}/user/{{userId}}",
+					"host": [
+						"{{epro_project}}"
+					],
+					"path": [
+						"user",
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "User",
 			"request": {
 				"method": "DELETE",
@@ -692,276 +1261,6 @@
 					"path": [
 						"user",
 						"{{userId}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "User Company",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"roleIds\": []\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{epro_project}}/company/{{companyId}}/user/{{userId}}/add",
-					"host": [
-						"{{epro_project}}"
-					],
-					"path": [
-						"company",
-						"{{companyId}}",
-						"user",
-						"{{userId}}",
-						"add"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "User Company",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{epro_project}}/company/{{companyId}}/user/{{userId}}/remove",
-					"host": [
-						"{{epro_project}}"
-					],
-					"path": [
-						"company",
-						"{{companyId}}",
-						"user",
-						"{{userId}}",
-						"remove"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Company",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"var jsonData = pm.response.json();\r",
-							"pm.collectionVariables.set(\"companyId\", jsonData.id);"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0QHRlc3QuZGUiLCJpYXQiOjE3MDczOTk0ODcsImV4cCI6MTcwNzM5OTg0N30.stFq-UISIKFhsDPKAG9jcmhFEuwr2fQQN6Ar1UGhjwtWctAhKir5HRPTuW51p6fH",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"Firma XY\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{epro_project}}/company",
-					"host": [
-						"{{epro_project}}"
-					],
-					"path": [
-						"company"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "BusinessUnit",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"var jsonData = pm.response.json();\r",
-							"pm.collectionVariables.set(\"businessUnitId\", jsonData.id.id);\r",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"Development\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{epro_project}}/company/{{companyId}}/businessunit",
-					"host": [
-						"{{epro_project}}"
-					],
-					"path": [
-						"company",
-						"{{companyId}}",
-						"businessunit"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "BusinessUnit",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{epro_project}}/company/{{companyId}}/businessunit/{{businessUnitId}}",
-					"host": [
-						"{{epro_project}}"
-					],
-					"path": [
-						"company",
-						"{{companyId}}",
-						"businessunit",
-						"{{businessUnitId}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Unit",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"var jsonData = pm.response.json();\r",
-							"pm.collectionVariables.set(\"unitId\", jsonData.id.id);\r",
-							"\r",
-							"\r",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"Frontend\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{epro_project}}/company/{{companyId}}/businessunit/{{businessUnitId}}/unit",
-					"host": [
-						"{{epro_project}}"
-					],
-					"path": [
-						"company",
-						"{{companyId}}",
-						"businessunit",
-						"{{businessUnitId}}",
-						"unit"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Unit",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{epro_project}}/company/{{companyId}}/businessunit/{{businessUnitId}}/unit/{{unitId}}",
-					"host": [
-						"{{epro_project}}"
-					],
-					"path": [
-						"company",
-						"{{companyId}}",
-						"businessunit",
-						"{{businessUnitId}}",
-						"unit",
-						"{{unitId}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "OKR-Set",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{epro_project}}/company/{{companyId}}/okrset/",
-					"host": [
-						"{{epro_project}}"
-					],
-					"path": [
-						"company",
-						"{{companyId}}",
-						"okrset",
-						""
 					]
 				}
 			},
@@ -1090,6 +1389,11 @@
 		{
 			"key": "businessUnitObjectiveId",
 			"value": ""
+		},
+		{
+			"key": "businessUnitKeyResultId",
+			"value": "",
+			"type": "string"
 		}
 	]
 }

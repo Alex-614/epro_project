@@ -1,6 +1,5 @@
 package de.thbingen.epro.project.okrservice.controller.businessunit;
 
-import java.lang.reflect.Field;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -96,21 +95,13 @@ public class BusinessUnitController {
                                                               @PathVariable @NonNull Number businessUnitId,
                                                               @RequestBody BusinessUnitDto businessUnitDto
     ) throws Exception {
-        BusinessUnit oldBusinessUnit = Utils.getBusinessUnitFromRepository(companyRepository, companyId,
+        BusinessUnit businessUnit = Utils.getBusinessUnitFromRepository(companyRepository, companyId,
                 businessUnitRepository, businessUnitId);
-        BusinessUnitDto oldBusinessUnitDto = new BusinessUnitDto(oldBusinessUnit);
-        Field[] fields = BusinessUnitDto.class.getDeclaredFields();
-        for (Field field : fields) {
-            field.setAccessible(true); // Allow access to private fields
-            Object value = field.get(businessUnitDto);
-            if(value != null) {
-                field.set(oldBusinessUnitDto, value);
-            }
-            field.setAccessible(false);
-        }
-        oldBusinessUnit.setName(oldBusinessUnitDto.getName());
-        businessUnitRepository.save(oldBusinessUnit);
-        return new ResponseEntity<>(oldBusinessUnitDto, HttpStatus.OK);
+
+        if (businessUnitDto.getName() != null) businessUnit.setName(businessUnitDto.getName());
+        
+        businessUnitRepository.save(businessUnit);
+        return new ResponseEntity<>(new BusinessUnitDto(businessUnit), HttpStatus.OK);
     }
 
 

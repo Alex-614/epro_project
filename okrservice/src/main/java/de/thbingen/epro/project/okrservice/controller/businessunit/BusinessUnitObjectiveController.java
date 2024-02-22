@@ -1,6 +1,5 @@
 package de.thbingen.epro.project.okrservice.controller.businessunit;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -90,8 +89,7 @@ public class BusinessUnitObjectiveController {
             @PathVariable @NonNull Number companyId,
             @PathVariable @NonNull Number businessUnitId){
         BusinessUnitId businessUnitIdObject = new BusinessUnitId(businessUnitId.longValue(), companyId.longValue());
-        List<BusinessUnitObjective> businessUnitsObjectives =
-                businessUnitObjectiveRepository.findByBusinessUnitId(businessUnitIdObject);
+        List<BusinessUnitObjective> businessUnitsObjectives = businessUnitObjectiveRepository.findByBusinessUnitId(businessUnitIdObject);
         return new ResponseEntity<>(businessUnitsObjectives.stream()
                 .map(BusinessUnitObjectiveDto::new)
                 .collect(Collectors.toList()), HttpStatus.OK);
@@ -114,29 +112,20 @@ public class BusinessUnitObjectiveController {
                                                                     @PathVariable @NonNull Number objectiveId,
                                                                     @RequestBody BusinessUnitObjectiveDto objectiveDto
     ) throws Exception {
-        BusinessUnitObjective oldObjective =
-                Utils.getBusinessUnitObjectiveFromRepository(companyRepository, companyId, businessUnitRepository,
+        BusinessUnitObjective objective = Utils.getBusinessUnitObjectiveFromRepository(companyRepository, companyId, businessUnitRepository,
                         businessUnitId, businessUnitObjectiveRepository, objectiveId);
-        BusinessUnitObjectiveDto oldObjectiveDto = new BusinessUnitObjectiveDto(oldObjective);
-        User owner = Utils.getUserFromRepository(userRepository, objectiveDto.getOwnerId());
-
-
-        Field[] fields = ObjectiveDto.class.getDeclaredFields();
-        for (Field field : fields) {
-            field.setAccessible(true); // Allow access to private fields
-            Object value = field.get(objectiveDto);
-            if(value != null) {
-                field.set(oldObjectiveDto, value);
-            }
-            field.setAccessible(false);
+        User owner = null;
+        if (objectiveDto.getOwnerId() != null) {
+            owner = Utils.getUserFromRepository(userRepository, objectiveDto.getOwnerId());
         }
 
-        oldObjective.setDeadline(oldObjectiveDto.getDeadline());
-        oldObjective.setTitle(oldObjectiveDto.getTitle());
-        oldObjective.setDescription(oldObjectiveDto.getDescription());
-        oldObjective.setOwner(owner);
-        businessUnitObjectiveRepository.save(oldObjective);
-        return new ResponseEntity<>(oldObjectiveDto, HttpStatus.OK);
+        if (objectiveDto.getDeadline() != null) objective.setDeadline(objectiveDto.getDeadline());
+        if (objectiveDto.getTitle() != null) objective.setTitle(objectiveDto.getTitle());
+        if (objectiveDto.getDescription() != null) objective.setDescription(objectiveDto.getDescription());
+        if (owner != null) objective.setOwner(owner);
+
+        businessUnitObjectiveRepository.save(objective);
+        return new ResponseEntity<>(new BusinessUnitObjectiveDto(objective), HttpStatus.OK);
     }
     
     @DeleteMapping("{objectiveId}")

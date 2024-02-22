@@ -3,6 +3,7 @@ package de.thbingen.epro.project.okrservice.dtos;
 import java.time.Instant;
 
 import de.thbingen.epro.project.okrservice.entities.objectives.Objective;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,10 +17,10 @@ public class ObjectiveDto {
     @NotNull(message = "'deadline' cannot be null")
     private Instant deadline;
     
-    @NotNull(message = "'title' cannot be null")
+    @NotEmpty(message = "'title' cannot be empty")
     private String title;
     
-    @NotNull(message = "'description' cannot be null")
+    @NotEmpty(message = "'description' cannot be empty")
     private String description;
     
     @NotNull(message = "'ownerId' cannot be null")

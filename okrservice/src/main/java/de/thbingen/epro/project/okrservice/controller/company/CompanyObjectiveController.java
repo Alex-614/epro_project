@@ -1,6 +1,5 @@
 package de.thbingen.epro.project.okrservice.controller.company;
 
-import java.lang.reflect.Field;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import de.thbingen.epro.project.okrservice.controller.Utils;
 import de.thbingen.epro.project.okrservice.dtos.CompanyObjectiveDto;
-import de.thbingen.epro.project.okrservice.dtos.ObjectiveDto;
 import de.thbingen.epro.project.okrservice.entities.Company;
 import de.thbingen.epro.project.okrservice.entities.User;
 import de.thbingen.epro.project.okrservice.entities.objectives.CompanyObjective;
@@ -101,29 +99,18 @@ public class CompanyObjectiveController {
     public ResponseEntity<CompanyObjectiveDto> patchCompanyObjective(
             @PathVariable Number companyId, @PathVariable Number objectiveId,
             @RequestBody CompanyObjectiveDto objectiveDto) throws Exception {
-        CompanyObjective oldObjective =
-                Utils.getCompanyObjectiveFromRepository(companyRepository, companyId,
-                        companyObjectiveRepository, objectiveId.longValue());
-        CompanyObjectiveDto oldObjectiveDto = new CompanyObjectiveDto(oldObjective);
-        User owner = Utils.getUserFromRepository(userRepository, objectiveDto.getOwnerId());
+        CompanyObjective objective = Utils.getCompanyObjectiveFromRepository(companyRepository, companyId,
+                                                companyObjectiveRepository, objectiveId.longValue());
+        User owner = null;
+        if (objectiveDto.getOwnerId() != null) owner = Utils.getUserFromRepository(userRepository, objectiveDto.getOwnerId());
+        
+        if (objectiveDto.getDeadline() != null) objective.setDeadline(objectiveDto.getDeadline());
+        if (objectiveDto.getTitle() != null) objective.setTitle(objectiveDto.getTitle());
+        if (objectiveDto.getDescription() != null) objective.setDescription(objectiveDto.getDescription());
+        if (owner != null) objective.setOwner(owner);
 
-
-        Field[] fields = ObjectiveDto.class.getDeclaredFields();
-        for (Field field : fields) {
-            field.setAccessible(true); // Allow access to private fields
-            Object value = field.get(objectiveDto);
-            if(value != null) {
-                field.set(oldObjectiveDto, value);
-            }
-            field.setAccessible(false);
-        }
-
-        oldObjective.setDeadline(oldObjectiveDto.getDeadline());
-        oldObjective.setTitle(oldObjectiveDto.getTitle());
-        oldObjective.setDescription(oldObjectiveDto.getDescription());
-        oldObjective.setOwner(owner);
-        companyObjectiveRepository.save(oldObjective);
-        return new ResponseEntity<>(oldObjectiveDto, HttpStatus.OK);
+        companyObjectiveRepository.save(objective);
+        return new ResponseEntity<>(new CompanyObjectiveDto(objective), HttpStatus.OK);
     }
 
 
