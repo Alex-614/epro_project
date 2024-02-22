@@ -14,7 +14,7 @@ RUN mvn dependency:go-offline
 COPY . .
 
 # Build the application
-RUN mvn package -DskipTests
+RUN mvn package 
 
 # Create the final image
 FROM openjdk:21-jdk-slim
@@ -26,4 +26,4 @@ WORKDIR /app
 COPY --from=builder /app/target/*.jar app.jar
 
 # Run the application
-CMD ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
