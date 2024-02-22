@@ -43,17 +43,17 @@ public class CompanyAuthorizationManager implements AuthorizationManager<Request
     public AuthorizationDecision check(Supplier<Authentication> authentication, RequestAuthorizationContext context) {
         
         User user = userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
-
+        
         AuthorizationDecision decision = new AuthorizationDecision(false);
         int i = 0;
         while (!decision.isGranted() && i < companyAuthorities.length) {
-
+            
             CompanyAuthority companyAuthority = companyAuthorities[i];
             AuthorityString authorityString = companyAuthority.getAuthorityString();
             List<String> methods = Arrays.stream(companyAuthority.getMethods()).map(mapper -> mapper.name()).collect(Collectors.toList());
             
             AuthorityString reproducedAuthorityString = new AuthorityString(authorityString.isRole(), null, null, null);
-
+            
             if (methods.contains(context.getRequest().getMethod())) {    
                 // translate Role/Privilege name to Id
                 if (authorityString.isRole()) {
@@ -74,16 +74,16 @@ public class CompanyAuthorizationManager implements AuthorizationManager<Request
                     reproducedAuthorityString.setBusinessUnitId(businessUnitId);
                 }
                 
-                if (companyAuthority.isShouldOwnObjective()) {
+                decision = AuthorityAuthorizationManager.hasAuthority(reproducedAuthorityString.toString()).check(authentication, context);
+                if (decision.isGranted() && companyAuthority.isShouldOwnObjective()) {
                     // must be final to stream
                     final String objectiveId = context.getVariables().get("objectiveId") != null ? context.getVariables().get("objectiveId") : "";
     
                     // if userOwnedObjectives not contains objectiveId
                     if (!user.getOwnedObjectives().stream().filter(obj -> obj.getId().toString() == objectiveId).findFirst().isPresent()) {
-                        return new AuthorizationDecision(false);
+                        decision = new AuthorizationDecision(false);
                     }
                 }
-                decision = AuthorityAuthorizationManager.hasAuthority(reproducedAuthorityString.toString()).check(authentication, context);
             }
 
             i++;

@@ -8,9 +8,14 @@ public class AuthResponseDto {
 
     private String accessToken;
     private String tokenType = SecurityConstants.TOKEN_TYPE;
-
-    public AuthResponseDto(String accessToken) {
+    private Long expirationTime;
+    
+    private Long userId;
+    
+    public AuthResponseDto(String accessToken, Long expirationTime, Long userId) {
         this.accessToken = accessToken;
+        this.expirationTime = expirationTime;
+        this.userId = userId;
     }
 
 }

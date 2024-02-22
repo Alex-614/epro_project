@@ -84,12 +84,12 @@ public class User {
             name = "company_id", referencedColumnName = "id"
         )
     )
-    private List<Company> companys;
+    private List<Company> companies;
     public void addCompany(Company company) {
-        this.companys.add(company);
+        this.companies.add(company);
     }
     public void removeCompany(Company company) {
-        this.companys.remove(company);
+        this.companies.remove(company);
     }
 
 

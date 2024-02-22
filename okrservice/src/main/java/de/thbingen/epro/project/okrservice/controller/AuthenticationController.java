@@ -13,7 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import de.thbingen.epro.project.okrservice.dtos.AuthResponseDto;
 import de.thbingen.epro.project.okrservice.dtos.LoginDto;
+import de.thbingen.epro.project.okrservice.entities.User;
 import de.thbingen.epro.project.okrservice.jwt.JwtGenerator;
+import de.thbingen.epro.project.okrservice.repositories.UserRepository;
+import de.thbingen.epro.project.okrservice.security.SecurityConstants;
 
 @RestController
 public class AuthenticationController {
@@ -22,11 +25,15 @@ public class AuthenticationController {
     private AuthenticationManager authenticationManager;
     private JwtGenerator jwtGenerator;
 
+    private UserRepository userRepository;
+
 
     @Autowired
-    public AuthenticationController(AuthenticationManager authenticationManager, JwtGenerator jwtGenerator) {
+    public AuthenticationController(AuthenticationManager authenticationManager, JwtGenerator jwtGenerator, 
+                                    UserRepository userRepository) {
         this.authenticationManager = authenticationManager;
         this.jwtGenerator = jwtGenerator;
+        this.userRepository = userRepository;
     }
 
 
@@ -38,7 +45,8 @@ public class AuthenticationController {
                                                 loginDto.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtGenerator.generateToken(authentication);
-        return new ResponseEntity<>(new AuthResponseDto(token), HttpStatus.OK);
+        User user = userRepository.findByEmail(loginDto.getEmail());
+        return new ResponseEntity<>(new AuthResponseDto(token, SecurityConstants.JWT_EXPIRATION, user.getId()), HttpStatus.OK);
     }
 
 

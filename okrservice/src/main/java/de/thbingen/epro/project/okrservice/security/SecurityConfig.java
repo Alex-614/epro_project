@@ -3,6 +3,7 @@ package de.thbingen.epro.project.okrservice.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
@@ -48,115 +49,81 @@ public class SecurityConfig {
                 .authorizeHttpRequests(req -> req
 
                         // register
-                        .requestMatchers(HttpMethod.POST, "/user").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/user", "/user/{userId}").permitAll()
+                        // TODO check target == user
+                        .requestMatchers(HttpMethod.GET, "/user", "/user/{userId}/companies").authenticated()
                         // login
                         .requestMatchers(HttpMethod.POST, "/login").permitAll()
 
-                        /*
-                         *  CO_OKR_ADMIN
-                         */
-                        // add User to Company
-                        .requestMatchers(HttpMethod.POST, "/company/{companyId}/user/{userId}*")
+
+                        // BusinessUnit
+                        .requestMatchers("/company/{companyId}/businessunit", 
+                                                "/company/{companyId}/businessunit/{businessUnitId}")
                                 .access(hasAnyCompanyAuthority(
-                                        hasRole(Roles.CO_OKR_ADMIN)))
+                                        hasRole(Roles.CO_OKR_ADMIN)
+                                                .allowMethods(HttpMethod.POST, HttpMethod.PATCH, HttpMethod.DELETE), 
+                                        hasRole(Roles.READ_ONLY_USER)
+                                                .allowMethods(HttpMethod.GET)))
+                                                
+                        // Unit
+                        .requestMatchers("/company/{companyId}/businessunit/{businessUnitId}/unit", 
+                                                "/company/{companyId}/businessunit/{businessUnitId}/unit/{unitId}")
+                                .access(hasAnyCompanyAuthority(
+                                        hasRole(Roles.CO_OKR_ADMIN)
+                                                .allowMethods(HttpMethod.POST, HttpMethod.PATCH, HttpMethod.DELETE), 
+                                        hasRole(Roles.BUO_OKR_ADMIN)
+                                                .allowMethods(HttpMethod.POST, HttpMethod.PATCH, HttpMethod.DELETE), 
+                                        hasRole(Roles.READ_ONLY_USER)
+                                                .allowMethods(HttpMethod.GET)))
 
-                        // post business unit objective
-                        /*.requestMatchers("/company/{companyId}/businessunit/{businessUnitId}/objective")
-                        .access(hasAnyCompanyAuthority(
-                                hasRole(Roles.CO_OKR_ADMIN)
-                                        .forMethods(HttpMethod.POST, HttpMethod.GET)))
 
-                        // patch business unit objective
-                        .requestMatchers("/company/{companyId}/businessunit/{businessUnitId}/objective/{objectiveId}")
-                        .access(hasAnyCompanyAuthority(
-                                hasRole(Roles.CO_OKR_ADMIN)
-                                        .forMethods(HttpMethod.PATCH, HttpMethod.GET, HttpMethod.DELETE)))
+                        // add User to Company / remove User from Company
+                        .requestMatchers(HttpMethod.POST, "/company/{companyId}/user/{userId}/add", 
+                                                                "/company/{companyId}/user/{userId}/remove")
+                                .access(hasAnyCompanyAuthority(
+                                        hasRole(Roles.CO_OKR_ADMIN)
+                                                .allowMethods(HttpMethod.POST)))
 
-
-                        // post company objective
-                        .requestMatchers("/company/{companyId}/objective")
-                        .access(hasAnyCompanyAuthority(
-                                hasRole(Roles.CO_OKR_ADMIN)
-                                        .forMethods(HttpMethod.POST, HttpMethod.GET)))
-
-                        // patch company objective
-                        .requestMatchers("/company/{companyId}/objective/{objectiveId}")
-                        .access(hasAnyCompanyAuthority(
-                                hasRole(Roles.CO_OKR_ADMIN)
-                                        .forMethods(HttpMethod.PATCH, HttpMethod.GET, HttpMethod.DELETE)))
-
-                        // post business unit
-                        .requestMatchers("/company/{companyId}/businessunit")
-                        .access(hasAnyCompanyAuthority(
-                                hasRole(Roles.CO_OKR_ADMIN)
-                                        .forMethods(HttpMethod.POST, HttpMethod.GET)))
-
-                        // patch business unit
-                        .requestMatchers("/company/{companyId}/businessunit/{businessUnitId}")
-                        .access(hasAnyCompanyAuthority(
-                                hasRole(Roles.CO_OKR_ADMIN)
-                                        .forMethods(HttpMethod.PATCH, HttpMethod.GET, HttpMethod.DELETE)))*/
-
-                        // post company
-                        /*.requestMatchers("/company")
-                        .access(hasAnyCompanyAuthority(
-                                hasRole(Roles.CO_OKR_ADMIN)
-                                        .forMethods(HttpMethod.POST, HttpMethod.GET)))
-
-                        // patch company
-                        .requestMatchers("/company/{companyId}")
-                        .access(hasAnyCompanyAuthority(
-                                hasRole(Roles.CO_OKR_ADMIN)
-                                        .forMethods(HttpMethod.PATCH, HttpMethod.GET, HttpMethod.DELETE)))*/
-
-                        // create Unit
-                        /*.requestMatchers("/company/{companyId}/businessunit/{businessUnitId}/unit")
-                        .access(hasAnyCompanyAuthority(
-                                hasRole(Roles.CO_OKR_ADMIN)
-                                        .forMethods(HttpMethod.POST)))
 
                         // CompanyObjective
-                        .requestMatchers("/company/{companyId}/objective")
-                        .access(hasAnyCompanyAuthority(
-                                hasRole(Roles.CO_OKR_ADMIN)
-                                        .forMethods(HttpMethod.POST)))
+                        .requestMatchers("/company/{companyId}/objective", 
+                                                "/company/{companyId}/objective/{objectiveId}")
+                                .access(hasAnyCompanyAuthority(
+                                        hasRole(Roles.CO_OKR_ADMIN)
+                                                .allowMethods(HttpMethod.POST, HttpMethod.PATCH, HttpMethod.DELETE), 
+                                        hasRole(Roles.READ_ONLY_USER)
+                                                .allowMethods(HttpMethod.GET)))
 
                         // CompanyKeyResult
-                        .requestMatchers("/company/{companyId}/keyresult")
-                        .access(hasAnyCompanyAuthority(
-                                hasRole(Roles.CO_OKR_ADMIN)
-                                        .forMethods(HttpMethod.POST)))*/
-
-
-                        /*
-                         *  BUO_OKR_ADMIN
-                         */
-                        // BusinessUnitObjective
-                        .requestMatchers("/company/{companyId}/businessunit/{businessUnitId}/objective")
+                        .requestMatchers("/company/{companyId}/objective/{objectiveId}/keyresult", 
+                                                "/company/{companyId}/objective/{objectiveId}/keyresult/{keyResultId}")
                                 .access(hasAnyCompanyAuthority(
-                                                hasRole(Roles.BUO_OKR_ADMIN)
-                                                        .forMethods(HttpMethod.POST)))
+                                        hasRole(Roles.CO_OKR_ADMIN)
+                                                .allowMethods(HttpMethod.POST, HttpMethod.PATCH, HttpMethod.DELETE), 
+                                        hasRole(Roles.READ_ONLY_USER)
+                                                .allowMethods(HttpMethod.GET)))
+
+                        // BusinessUnitObjective
+                        .requestMatchers("/company/{companyId}/businessunit/{businessUnitId}/objective", 
+                                                "/company/{companyId}/businessunit/{businessUnitId}/objective/{objectiveId}")
+                                .access(hasAnyCompanyAuthority(
+                                        hasRole(Roles.BUO_OKR_ADMIN)
+                                                .allowMethods(HttpMethod.POST), 
+                                        hasRole(Roles.BUO_OKR_ADMIN)
+                                                .ownsObjective(true)
+                                                .allowMethods(HttpMethod.PATCH, HttpMethod.DELETE), 
+                                        hasRole(Roles.READ_ONLY_USER)
+                                                .allowMethods(HttpMethod.GET)))
 
                         // BusinessUnitKeyResult
-                        .requestMatchers("/company/{companyId}/businessunit/{businessUnitId}/objective/{objectiveId}/keyresult")
+                        .requestMatchers("/company/{companyId}/businessunit/{businessUnitId}/objective/{objectiveId}/keyresult", 
+                                                "/company/{companyId}/businessunit/{businessUnitId}/objective/{objectiveId}/keyresult/{keyResultId}")
                                 .access(hasAnyCompanyAuthority(
-                                                hasRole(Roles.BUO_OKR_ADMIN)
-                                                        .ownsObjective(true)
-                                                        .forMethods(HttpMethod.POST)))
-
-
-                        /*
-                         *  READ_ONLY_USER
-                         */
-                        // CompanyObjective
-                        .requestMatchers(HttpMethod.GET, "/company/{companyId}/objective/{objectiveId}")
-                                .access(hasAnyCompanyAuthority(
-                                                hasRole(Roles.READ_ONLY_USER)))
-
-                        // BusinessUnitObjective
-                        .requestMatchers(HttpMethod.GET, "/company/{companyId}/businessunit/{businessUnitId}/objective/{objectiveId}")
-                                .access(hasAnyCompanyAuthority(
-                                                hasRole(Roles.READ_ONLY_USER)))
+                                        hasRole(Roles.BUO_OKR_ADMIN)
+                                                .ownsObjective(true)
+                                                .allowMethods(HttpMethod.POST, HttpMethod.PATCH, HttpMethod.DELETE), 
+                                        hasRole(Roles.READ_ONLY_USER)
+                                                .allowMethods(HttpMethod.GET)))
 
 
                         .anyRequest().authenticated())
@@ -182,6 +149,7 @@ public class SecurityConfig {
     }
 
     @Bean
+    @Scope("prototype")
     public CompanyAuthorizationManager hasAnyCompanyAuthority(CompanyAuthority... companyAuthorities) {
         return new CompanyAuthorizationManager(companyAuthorities);
     }

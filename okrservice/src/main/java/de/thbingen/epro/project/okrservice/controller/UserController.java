@@ -1,6 +1,7 @@
 package de.thbingen.epro.project.okrservice.controller;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,7 +19,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import de.thbingen.epro.project.okrservice.dtos.CompanyDto;
 import de.thbingen.epro.project.okrservice.dtos.UserDto;
+import de.thbingen.epro.project.okrservice.entities.Company;
 import de.thbingen.epro.project.okrservice.entities.User;
 import de.thbingen.epro.project.okrservice.repositories.UserRepository;
 
@@ -106,6 +109,31 @@ public class UserController {
         userRepository.deleteById(user.getId());
         return new ResponseEntity<>(user.getUsername() + " deleted!", HttpStatus.OK);
     }
+
+
+
+
+
+
+
+
+
+
+    @GetMapping("{userId}/companies")
+    public ResponseEntity<List<CompanyDto>> getUserCompanies(@PathVariable @NonNull Number userId) throws Exception {
+        User user = Utils.getUserFromRepository(userRepository, userId.longValue());
+        List<CompanyDto> dtos = new ArrayList<>();
+        for (Company c : user.getCompanies()) {
+            dtos.add(new CompanyDto(c));
+        }
+        return new ResponseEntity<>(dtos, HttpStatus.OK);
+    }
+
+
+
+
+
+
 
 
 

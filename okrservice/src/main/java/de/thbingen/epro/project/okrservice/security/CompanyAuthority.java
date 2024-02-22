@@ -25,7 +25,7 @@ public class CompanyAuthority {
     }
 
     
-    public CompanyAuthority forMethods(HttpMethod ... methods) {
+    public CompanyAuthority allowMethods(HttpMethod ... methods) {
         this.methods = methods;
         return this;
     }
