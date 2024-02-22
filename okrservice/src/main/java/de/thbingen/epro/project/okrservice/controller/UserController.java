@@ -79,7 +79,7 @@ public class UserController {
 
 
     @PatchMapping("{userId}")
-    public ResponseEntity<UserDto> patchUser(@PathVariable @NonNull Number userId, @RequestBody @Valid UserDto userDto) throws Exception {
+    public ResponseEntity<UserDto> patchUser(@PathVariable @NonNull Number userId, @RequestBody UserDto userDto) throws Exception {
         User user = Utils.getUserFromRepository(userRepository, userId);
 
         if (userDto.getEmail() != null) user.setEmail(userDto.getEmail());
