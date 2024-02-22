@@ -1,10 +1,12 @@
 package de.thbingen.epro.project.okrservice.dtos;
 
 import de.thbingen.epro.project.okrservice.entities.keyresults.BusinessUnitKeyResult;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class BusinessUnitKeyResultDto extends KeyResultDto {
     public BusinessUnitKeyResultDto(BusinessUnitKeyResult businessUnitKeyResult) {

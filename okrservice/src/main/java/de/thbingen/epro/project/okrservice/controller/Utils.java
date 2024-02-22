@@ -10,11 +10,22 @@ import de.thbingen.epro.project.okrservice.entities.ids.BusinessUnitId;
 import de.thbingen.epro.project.okrservice.entities.ids.UnitId;
 import de.thbingen.epro.project.okrservice.entities.keyresults.BusinessUnitKeyResult;
 import de.thbingen.epro.project.okrservice.entities.keyresults.CompanyKeyResult;
-import de.thbingen.epro.project.okrservice.entities.keyresults.KeyResult;
 import de.thbingen.epro.project.okrservice.entities.objectives.BusinessUnitObjective;
 import de.thbingen.epro.project.okrservice.entities.objectives.CompanyObjective;
-import de.thbingen.epro.project.okrservice.exceptions.*;
-import de.thbingen.epro.project.okrservice.repositories.*;
+import de.thbingen.epro.project.okrservice.exceptions.BusinessUnitNotFoundException;
+import de.thbingen.epro.project.okrservice.exceptions.CompanyNotFoundException;
+import de.thbingen.epro.project.okrservice.exceptions.KeyResultNotFoundException;
+import de.thbingen.epro.project.okrservice.exceptions.ObjectiveNotFoundException;
+import de.thbingen.epro.project.okrservice.exceptions.UnitNotFoundException;
+import de.thbingen.epro.project.okrservice.exceptions.UserNotFoundException;
+import de.thbingen.epro.project.okrservice.repositories.BusinessUnitKeyResultRepository;
+import de.thbingen.epro.project.okrservice.repositories.BusinessUnitObjectiveRepository;
+import de.thbingen.epro.project.okrservice.repositories.BusinessUnitRepository;
+import de.thbingen.epro.project.okrservice.repositories.CompanyKeyResultRepository;
+import de.thbingen.epro.project.okrservice.repositories.CompanyObjectiveRepository;
+import de.thbingen.epro.project.okrservice.repositories.CompanyRepository;
+import de.thbingen.epro.project.okrservice.repositories.UnitRepository;
+import de.thbingen.epro.project.okrservice.repositories.UserRepository;
 
 public class Utils {
     public static Company getCompanyFromRepository(CompanyRepository companyRepository, Number companyId) throws Exception {

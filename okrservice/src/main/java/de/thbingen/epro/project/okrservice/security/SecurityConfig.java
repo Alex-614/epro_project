@@ -46,6 +46,7 @@ public class SecurityConfig {
                 .sessionManagement(manager -> manager
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(req -> req
+
                         // register
                         .requestMatchers(HttpMethod.POST, "/user").permitAll()
                         // login
@@ -56,8 +57,8 @@ public class SecurityConfig {
                          */
                         // add User to Company
                         .requestMatchers(HttpMethod.POST, "/company/{companyId}/user/{userId}*")
-                        .access(hasAnyCompanyAuthority(
-                                hasRole(Roles.CO_OKR_ADMIN)))
+                                .access(hasAnyCompanyAuthority(
+                                        hasRole(Roles.CO_OKR_ADMIN)))
 
                         // post business unit objective
                         /*.requestMatchers("/company/{companyId}/businessunit/{businessUnitId}/objective")
@@ -132,17 +133,16 @@ public class SecurityConfig {
                          */
                         // BusinessUnitObjective
                         .requestMatchers("/company/{companyId}/businessunit/{businessUnitId}/objective")
-                        .access(hasAnyCompanyAuthority(
-                                hasRole(Roles.BUO_OKR_ADMIN)
-                                        .ownsObjective(true)
-                                        .forMethods(HttpMethod.POST)))
+                                .access(hasAnyCompanyAuthority(
+                                                hasRole(Roles.BUO_OKR_ADMIN)
+                                                        .forMethods(HttpMethod.POST)))
 
                         // BusinessUnitKeyResult
-                        .requestMatchers("/company/{companyId}/businessunit/{businessUnitId}/keyresult")
-                        .access(hasAnyCompanyAuthority(
-                                hasRole(Roles.BUO_OKR_ADMIN)
-                                        .ownsObjective(true)
-                                        .forMethods(HttpMethod.POST)))
+                        .requestMatchers("/company/{companyId}/businessunit/{businessUnitId}/objective/{objectiveId}/keyresult")
+                                .access(hasAnyCompanyAuthority(
+                                                hasRole(Roles.BUO_OKR_ADMIN)
+                                                        .ownsObjective(true)
+                                                        .forMethods(HttpMethod.POST)))
 
 
                         /*
@@ -150,13 +150,13 @@ public class SecurityConfig {
                          */
                         // CompanyObjective
                         .requestMatchers(HttpMethod.GET, "/company/{companyId}/objective/{objectiveId}")
-                        .access(hasAnyCompanyAuthority(
-                                hasRole(Roles.READ_ONLY_USER)))
+                                .access(hasAnyCompanyAuthority(
+                                                hasRole(Roles.READ_ONLY_USER)))
 
                         // BusinessUnitObjective
                         .requestMatchers(HttpMethod.GET, "/company/{companyId}/businessunit/{businessUnitId}/objective/{objectiveId}")
-                        .access(hasAnyCompanyAuthority(
-                                hasRole(Roles.READ_ONLY_USER)))
+                                .access(hasAnyCompanyAuthority(
+                                                hasRole(Roles.READ_ONLY_USER)))
 
 
                         .anyRequest().authenticated())

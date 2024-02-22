@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import de.thbingen.epro.project.okrservice.dtos.UnitDto;
@@ -27,6 +28,7 @@ import de.thbingen.epro.project.okrservice.repositories.UnitRepository;
 import jakarta.validation.Valid;
 
 @RestController
+@RequestMapping("/company/{companyId}/businessunit/{businessUnitId}/unit")
 public class UnitController {
     private CompanyRepository companyRepository;
 
@@ -43,7 +45,7 @@ public class UnitController {
     }
 
 
-    @PostMapping("/company/{companyId}/businessunit/{businessUnitId}/unit")
+    @PostMapping
     public ResponseEntity<UnitDto> createUnit(@PathVariable @NonNull Number companyId, 
                                                 @PathVariable @NonNull Number businessUnitId, 
                                                 @RequestBody @Valid UnitDto unitDto) throws Exception {
@@ -63,8 +65,31 @@ public class UnitController {
         unitDto.setId(unit.getId());
         return new ResponseEntity<>(unitDto, HttpStatus.OK);
     }
+    
 
-    @PatchMapping("/company/{companyId}/businessunit/{businessUnitId}/unit/{unitId}")
+
+    @GetMapping("{unitId}")
+    public ResponseEntity<UnitDto> getUnit(@PathVariable @NonNull Number companyId,
+                                           @PathVariable @NonNull Number businessUnitId,
+                                           @PathVariable @NonNull Number unitId) throws Exception{
+        Unit unit = Utils.getUnitFromRepository(companyRepository, companyId, businessUnitRepository, businessUnitId,
+                unitRepository, unitId);
+        return new ResponseEntity<>(new UnitDto(unit), HttpStatus.OK);
+    }
+    
+    
+    @GetMapping
+    public ResponseEntity<List<UnitDto>> getAllUnits(@PathVariable @NonNull Number companyId,
+                                                     @PathVariable @NonNull Number businessUnitId) {
+        BusinessUnitId businessUnitIdObject = new BusinessUnitId(businessUnitId.longValue(), companyId.longValue());
+        List<Unit> units = unitRepository.findByBusinessUnitId(businessUnitIdObject);
+        return new ResponseEntity<>(units.stream()
+                .map(UnitDto::new)
+                .collect(Collectors.toList()), HttpStatus.OK);
+    }
+
+
+    @PatchMapping("{unitId}")
     public ResponseEntity<UnitDto> patchUnit(@PathVariable @NonNull Number companyId,
                                              @PathVariable @NonNull Number businessUnitId,
                                              @PathVariable @NonNull Number unitId,
@@ -88,26 +113,9 @@ public class UnitController {
         return new ResponseEntity<>(oldUnitDto, HttpStatus.OK);
     }
 
-    @GetMapping("/company/{companyId}/businessunit/{businessUnitId}/unit")
-    public ResponseEntity<List<UnitDto>> getAllUnits(@PathVariable @NonNull Number companyId,
-                                                     @PathVariable @NonNull Number businessUnitId) {
-        BusinessUnitId businessUnitIdObject = new BusinessUnitId(businessUnitId.longValue(), companyId.longValue());
-        List<Unit> units = unitRepository.findByBusinessUnitId(businessUnitIdObject);
-        return new ResponseEntity<>(units.stream()
-                .map(UnitDto::new)
-                .collect(Collectors.toList()), HttpStatus.OK);
-    }
 
-    @GetMapping("/company/{companyId}/businessunit/{businessUnitId}/unit/{unitId}")
-    public ResponseEntity<UnitDto> getUnit(@PathVariable @NonNull Number companyId,
-                                           @PathVariable @NonNull Number businessUnitId,
-                                           @PathVariable @NonNull Number unitId) throws Exception{
-        Unit unit = Utils.getUnitFromRepository(companyRepository, companyId, businessUnitRepository, businessUnitId,
-                unitRepository, unitId);
-        return new ResponseEntity<>(new UnitDto(unit), HttpStatus.OK);
-    }
 
-    @DeleteMapping("/company/{companyId}/businessunit/{businessUnitId}/unit/{unitId}")
+    @DeleteMapping("{unitId}")
     public ResponseEntity<String> deleteUnit(@PathVariable @NonNull Number companyId,
                                              @PathVariable @NonNull Number businessUnitId,
                                              @PathVariable @NonNull Number unitId) throws Exception{

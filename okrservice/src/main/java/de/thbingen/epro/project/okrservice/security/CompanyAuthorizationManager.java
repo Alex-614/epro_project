@@ -78,7 +78,7 @@ public class CompanyAuthorizationManager implements AuthorizationManager<Request
                     // must be final to stream
                     final String objectiveId = context.getVariables().get("objectiveId") != null ? context.getVariables().get("objectiveId") : "";
     
-                    // if userOwnedObjectives contains objectiveId
+                    // if userOwnedObjectives not contains objectiveId
                     if (!user.getOwnedObjectives().stream().filter(obj -> obj.getId().toString() == objectiveId).findFirst().isPresent()) {
                         return new AuthorizationDecision(false);
                     }
