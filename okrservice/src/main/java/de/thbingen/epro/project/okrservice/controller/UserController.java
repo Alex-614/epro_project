@@ -55,7 +55,7 @@ public class UserController {
         user.setFirstname(userDto.getFirstname());
         user.setSurname(userDto.getSurname());
 
-        userRepository.save(user);
+        user = userRepository.save(user);
 
         userDto.setId(user.getId());
         return new ResponseEntity<>(userDto, HttpStatus.OK);
