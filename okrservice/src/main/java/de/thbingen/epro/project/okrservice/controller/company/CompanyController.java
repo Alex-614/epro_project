@@ -91,21 +91,11 @@ public class CompanyController {
 
     @PatchMapping("{companyId}")
     public ResponseEntity<CompanyDto> patchCompany(@PathVariable Number companyId,
-                                                   @RequestBody CompanyDto companyDto) throws Exception {
-        Company oldCompany = Utils.getCompanyFromRepository(companyRepository, companyId);
-        CompanyDto oldCompanyDto = new CompanyDto(oldCompany);
-        Field[] fields = CompanyDto.class.getDeclaredFields();
-        for (Field field : fields) {
-            field.setAccessible(true); // Allow access to private fields
-            Object value = field.get(companyDto);
-            if(value != null) {
-                field.set(oldCompanyDto, value);
-            }
-            field.setAccessible(false);
-        }
-        oldCompany.setName(oldCompanyDto.getName());
-        companyRepository.save(oldCompany);
-        return new ResponseEntity<>(oldCompanyDto, HttpStatus.OK);
+                                                   @RequestBody @Valid CompanyDto companyDto) throws Exception {
+        Company company = Utils.getCompanyFromRepository(companyRepository, companyId);
+        company.setName(companyDto.getName());
+        companyRepository.save(company);
+        return new ResponseEntity<>(new CompanyDto(company), HttpStatus.OK);
     }
 
 
@@ -117,14 +107,6 @@ public class CompanyController {
     }
     
     
-
-
-
-
-
-
-
-
 
 
 

@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 public class BusinessUnitDto {
 
     private BusinessUnitId id;
+    
     @NotEmpty(message = "'name' cannot be empty")
     private String name;
 

@@ -93,24 +93,13 @@ public class UnitController {
     public ResponseEntity<UnitDto> patchUnit(@PathVariable @NonNull Number companyId,
                                              @PathVariable @NonNull Number businessUnitId,
                                              @PathVariable @NonNull Number unitId,
-                                             @RequestBody UnitDto unitDto) throws Exception {
-        Unit oldUnit =
-                Utils.getUnitFromRepository(companyRepository, companyId, businessUnitRepository,
+                                             @RequestBody @Valid UnitDto unitDto) throws Exception {
+        Unit unit = Utils.getUnitFromRepository(companyRepository, companyId, businessUnitRepository,
                         businessUnitId, unitRepository, unitId);
-        UnitDto oldUnitDto = new UnitDto(oldUnit);
 
-        Field[] fields = UnitDto.class.getDeclaredFields();
-        for (Field field : fields) {
-            field.setAccessible(true); // Allow access to private fields
-            Object value = field.get(unitDto);
-            if(value != null) {
-                field.set(oldUnitDto, value);
-            }
-            field.setAccessible(false);
-        }
-        oldUnit.setName(oldUnitDto.getName());
-        unitRepository.save(oldUnit);
-        return new ResponseEntity<>(oldUnitDto, HttpStatus.OK);
+        unit.setName(unitDto.getName());
+        unitRepository.save(unit);
+        return new ResponseEntity<>(new UnitDto(unit), HttpStatus.OK);
     }
 
 

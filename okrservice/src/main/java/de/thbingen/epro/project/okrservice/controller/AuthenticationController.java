@@ -17,6 +17,7 @@ import de.thbingen.epro.project.okrservice.entities.User;
 import de.thbingen.epro.project.okrservice.jwt.JwtGenerator;
 import de.thbingen.epro.project.okrservice.repositories.UserRepository;
 import de.thbingen.epro.project.okrservice.security.SecurityConstants;
+import jakarta.validation.Valid;
 
 @RestController
 public class AuthenticationController {
@@ -38,7 +39,7 @@ public class AuthenticationController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponseDto> login(@RequestBody LoginDto loginDto) {
+    public ResponseEntity<AuthResponseDto> login(@RequestBody @Valid LoginDto loginDto) {
         Authentication authentication = authenticationManager.authenticate(
                                             new UsernamePasswordAuthenticationToken(
                                                 loginDto.getEmail(), 

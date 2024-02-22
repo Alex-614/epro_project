@@ -24,6 +24,7 @@ import de.thbingen.epro.project.okrservice.dtos.UserDto;
 import de.thbingen.epro.project.okrservice.entities.Company;
 import de.thbingen.epro.project.okrservice.entities.User;
 import de.thbingen.epro.project.okrservice.repositories.UserRepository;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/user")
@@ -41,7 +42,7 @@ public class UserController {
 
 
     @PostMapping
-    public ResponseEntity<UserDto> register(@RequestBody UserDto userDto) {
+    public ResponseEntity<UserDto> register(@RequestBody @Valid UserDto userDto) {
         if (userRepository.existsByEmail(userDto.getEmail())) {
             // "Email already exists!"
             userDto.setEmail("Email already exists!");
@@ -78,7 +79,7 @@ public class UserController {
 
 
     @PatchMapping("{userId}")
-    public ResponseEntity<UserDto> patchUser(@PathVariable @NonNull Number userId, @RequestBody UserDto userDto) throws Exception {
+    public ResponseEntity<UserDto> patchUser(@PathVariable @NonNull Number userId, @RequestBody @Valid UserDto userDto) throws Exception {
         User oldUser = Utils.getUserFromRepository(userRepository, userId);
         UserDto oldUserDto = new UserDto(oldUser);
 
