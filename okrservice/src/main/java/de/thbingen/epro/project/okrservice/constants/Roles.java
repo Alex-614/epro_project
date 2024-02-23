@@ -1,4 +1,4 @@
-package de.thbingen.epro.project.okrservice;
+package de.thbingen.epro.project.okrservice.constants;
 
 import de.thbingen.epro.project.okrservice.security.SecurityConstants;
 

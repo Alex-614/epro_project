@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import de.thbingen.epro.project.okrservice.Roles;
+import de.thbingen.epro.project.okrservice.constants.Roles;
 import de.thbingen.epro.project.okrservice.controller.Utils;
 import de.thbingen.epro.project.okrservice.dtos.CompanyDto;
 import de.thbingen.epro.project.okrservice.dtos.RolesDto;

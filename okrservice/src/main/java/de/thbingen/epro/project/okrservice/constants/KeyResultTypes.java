@@ -1,4 +1,4 @@
-package de.thbingen.epro.project.okrservice;
+package de.thbingen.epro.project.okrservice.constants;
 
 public enum KeyResultTypes {
     NUMERIC(KeyResultTypes.NUMERIC_NAME),

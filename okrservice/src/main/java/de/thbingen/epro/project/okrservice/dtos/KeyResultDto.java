@@ -3,7 +3,7 @@ package de.thbingen.epro.project.okrservice.dtos;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import de.thbingen.epro.project.okrservice.KeyResultTypes;
+import de.thbingen.epro.project.okrservice.constants.KeyResultTypes;
 import de.thbingen.epro.project.okrservice.entities.ids.BusinessUnitId;
 import de.thbingen.epro.project.okrservice.entities.ids.UnitId;
 import de.thbingen.epro.project.okrservice.entities.keyresults.KeyResult;

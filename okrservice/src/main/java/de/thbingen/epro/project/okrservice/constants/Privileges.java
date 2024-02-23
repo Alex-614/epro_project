@@ -1,4 +1,4 @@
-package de.thbingen.epro.project.okrservice;
+package de.thbingen.epro.project.okrservice.constants;
 
 public enum Privileges {
     CO_READ(Privileges.CO_READ_NAME),
