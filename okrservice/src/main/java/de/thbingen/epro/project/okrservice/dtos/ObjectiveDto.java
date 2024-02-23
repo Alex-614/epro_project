@@ -14,16 +14,16 @@ public class ObjectiveDto {
 
     private Long id;
     
-    @NotNull(message = "'deadline' cannot be null")
+    @NotNull
     private Instant deadline;
     
-    @NotEmpty(message = "'title' cannot be empty")
+    @NotEmpty
     private String title;
     
-    @NotEmpty(message = "'description' cannot be empty")
+    @NotEmpty
     private String description;
     
-    @NotNull(message = "'ownerId' cannot be null")
+    @NotNull
     private Long ownerId;
 
     public ObjectiveDto(Objective objective) {

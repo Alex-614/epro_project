@@ -95,6 +95,8 @@ public class CompanyKeyResultController {
         companyKeyResult.setConfidenceLevel(keyResultDto.getConfidenceLevel());
         companyKeyResult.setObjective(objective);
         companyKeyResult.setType(keyResultType.get());
+        companyKeyResult.setContributingUnits(keyResultDto.getContributingUnits().stream().map(Unit::new).collect(Collectors.toList()));
+        companyKeyResult.setContributingBusinessUnits(keyResultDto.getContributingBusinessUnits().stream().map(BusinessUnit::new).collect(Collectors.toList()));
 
         companyKeyResultRepository.save(companyKeyResult);
         keyResultDto.setId(companyKeyResult.getId());
@@ -197,9 +199,11 @@ public class CompanyKeyResultController {
         keyResultCopy.setGoal(keyResult.getGoal());
         keyResultCopy.setLastUpdate(null);
         keyResultCopy.setObjective(keyResult.getObjective());
-        keyResultCopy.setRepresenters(keyResult.getRepresenters().stream().collect(Collectors.toList()));
+        keyResultCopy.setRepresenters(keyResult.getRepresenters().stream().collect(Collectors.toList())); // create copy
         keyResultCopy.setTitle(keyResult.getTitle());
         keyResultCopy.setType(keyResult.getType());
+        keyResultCopy.setContributingUnits(keyResult.getContributingUnits().stream().collect(Collectors.toList())); // create copy
+        keyResultCopy.setContributingBusinessUnits(keyResult.getContributingBusinessUnits().stream().collect(Collectors.toList())); // create copy
 
 
 
@@ -217,6 +221,8 @@ public class CompanyKeyResultController {
         if (keyResultDto.getDescription() != null) keyResult.setDescription(keyResultDto.getDescription());
         if (keyResultDto.getCurrent() != null) keyResult.setCurrent(keyResultDto.getCurrent());
         if (keyResultDto.getConfidenceLevel() != null) keyResult.setConfidenceLevel(keyResultDto.getConfidenceLevel());
+        if (keyResultDto.getContributingUnits() != null) keyResult.setContributingUnits(keyResultDto.getContributingUnits().stream().map(Unit::new).collect(Collectors.toList()));
+        if (keyResultDto.getContributingBusinessUnits() != null) keyResult.setContributingBusinessUnits(keyResultDto.getContributingBusinessUnits().stream().map(BusinessUnit::new).collect(Collectors.toList()));
         if (keyResultType != null) keyResult.setType(keyResultType.get());
         if (keyResultDto.getRepresenters() != null) {
             List<BusinessUnitObjective> businessUnitObjectives = new ArrayList<>();

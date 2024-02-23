@@ -12,20 +12,20 @@ public class UserDto {
 
     private Long id;
 
-    @NotEmpty(message = "'email' cannot be empty")
+    @NotEmpty
     @Email
     private String email;
 
-    @NotEmpty(message = "'password' cannot be empty")
+    @NotEmpty
     private String password;
 
-    @NotEmpty(message = "'username' cannot be empty")
+    @NotEmpty
     private String username;
 
-    @NotEmpty(message = "'firstname' cannot be empty")
+    @NotEmpty
     private String firstname;
 
-    @NotEmpty(message = "'surname' cannot be empty")
+    @NotEmpty
     private String surname;
 
     public UserDto(User user) {

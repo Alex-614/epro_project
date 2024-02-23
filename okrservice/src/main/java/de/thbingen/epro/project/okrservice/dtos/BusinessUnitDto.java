@@ -12,7 +12,7 @@ public class BusinessUnitDto {
 
     private BusinessUnitId id;
     
-    @NotEmpty(message = "'name' cannot be empty")
+    @NotEmpty
     private String name;
 
     public BusinessUnitDto(BusinessUnit businessUnit) {

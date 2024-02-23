@@ -11,7 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class KeyResultPatchDto<T extends KeyResultDto> {
 
-    @NotEmpty(message = "'updateStatus' cannot be empty")
+    @NotEmpty
     private String statusUpdate;
 
     private Long updateTimestamp;

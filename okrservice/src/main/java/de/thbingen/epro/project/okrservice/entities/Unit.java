@@ -32,6 +32,10 @@ public class Unit {
     private UnitId id;
 
 
+    public Unit(UnitId id) {
+        this.id = id;
+    }
+
     
     @MapsId("businessUnitId")
     @ManyToOne

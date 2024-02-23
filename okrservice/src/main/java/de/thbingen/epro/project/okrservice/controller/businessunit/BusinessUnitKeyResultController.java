@@ -29,6 +29,7 @@ import de.thbingen.epro.project.okrservice.dtos.KeyResultPatchDto;
 import de.thbingen.epro.project.okrservice.dtos.KeyResultUpdateDto;
 import de.thbingen.epro.project.okrservice.dtos.UnitDto;
 import de.thbingen.epro.project.okrservice.entities.BusinessUnit;
+import de.thbingen.epro.project.okrservice.entities.Unit;
 import de.thbingen.epro.project.okrservice.entities.User;
 import de.thbingen.epro.project.okrservice.entities.keyresults.BusinessUnitKeyResult;
 import de.thbingen.epro.project.okrservice.entities.keyresults.KeyResultType;
@@ -82,8 +83,10 @@ public class BusinessUnitKeyResultController {
         businessUnitKeyResult.setConfidenceLevel(keyResultDto.getConfidenceLevel());
         businessUnitKeyResult.setObjective(objective);
         businessUnitKeyResult.setType(keyResultType);
-        BusinessUnit bu = utils.getBusinessUnitFromRepository(companyId, businessUnitId);
-        businessUnitKeyResult.setContributingBusinessUnits(Collections.singletonList(bu));
+        businessUnitKeyResult.setContributingUnits(keyResultDto.getContributingUnits().stream().map(Unit::new).collect(Collectors.toList()));
+        List<BusinessUnit> bus = Collections.singletonList(utils.getBusinessUnitFromRepository(companyId, businessUnitId));
+        bus.addAll(keyResultDto.getContributingBusinessUnits().stream().map(BusinessUnit::new).collect(Collectors.toList()));
+        businessUnitKeyResult.setContributingBusinessUnits(bus);
 
         businessUnitKeyResultRepository.save(businessUnitKeyResult);
         keyResultDto.setId(businessUnitKeyResult.getId());
@@ -192,7 +195,8 @@ public class BusinessUnitKeyResultController {
         keyResultCopy.setObjective(keyResult.getObjective());
         keyResultCopy.setTitle(keyResult.getTitle());
         keyResultCopy.setType(keyResult.getType());
-
+        keyResultCopy.setContributingUnits(keyResult.getContributingUnits().stream().collect(Collectors.toList())); // create copy
+        keyResultCopy.setContributingBusinessUnits(keyResult.getContributingBusinessUnits().stream().collect(Collectors.toList())); // create copy
 
         // perform the KeyResult change but dont persist, just validation
         Optional<KeyResultType> keyResultType = null;
@@ -207,6 +211,8 @@ public class BusinessUnitKeyResultController {
         if (keyResultDto.getDescription() != null) keyResult.setDescription(keyResultDto.getDescription());
         if (keyResultDto.getCurrent() != null) keyResult.setCurrent(keyResultDto.getCurrent());
         if (keyResultDto.getConfidenceLevel() != null) keyResult.setConfidenceLevel(keyResultDto.getConfidenceLevel());
+        if (keyResultDto.getContributingUnits() != null) keyResult.setContributingUnits(keyResultDto.getContributingUnits().stream().map(Unit::new).collect(Collectors.toList()));
+        if (keyResultDto.getContributingBusinessUnits() != null) keyResult.setContributingBusinessUnits(keyResultDto.getContributingBusinessUnits().stream().map(BusinessUnit::new).collect(Collectors.toList()));
         if (keyResultType != null) keyResult.setType(keyResultType.get());
 
 

@@ -11,7 +11,7 @@ public class CompanyDto {
 
     private Long id;
     
-    @NotEmpty(message = "'name' cannot be empty")
+    @NotEmpty
     private String name;
 
     public CompanyDto(Company company) {

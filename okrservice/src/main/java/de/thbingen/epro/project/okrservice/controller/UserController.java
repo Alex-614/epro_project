@@ -22,6 +22,7 @@ import de.thbingen.epro.project.okrservice.dtos.CompanyDto;
 import de.thbingen.epro.project.okrservice.dtos.UserDto;
 import de.thbingen.epro.project.okrservice.entities.Company;
 import de.thbingen.epro.project.okrservice.entities.User;
+import de.thbingen.epro.project.okrservice.exceptions.UserAlreadyExistsException;
 import de.thbingen.epro.project.okrservice.repositories.UserRepository;
 import jakarta.validation.Valid;
 
@@ -44,11 +45,9 @@ public class UserController {
 
 
     @PostMapping
-    public ResponseEntity<UserDto> register(@RequestBody @Valid UserDto userDto) {
+    public ResponseEntity<UserDto> register(@RequestBody @Valid UserDto userDto) throws UserAlreadyExistsException {
         if (userRepository.existsByEmail(userDto.getEmail())) {
-            // "Email already exists!"
-            userDto.setEmail("Email already exists!");
-            return new ResponseEntity<UserDto>(userDto, HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new UserAlreadyExistsException();
         }
         User user = new User();
         user.setEmail(userDto.getEmail());

@@ -1,7 +1,9 @@
 package de.thbingen.epro.project.okrservice.controller;
 
+import org.postgresql.util.PSQLException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -16,6 +18,7 @@ import de.thbingen.epro.project.okrservice.exceptions.MaxCompanyObjectivesReache
 import de.thbingen.epro.project.okrservice.exceptions.ObjectiveNotFoundException;
 import de.thbingen.epro.project.okrservice.exceptions.UnitAlreadyExistsException;
 import de.thbingen.epro.project.okrservice.exceptions.UnitNotFoundException;
+import de.thbingen.epro.project.okrservice.exceptions.UserAlreadyExistsException;
 import de.thbingen.epro.project.okrservice.exceptions.UserNotFoundException;
 
 @ControllerAdvice
@@ -29,11 +32,28 @@ public class RequestExceptionHandler {
         if (error == null) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("An unexpected Error occured!");
         }
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(error.getDefaultMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body("'" + error.getField() + "' " + error.getDefaultMessage());
+    }
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ResponseEntity<String> notReadableException(HttpMessageNotReadableException  ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body("An unexpected Error occured, could not read HttpMessage!\n" + 
+                                                                ex.getMessage());
+    }
+    @ExceptionHandler(PSQLException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ResponseEntity<String> psqlException(PSQLException  ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body("An unexpected Error occured, invalid Arguments!\n");
     }
 
 
 
+
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ResponseEntity<String> userAlreadyExistsException(UserAlreadyExistsException  ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body("User already exists!");
+    }
 
     @ExceptionHandler(UnitAlreadyExistsException.class)
     @ResponseStatus(HttpStatus.CONFLICT)

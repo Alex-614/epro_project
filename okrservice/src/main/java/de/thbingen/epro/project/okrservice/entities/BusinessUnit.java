@@ -29,6 +29,11 @@ public class BusinessUnit {
 
 
 
+    public BusinessUnit(BusinessUnitId id) {
+        this.id = id;
+    }
+
+
 
     @EmbeddedId
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "businessunit_id_gen")
