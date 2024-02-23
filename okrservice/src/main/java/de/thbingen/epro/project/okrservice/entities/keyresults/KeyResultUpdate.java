@@ -15,10 +15,12 @@ import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "tbl_keyresultupdate")
@@ -33,9 +35,12 @@ public class KeyResultUpdate {
     })
     private KeyResultUpdateId id = new KeyResultUpdateId();
 
-    public KeyResultUpdate(String statusUpdate, Instant timestamp, KeyResult keyResult, KeyResult oldKeyResult, KeyResult newKeyResult, User updater) {
+    public KeyResultUpdate(KeyResultUpdateId id) {
+        this.id = id;
+    }
+    public KeyResultUpdate(String statusUpdate, Instant updateTimestamp, KeyResult keyResult, KeyResult oldKeyResult, KeyResult newKeyResult, User updater) {
         this.statusUpdate = statusUpdate;
-        this.timestamp = timestamp;
+        this.updateTimestamp = updateTimestamp;
         this.keyResult = keyResult;
         this.oldKeyResult = oldKeyResult;
         this.newKeyResult = newKeyResult;
@@ -44,8 +49,9 @@ public class KeyResultUpdate {
 
     @Column(name = "statusupdate")
     private String statusUpdate;
-
-    private Instant timestamp;
+    
+    @Column(name = "updatetimestamp")
+    private Instant updateTimestamp;
 
     @OneToOne
     @JoinColumn(name = "keyresult_id", referencedColumnName = "id")

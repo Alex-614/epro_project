@@ -22,8 +22,6 @@ import de.thbingen.epro.project.okrservice.entities.Company;
 import de.thbingen.epro.project.okrservice.entities.User;
 import de.thbingen.epro.project.okrservice.entities.objectives.CompanyObjective;
 import de.thbingen.epro.project.okrservice.repositories.CompanyObjectiveRepository;
-import de.thbingen.epro.project.okrservice.repositories.CompanyRepository;
-import de.thbingen.epro.project.okrservice.repositories.UserRepository;
 import jakarta.validation.Valid;
 
 @RestController
@@ -32,19 +30,14 @@ public class CompanyObjectiveController {
 
 
 
-
-    private CompanyRepository companyRepository;
-
-    private UserRepository userRepository;
-
     private CompanyObjectiveRepository companyObjectiveRepository;
 
+    private Utils utils;
+
     @Autowired
-    public CompanyObjectiveController(CompanyRepository companyRepository, UserRepository userRepository,  
-                            CompanyObjectiveRepository companyObjectiveRepository) {
-        this.companyRepository = companyRepository;
-        this.userRepository = userRepository;
+    public CompanyObjectiveController(CompanyObjectiveRepository companyObjectiveRepository, Utils utils) {
         this.companyObjectiveRepository = companyObjectiveRepository;
+        this.utils = utils;
     }
 
 
@@ -54,8 +47,8 @@ public class CompanyObjectiveController {
     public ResponseEntity<CompanyObjectiveDto> createCompanyObjective(@PathVariable @NonNull Number companyId,
                                                           @RequestBody @Valid CompanyObjectiveDto companyObjectiveDto)
             throws Exception {
-        Company company = Utils.getCompanyFromRepository(companyRepository, companyId);
-        User owner = Utils.getUserFromRepository(userRepository, companyObjectiveDto.getOwnerId());
+        Company company = utils.getCompanyFromRepository(companyId);
+        User owner = utils.getUserFromRepository(companyObjectiveDto.getOwnerId());
 
         if (company.getObjectives().size() >= 5) {
             // Reached Max Commpany Objectives
@@ -79,8 +72,7 @@ public class CompanyObjectiveController {
     public ResponseEntity<CompanyObjectiveDto> getCompanyObjective(@PathVariable Number companyId,
                                                                    @PathVariable Number objectiveId) throws Exception {
         CompanyObjective companyObjective =
-                Utils.getCompanyObjectiveFromRepository(companyRepository, companyId, companyObjectiveRepository,
-                        objectiveId);
+        utils.getCompanyObjectiveFromRepository(companyId, objectiveId);
         return new ResponseEntity<>(new CompanyObjectiveDto(companyObjective), HttpStatus.OK);
     }
 
@@ -99,10 +91,9 @@ public class CompanyObjectiveController {
     public ResponseEntity<CompanyObjectiveDto> patchCompanyObjective(
             @PathVariable Number companyId, @PathVariable Number objectiveId,
             @RequestBody CompanyObjectiveDto objectiveDto) throws Exception {
-        CompanyObjective objective = Utils.getCompanyObjectiveFromRepository(companyRepository, companyId,
-                                                companyObjectiveRepository, objectiveId.longValue());
+        CompanyObjective objective = utils.getCompanyObjectiveFromRepository(companyId, objectiveId.longValue());
         User owner = null;
-        if (objectiveDto.getOwnerId() != null) owner = Utils.getUserFromRepository(userRepository, objectiveDto.getOwnerId());
+        if (objectiveDto.getOwnerId() != null) owner = utils.getUserFromRepository(objectiveDto.getOwnerId());
         
         if (objectiveDto.getDeadline() != null) objective.setDeadline(objectiveDto.getDeadline());
         if (objectiveDto.getTitle() != null) objective.setTitle(objectiveDto.getTitle());
@@ -116,13 +107,11 @@ public class CompanyObjectiveController {
 
 
     @DeleteMapping("{objectiveId}")
-    public ResponseEntity<String> deleteCompanyObjective(@PathVariable Number companyId,
+    public ResponseEntity<Void> deleteCompanyObjective(@PathVariable Number companyId,
                                                          @PathVariable Number objectiveId) throws Exception {
-        CompanyObjective companyObjective =
-                Utils.getCompanyObjectiveFromRepository(companyRepository, companyId, companyObjectiveRepository,
-                        objectiveId);
+        CompanyObjective companyObjective = utils.getCompanyObjectiveFromRepository(companyId, objectiveId);
         companyObjectiveRepository.deleteById(objectiveId.longValue());
-        return new ResponseEntity<>(companyObjective.getTitle() + " deleted", HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 

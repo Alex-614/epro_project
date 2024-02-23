@@ -245,7 +245,7 @@ CREATE TABLE tbl_CompanyKeyResult
 CREATE TABLE tbl_KeyResultUpdate
 (
   StatusUpdate VARCHAR(100) NOT NULL,
-  Timestamp TIMESTAMP NOT NULL,
+  UpdateTimestamp TIMESTAMP NOT NULL,
   KeyResult_ID BIGINT NOT NULL,
   Old_KeyResult_ID BIGINT NOT NULL,
   New_KeyResult_ID BIGINT NOT NULL,

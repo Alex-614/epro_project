@@ -34,12 +34,14 @@ public class BusinessUnitController {
     private CompanyRepository companyRepository;
 
     private BusinessUnitRepository businessUnitRepository;
+    private Utils utils;
 
 
     @Autowired
-    public BusinessUnitController(CompanyRepository companyRepository, BusinessUnitRepository businessUnitRepository) {
+    public BusinessUnitController(CompanyRepository companyRepository, BusinessUnitRepository businessUnitRepository, Utils utils) {
         this.companyRepository = companyRepository;
         this.businessUnitRepository = businessUnitRepository;
+        this.utils = utils;
     }
 
 
@@ -84,8 +86,7 @@ public class BusinessUnitController {
     public ResponseEntity<BusinessUnitDto> getBusinessUnit(@PathVariable @NonNull Number companyId,
                                               @PathVariable @NonNull Number businessUnitId)
             throws Exception {
-        BusinessUnit businessUnit = Utils.getBusinessUnitFromRepository(companyRepository, companyId,
-                businessUnitRepository, businessUnitId);
+        BusinessUnit businessUnit = utils.getBusinessUnitFromRepository(companyId, businessUnitId);
         return new ResponseEntity<>(new BusinessUnitDto(businessUnit), HttpStatus.OK);
     }
 
@@ -95,25 +96,22 @@ public class BusinessUnitController {
                                                               @PathVariable @NonNull Number businessUnitId,
                                                               @RequestBody BusinessUnitDto businessUnitDto
     ) throws Exception {
-        BusinessUnit businessUnit = Utils.getBusinessUnitFromRepository(companyRepository, companyId,
-                businessUnitRepository, businessUnitId);
+        BusinessUnit businessUnit = utils.getBusinessUnitFromRepository(companyId, businessUnitId);
 
         if (businessUnitDto.getName() != null) businessUnit.setName(businessUnitDto.getName());
-        
+
         businessUnitRepository.save(businessUnit);
         return new ResponseEntity<>(new BusinessUnitDto(businessUnit), HttpStatus.OK);
     }
 
 
     @DeleteMapping("{businessUnitId}")
-    public ResponseEntity<String> deleteBusinessUnit(@PathVariable @NonNull Number companyId,
+    public ResponseEntity<Void> deleteBusinessUnit(@PathVariable @NonNull Number companyId,
                                            @PathVariable @NonNull Number businessUnitId)
             throws Exception {
-        BusinessUnit businessUnit = Utils.getBusinessUnitFromRepository(companyRepository, companyId,
-                businessUnitRepository, businessUnitId);
-        BusinessUnitDto businessUnitDto = new BusinessUnitDto(businessUnit);
+        BusinessUnit businessUnit = utils.getBusinessUnitFromRepository(companyId, businessUnitId);
         businessUnitRepository.deleteById(businessUnit.getId());
-        return new ResponseEntity<>(businessUnitDto.getName() + " deleted", HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 

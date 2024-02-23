@@ -96,7 +96,8 @@ public class SecurityConfig {
 
                         // CompanyKeyResult
                         .requestMatchers("/company/{companyId}/objective/{objectiveId}/keyresult", 
-                                                "/company/{companyId}/objective/{objectiveId}/keyresult/{keyResultId}")
+                                                "/company/{companyId}/objective/{objectiveId}/keyresult/{keyResultId}",
+                                                "/company/{companyId}/objective/{objectiveId}/keyresult/{keyResultId}/updatehistory")
                                 .access(hasAnyCompanyAuthority(
                                         hasRole(Roles.CO_OKR_ADMIN)
                                                 .allowMethods(HttpMethod.POST, HttpMethod.PATCH, HttpMethod.DELETE), 
@@ -117,7 +118,8 @@ public class SecurityConfig {
 
                         // BusinessUnitKeyResult
                         .requestMatchers("/company/{companyId}/businessunit/{businessUnitId}/objective/{objectiveId}/keyresult", 
-                                                "/company/{companyId}/businessunit/{businessUnitId}/objective/{objectiveId}/keyresult/{keyResultId}")
+                                                "/company/{companyId}/businessunit/{businessUnitId}/objective/{objectiveId}/keyresult/{keyResultId}",
+                                                "/company/{companyId}/businessunit/{businessUnitId}/objective/{objectiveId}/keyresult/{keyResultId}/updatehistory")
                                 .access(hasAnyCompanyAuthority(
                                         hasRole(Roles.BUO_OKR_ADMIN)
                                                 .ownsObjective(true)

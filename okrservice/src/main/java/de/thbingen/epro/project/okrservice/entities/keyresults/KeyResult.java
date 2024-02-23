@@ -30,6 +30,10 @@ public abstract class KeyResult {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "keyresult_id_seq")
     private Long id;
 
+    public KeyResult(Long id) {
+        this.id = id;
+    }
+
     private int goal;
 
     private String title;
@@ -49,7 +53,7 @@ public abstract class KeyResult {
     @JoinColumn(name = "type_name")
     private KeyResultType type;
     
-    @OneToOne(mappedBy = "newKeyResult")
+    @OneToOne(mappedBy = "newKeyResult", optional = true)
     private KeyResultUpdate lastUpdate;
 
 

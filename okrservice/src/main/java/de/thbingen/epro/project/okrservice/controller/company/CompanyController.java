@@ -1,6 +1,5 @@
 package de.thbingen.epro.project.okrservice.controller.company;
 
-import java.lang.reflect.Field;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,14 +43,17 @@ public class CompanyController {
     private RoleRepository roleRepository;
 
     private RoleAssignmentRepository roleAssignmentRepository;
+    private Utils utils;
 
     @Autowired
     public CompanyController(CompanyRepository companyRepository, UserRepository userRepository, 
-                            RoleRepository roleRepository, RoleAssignmentRepository roleAssignmentRepository) {
+                            RoleRepository roleRepository, RoleAssignmentRepository roleAssignmentRepository, 
+                            Utils utils) {
         this.companyRepository = companyRepository;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.roleAssignmentRepository = roleAssignmentRepository;
+        this.utils = utils;
     }
 
 
@@ -68,8 +70,11 @@ public class CompanyController {
         //userRepository.save(user)
 
         Role role = roleRepository.findByName(Roles.CO_OKR_ADMIN.getName());
-
         roleAssignmentRepository.save(new RoleAssignment(user, role, company));
+        //TODO remove
+        role = roleRepository.findByName(Roles.BUO_OKR_ADMIN.getName());
+        roleAssignmentRepository.save(new RoleAssignment(user, role, company));
+
 
         companyDto.setId(company.getId());
         return new ResponseEntity<>(companyDto, HttpStatus.OK);
@@ -77,7 +82,7 @@ public class CompanyController {
 
     @GetMapping("{companyId}")
     public ResponseEntity<CompanyDto> getCompany(@PathVariable Number companyId) throws Exception {
-        Company company = Utils.getCompanyFromRepository(companyRepository, companyId);
+        Company company = utils.getCompanyFromRepository(companyId);
         return new ResponseEntity<>(new CompanyDto(company), HttpStatus.OK);
     }
 
@@ -92,7 +97,7 @@ public class CompanyController {
     @PatchMapping("{companyId}")
     public ResponseEntity<CompanyDto> patchCompany(@PathVariable Number companyId,
                                                    @RequestBody CompanyDto companyDto) throws Exception {
-        Company company = Utils.getCompanyFromRepository(companyRepository, companyId);
+        Company company = utils.getCompanyFromRepository(companyId);
         if (companyDto.getName() != null) company.setName(companyDto.getName());
         companyRepository.save(company);
         return new ResponseEntity<>(new CompanyDto(company), HttpStatus.OK);
@@ -100,10 +105,10 @@ public class CompanyController {
 
 
     @DeleteMapping("{companyId}")
-    public ResponseEntity<String> deleteCompany(@PathVariable Number companyId) throws Exception {
-        Company company = Utils.getCompanyFromRepository(companyRepository, companyId);
+    public ResponseEntity<Void> deleteCompany(@PathVariable Number companyId) throws Exception {
+        Company company = utils.getCompanyFromRepository(companyId);
         companyRepository.deleteById(companyId.longValue());
-        return new ResponseEntity<>(company.getName() + " deleted", HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
     
     

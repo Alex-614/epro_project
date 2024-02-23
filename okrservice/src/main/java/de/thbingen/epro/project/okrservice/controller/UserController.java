@@ -33,10 +33,13 @@ public class UserController {
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
 
+    private Utils utils;
+
     @Autowired
-    public UserController(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserController(UserRepository userRepository, PasswordEncoder passwordEncoder, Utils utils) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.utils = utils;
     }
 
 
@@ -64,7 +67,7 @@ public class UserController {
 
     @GetMapping("{userId}")
     public ResponseEntity<UserDto> getUser(@PathVariable @NonNull Number userId) throws Exception {
-        User user = Utils.getUserFromRepository(userRepository, userId.longValue());
+        User user = utils.getUserFromRepository(userId.longValue());
         return new ResponseEntity<>(new UserDto(user), HttpStatus.OK);
     }
 
@@ -79,7 +82,7 @@ public class UserController {
 
     @PatchMapping("{userId}")
     public ResponseEntity<UserDto> patchUser(@PathVariable @NonNull Number userId, @RequestBody UserDto userDto) throws Exception {
-        User user = Utils.getUserFromRepository(userRepository, userId);
+        User user = utils.getUserFromRepository(userId);
 
         if (userDto.getEmail() != null) user.setEmail(userDto.getEmail());
         if (userDto.getPassword() != null) user.setPassword(passwordEncoder.encode(userDto.getPassword()));
@@ -93,10 +96,10 @@ public class UserController {
 
 
     @DeleteMapping("{userId}")
-    public ResponseEntity<String> deleteUser(@PathVariable @NonNull Number userId) throws Exception {
-        User user = Utils.getUserFromRepository(userRepository, userId.longValue());
+    public ResponseEntity<Void> deleteUser(@PathVariable @NonNull Number userId) throws Exception {
+        User user = utils.getUserFromRepository(userId.longValue());
         userRepository.deleteById(user.getId());
-        return new ResponseEntity<>(user.getUsername() + " deleted!", HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 
@@ -110,7 +113,7 @@ public class UserController {
 
     @GetMapping("{userId}/companies")
     public ResponseEntity<List<CompanyDto>> getUserCompanies(@PathVariable @NonNull Number userId) throws Exception {
-        User user = Utils.getUserFromRepository(userRepository, userId.longValue());
+        User user = utils.getUserFromRepository(userId.longValue());
         List<CompanyDto> dtos = new ArrayList<>();
         for (Company c : user.getCompanies()) {
             dtos.add(new CompanyDto(c));

@@ -2,6 +2,9 @@ package de.thbingen.epro.project.okrservice.controller;
 
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import de.thbingen.epro.project.okrservice.entities.BusinessUnit;
 import de.thbingen.epro.project.okrservice.entities.Company;
 import de.thbingen.epro.project.okrservice.entities.Unit;
@@ -10,6 +13,7 @@ import de.thbingen.epro.project.okrservice.entities.ids.BusinessUnitId;
 import de.thbingen.epro.project.okrservice.entities.ids.UnitId;
 import de.thbingen.epro.project.okrservice.entities.keyresults.BusinessUnitKeyResult;
 import de.thbingen.epro.project.okrservice.entities.keyresults.CompanyKeyResult;
+import de.thbingen.epro.project.okrservice.entities.keyresults.KeyResult;
 import de.thbingen.epro.project.okrservice.entities.objectives.BusinessUnitObjective;
 import de.thbingen.epro.project.okrservice.entities.objectives.CompanyObjective;
 import de.thbingen.epro.project.okrservice.exceptions.BusinessUnitNotFoundException;
@@ -24,11 +28,49 @@ import de.thbingen.epro.project.okrservice.repositories.BusinessUnitRepository;
 import de.thbingen.epro.project.okrservice.repositories.CompanyKeyResultRepository;
 import de.thbingen.epro.project.okrservice.repositories.CompanyObjectiveRepository;
 import de.thbingen.epro.project.okrservice.repositories.CompanyRepository;
+import de.thbingen.epro.project.okrservice.repositories.KeyResultRepository;
 import de.thbingen.epro.project.okrservice.repositories.UnitRepository;
 import de.thbingen.epro.project.okrservice.repositories.UserRepository;
 
+@Component
 public class Utils {
-    public static Company getCompanyFromRepository(CompanyRepository companyRepository, Number companyId) throws Exception {
+
+
+    private CompanyRepository companyRepository;
+    private BusinessUnitRepository businessUnitRepository;
+    private UserRepository userRepository;
+    private BusinessUnitObjectiveRepository businessUnitObjectiveRepository;
+    private CompanyObjectiveRepository companyObjectiveRepository;
+    private UnitRepository unitRepository;
+    private CompanyKeyResultRepository companyKeyResultRepository;
+    private BusinessUnitKeyResultRepository businessUnitKeyResultRepository;
+    private KeyResultRepository keyResultRepository;
+
+    @Autowired
+    public Utils(CompanyRepository companyRepository, 
+                    BusinessUnitRepository businessUnitRepository, 
+                    UserRepository userRepository, 
+                    BusinessUnitObjectiveRepository businessUnitObjectiveRepository, 
+                    CompanyObjectiveRepository companyObjectiveRepository, 
+                    UnitRepository unitRepository, 
+                    CompanyKeyResultRepository companyKeyResultRepository, 
+                    BusinessUnitKeyResultRepository businessUnitKeyResultRepository, 
+                    KeyResultRepository keyResultRepository) {
+        this.companyRepository = companyRepository;
+        this.businessUnitRepository = businessUnitRepository;
+        this.userRepository = userRepository;
+        this.businessUnitObjectiveRepository = businessUnitObjectiveRepository;
+        this.companyObjectiveRepository = companyObjectiveRepository;
+        this.unitRepository = unitRepository;
+        this.companyKeyResultRepository = companyKeyResultRepository;
+        this.businessUnitKeyResultRepository = businessUnitKeyResultRepository;
+        this.keyResultRepository = keyResultRepository;
+    }
+
+
+
+
+    public Company getCompanyFromRepository(Number companyId) throws Exception {
         Optional<Company> optionalCompany = companyRepository.findById(companyId.longValue());
         if(optionalCompany.isPresent()) {
             return optionalCompany.get();
@@ -41,18 +83,11 @@ public class Utils {
         }
     }
 
-    public static BusinessUnit getBusinessUnitFromRepository(CompanyRepository companyRepository,
-                                                             Number companyId,
-                                                             BusinessUnitRepository businessUnitRepository,
-                                                             Number businessUnitId) throws Exception {
+    public BusinessUnit getBusinessUnitFromRepository(Number companyId, Number businessUnitId) throws Exception {
         BusinessUnitId businessUnitIdObject = new BusinessUnitId(businessUnitId.longValue(), companyId.longValue());
         Optional<BusinessUnit> optionalBusinessUnitItem = businessUnitRepository.findById(businessUnitIdObject);
         if(optionalBusinessUnitItem.isPresent()) {
             return optionalBusinessUnitItem.get();
-        }
-        else if (!companyRepository.existsById(companyId.longValue())) {
-            // "Company not found!"
-            throw new CompanyNotFoundException();
         }
         else if(!businessUnitRepository.existsById(businessUnitIdObject)) {
             // "Business unit not found!"
@@ -63,7 +98,7 @@ public class Utils {
         }
     }
 
-    public static User getUserFromRepository(UserRepository userRepository, Number userId) throws Exception {
+    public User getUserFromRepository(Number userId) throws Exception {
         Optional<User> optionalUser = userRepository.findById(userId.longValue());
         if(optionalUser.isPresent()) {
             return optionalUser.get();
@@ -76,19 +111,12 @@ public class Utils {
         }
     }
 
-    public static BusinessUnitObjective getBusinessUnitObjectiveFromRepository (
-            CompanyRepository companyRepository, Number companyId, BusinessUnitRepository businessUnitRepository,
-            Number businessUnitId, BusinessUnitObjectiveRepository businessUnitObjectiveRepository,
-            Number businessUnitObjectiveId) throws Exception {
+    public BusinessUnitObjective getBusinessUnitObjectiveFromRepository (Number companyId, Number businessUnitId, Number businessUnitObjectiveId) throws Exception {
         BusinessUnitId businessUnitIdObject = new BusinessUnitId(businessUnitId.longValue(), companyId.longValue());
         Optional<BusinessUnitObjective> optionalBusinessUnitObjective =
                 businessUnitObjectiveRepository.findById(businessUnitObjectiveId.longValue());
         if(optionalBusinessUnitObjective.isPresent()) {
             return optionalBusinessUnitObjective.get();
-        }
-        else if (!companyRepository.existsById(companyId.longValue())) {
-            // "Company not found!"
-            throw new CompanyNotFoundException();
         }
         else if(!businessUnitRepository.existsById(businessUnitIdObject)) {
             // "Business unit not found!"
@@ -102,18 +130,11 @@ public class Utils {
         }
     }
 
-    public static CompanyObjective getCompanyObjectiveFromRepository (
-            CompanyRepository companyRepository, Number companyId,
-            CompanyObjectiveRepository companyObjectiveRepository,
-            Number companyObjectiveId) throws Exception {
+    public CompanyObjective getCompanyObjectiveFromRepository (Number companyId, Number companyObjectiveId) throws Exception {
         Optional<CompanyObjective> optionalCompanyObjective =
                 companyObjectiveRepository.findById(companyObjectiveId.longValue());
         if(optionalCompanyObjective.isPresent()) {
             return optionalCompanyObjective.get();
-        }
-        else if (!companyRepository.existsById(companyId.longValue())) {
-            // "Company not found!"
-            throw new CompanyNotFoundException();
         }
         else if (!companyObjectiveRepository.existsById(companyObjectiveId.longValue())) {
             throw new ObjectiveNotFoundException();
@@ -123,19 +144,13 @@ public class Utils {
         }
     }
 
-    public static Unit getUnitFromRepository(
-            CompanyRepository companyRepository, Number companyId, BusinessUnitRepository businessUnitRepository,
-            Number businessUnitId, UnitRepository unitRepository, Number unitId
+    public Unit getUnitFromRepository(Number companyId, Number businessUnitId, Number unitId
     ) throws Exception {
         BusinessUnitId businessUnitIdObject = new BusinessUnitId(businessUnitId.longValue(), companyId.longValue());
         UnitId unitIdObject = new UnitId(unitId.longValue(), businessUnitIdObject);
         Optional<Unit> optionalUnit = unitRepository.findById(unitIdObject);
         if(optionalUnit.isPresent()) {
             return optionalUnit.get();
-        }
-        else if (!companyRepository.existsById(companyId.longValue())) {
-            // "Company not found!"
-            throw new CompanyNotFoundException();
         }
         else if (!businessUnitRepository.existsById(businessUnitIdObject)) {
             // "Business unit not found!"
@@ -150,18 +165,19 @@ public class Utils {
         }
     }
 
-    public static CompanyKeyResult getCompanyKeyResultFromRepository(
-            CompanyRepository companyRepository, Number companyId,
-            CompanyObjectiveRepository companyObjectiveRepository, Number companyObjectiveId,
-            CompanyKeyResultRepository companyKeyResultRepository, Number companyKeyResultId) throws Exception {
+    public KeyResult getKeyResultFromRepository(Number keyResultId) throws Exception {
+        Optional<KeyResult> optionalKeyResult = keyResultRepository.findById(keyResultId.longValue());
+        if(optionalKeyResult.isPresent()) {
+            return optionalKeyResult.get();
+        }
+        throw new KeyResultNotFoundException();
+    }
+
+    public CompanyKeyResult getCompanyKeyResultFromRepository(Number companyId, Number companyObjectiveId, Number companyKeyResultId) throws Exception {
         Optional<CompanyKeyResult> optionalCompanyKeyResult =
                 companyKeyResultRepository.findById(companyKeyResultId.longValue());
         if(optionalCompanyKeyResult.isPresent()) {
             return optionalCompanyKeyResult.get();
-        }
-        else if (!companyRepository.existsById(companyId.longValue())) {
-            // "Company not found!"
-            throw new CompanyNotFoundException();
         }
         else if (!companyObjectiveRepository.existsById(companyObjectiveId.longValue())) {
             // "Company objective not found!"
@@ -176,21 +192,13 @@ public class Utils {
         }
     }
 
-    public static BusinessUnitKeyResult getBusinessUnitKeyResultFromRepository(
-            CompanyRepository companyRepository, Number companyId,
-            BusinessUnitRepository businessUnitRepository, Number businessUnitId,
-            BusinessUnitObjectiveRepository businessUnitObjectiveRepository, Number businessUnitObjectiveId,
-            BusinessUnitKeyResultRepository businessUnitKeyResultRepository, Number businessUnitKeyResultId
+    public BusinessUnitKeyResult getBusinessUnitKeyResultFromRepository(Number companyId, Number businessUnitId, Number businessUnitObjectiveId, Number businessUnitKeyResultId
     ) throws Exception {
         BusinessUnitId businessUnitIdObject = new BusinessUnitId(businessUnitId.longValue(), companyId.longValue());
         Optional<BusinessUnitKeyResult> optionalBusinessUnitKeyResult =
                 businessUnitKeyResultRepository.findById(businessUnitKeyResultId.longValue());
         if(optionalBusinessUnitKeyResult.isPresent()) {
             return optionalBusinessUnitKeyResult.get();
-        }
-        else if (!companyRepository.existsById(companyId.longValue())) {
-            // "Company not found!"
-            throw new CompanyNotFoundException();
         }
         else if(!businessUnitRepository.existsById(businessUnitIdObject)) {
             // "Business unit not found!"

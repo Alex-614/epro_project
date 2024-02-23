@@ -21,26 +21,21 @@ import de.thbingen.epro.project.okrservice.entities.BusinessUnit;
 import de.thbingen.epro.project.okrservice.entities.Unit;
 import de.thbingen.epro.project.okrservice.entities.ids.BusinessUnitId;
 import de.thbingen.epro.project.okrservice.exceptions.UnitAlreadyExistsException;
-import de.thbingen.epro.project.okrservice.repositories.BusinessUnitRepository;
-import de.thbingen.epro.project.okrservice.repositories.CompanyRepository;
 import de.thbingen.epro.project.okrservice.repositories.UnitRepository;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/company/{companyId}/businessunit/{businessUnitId}/unit")
 public class UnitController {
-    private CompanyRepository companyRepository;
 
-    private BusinessUnitRepository businessUnitRepository;
-    
     private UnitRepository unitRepository;
 
+    private Utils utils;
 
     @Autowired
-    public UnitController(BusinessUnitRepository businessUnitRepository, UnitRepository unitRepository, CompanyRepository companyRepository) {
-        this.businessUnitRepository = businessUnitRepository;
+    public UnitController(UnitRepository unitRepository, Utils utils) {
         this.unitRepository = unitRepository;
-        this.companyRepository = companyRepository;
+        this.utils = utils;
     }
 
 
@@ -48,8 +43,7 @@ public class UnitController {
     public ResponseEntity<UnitDto> createUnit(@PathVariable @NonNull Number companyId, 
                                                 @PathVariable @NonNull Number businessUnitId, 
                                                 @RequestBody @Valid UnitDto unitDto) throws Exception {
-        BusinessUnit businessUnit = Utils.getBusinessUnitFromRepository(companyRepository, companyId,
-                businessUnitRepository, businessUnitId);
+        BusinessUnit businessUnit = utils.getBusinessUnitFromRepository( companyId, businessUnitId);
         if (unitRepository.existsByNameAndBusinessUnitIdEquals(unitDto.getName(), businessUnit.getId())) {
             // "Unit already exists!"
             throw new UnitAlreadyExistsException();
@@ -71,8 +65,7 @@ public class UnitController {
     public ResponseEntity<UnitDto> getUnit(@PathVariable @NonNull Number companyId,
                                            @PathVariable @NonNull Number businessUnitId,
                                            @PathVariable @NonNull Number unitId) throws Exception{
-        Unit unit = Utils.getUnitFromRepository(companyRepository, companyId, businessUnitRepository, businessUnitId,
-                unitRepository, unitId);
+        Unit unit = utils.getUnitFromRepository(companyId, businessUnitId, unitId);
         return new ResponseEntity<>(new UnitDto(unit), HttpStatus.OK);
     }
     
@@ -93,8 +86,7 @@ public class UnitController {
                                              @PathVariable @NonNull Number businessUnitId,
                                              @PathVariable @NonNull Number unitId,
                                              @RequestBody UnitDto unitDto) throws Exception {
-        Unit unit = Utils.getUnitFromRepository(companyRepository, companyId, businessUnitRepository,
-                        businessUnitId, unitRepository, unitId);
+        Unit unit = utils.getUnitFromRepository(companyId, businessUnitId, unitId);
 
         if (unitDto.getName() != null) unit.setName(unitDto.getName());
 
@@ -105,12 +97,11 @@ public class UnitController {
 
 
     @DeleteMapping("{unitId}")
-    public ResponseEntity<String> deleteUnit(@PathVariable @NonNull Number companyId,
+    public ResponseEntity<Void> deleteUnit(@PathVariable @NonNull Number companyId,
                                              @PathVariable @NonNull Number businessUnitId,
                                              @PathVariable @NonNull Number unitId) throws Exception{
-        Unit unit = Utils.getUnitFromRepository(companyRepository, companyId, businessUnitRepository, businessUnitId,
-                unitRepository, unitId);
+        Unit unit = utils.getUnitFromRepository(companyId, businessUnitId, unitId);
         unitRepository.deleteById(unit.getId());
-        return new ResponseEntity<>(unit.getName() + " deleted!", HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

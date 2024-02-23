@@ -27,30 +27,21 @@ import de.thbingen.epro.project.okrservice.entities.keyresults.CompanyKeyResult;
 import de.thbingen.epro.project.okrservice.entities.objectives.BusinessUnitObjective;
 import de.thbingen.epro.project.okrservice.exceptions.MaxCompanyObjectivesReachedException;
 import de.thbingen.epro.project.okrservice.repositories.BusinessUnitObjectiveRepository;
-import de.thbingen.epro.project.okrservice.repositories.BusinessUnitRepository;
-import de.thbingen.epro.project.okrservice.repositories.CompanyRepository;
-import de.thbingen.epro.project.okrservice.repositories.UserRepository;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/company/{companyId}/businessunit/{businessUnitId}/objective")
 public class BusinessUnitObjectiveController {
 
-    private CompanyRepository companyRepository;
-
-    private BusinessUnitRepository businessUnitRepository;
     private BusinessUnitObjectiveRepository businessUnitObjectiveRepository;
 
-    private UserRepository userRepository;
+    private Utils utils;
 
 
     @Autowired
-    public BusinessUnitObjectiveController(CompanyRepository companyRepository, BusinessUnitRepository businessUnitRepository, 
-                                    BusinessUnitObjectiveRepository businessUnitObjectiveRepository, UserRepository userRepository) {
-        this.companyRepository = companyRepository;
-        this.businessUnitRepository = businessUnitRepository;
+    public BusinessUnitObjectiveController(BusinessUnitObjectiveRepository businessUnitObjectiveRepository, Utils utils) {
         this.businessUnitObjectiveRepository = businessUnitObjectiveRepository;
-        this.userRepository = userRepository;
+        this.utils = utils;
     }
 
 
@@ -63,9 +54,8 @@ public class BusinessUnitObjectiveController {
                                                                         @PathVariable @NonNull Number businessUnitId, 
                                                                         @RequestBody @Valid BusinessUnitObjectiveDto objectiveDto
     ) throws Exception {
-        BusinessUnit businessUnit = Utils.getBusinessUnitFromRepository(companyRepository, companyId,
-                businessUnitRepository, businessUnitId);
-        User owner = Utils.getUserFromRepository(userRepository, objectiveDto.getOwnerId());
+        BusinessUnit businessUnit = utils.getBusinessUnitFromRepository(companyId, businessUnitId);
+        User owner = utils.getUserFromRepository(objectiveDto.getOwnerId());
         if (businessUnit.getObjectives().size() >= 5) {
             // Reached Max Company Objectives
             throw new MaxCompanyObjectivesReachedException();
@@ -101,8 +91,7 @@ public class BusinessUnitObjectiveController {
                                                                              @PathVariable @NonNull Number objectiveId
     ) throws Exception {
         BusinessUnitObjective businessUnitObjective =
-                Utils.getBusinessUnitObjectiveFromRepository(companyRepository, companyId, businessUnitRepository,
-                        businessUnitId, businessUnitObjectiveRepository, objectiveId);
+        utils.getBusinessUnitObjectiveFromRepository(companyId, businessUnitId, objectiveId);
         return new ResponseEntity<>(new BusinessUnitObjectiveDto(businessUnitObjective), HttpStatus.OK);
     }
 
@@ -112,11 +101,10 @@ public class BusinessUnitObjectiveController {
                                                                     @PathVariable @NonNull Number objectiveId,
                                                                     @RequestBody BusinessUnitObjectiveDto objectiveDto
     ) throws Exception {
-        BusinessUnitObjective objective = Utils.getBusinessUnitObjectiveFromRepository(companyRepository, companyId, businessUnitRepository,
-                        businessUnitId, businessUnitObjectiveRepository, objectiveId);
+        BusinessUnitObjective objective = utils.getBusinessUnitObjectiveFromRepository(companyId, businessUnitId, objectiveId);
         User owner = null;
         if (objectiveDto.getOwnerId() != null) {
-            owner = Utils.getUserFromRepository(userRepository, objectiveDto.getOwnerId());
+            owner = utils.getUserFromRepository(objectiveDto.getOwnerId());
         }
 
         if (objectiveDto.getDeadline() != null) objective.setDeadline(objectiveDto.getDeadline());
@@ -129,17 +117,15 @@ public class BusinessUnitObjectiveController {
     }
     
     @DeleteMapping("{objectiveId}")
-    public ResponseEntity<String> deleteBusinessUnitObjective(@PathVariable @NonNull Number companyId,
+    public ResponseEntity<Void> deleteBusinessUnitObjective(@PathVariable @NonNull Number companyId,
                                                               @PathVariable @NonNull Number businessUnitId,
                                                               @PathVariable @NonNull Number objectiveId
 
     )
             throws Exception {
-        BusinessUnitObjective businessUnitObjective =
-                Utils.getBusinessUnitObjectiveFromRepository(companyRepository, companyId, businessUnitRepository,
-                        businessUnitId, businessUnitObjectiveRepository, objectiveId);
+        BusinessUnitObjective businessUnitObjective = utils.getBusinessUnitObjectiveFromRepository(companyId, businessUnitId, objectiveId);
         businessUnitObjectiveRepository.deleteById(objectiveId.longValue());
-        return new ResponseEntity<>(businessUnitObjective.getTitle() + " deleted", HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 

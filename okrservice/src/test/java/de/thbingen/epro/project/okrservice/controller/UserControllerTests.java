@@ -1,11 +1,18 @@
 package de.thbingen.epro.project.okrservice.controller;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import de.thbingen.epro.project.okrservice.dtos.UserDto;
-import de.thbingen.epro.project.okrservice.entities.User;
-import de.thbingen.epro.project.okrservice.jwt.JwtGenerator;
-import de.thbingen.epro.project.okrservice.repositories.UserRepository;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.ArrayList;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,15 +28,13 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-import java.util.ArrayList;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import de.thbingen.epro.project.okrservice.dtos.UserDto;
+import de.thbingen.epro.project.okrservice.entities.User;
+import de.thbingen.epro.project.okrservice.jwt.JwtGenerator;
+import de.thbingen.epro.project.okrservice.repositories.UserRepository;
 
 @WebMvcTest(UserController.class)
 @AutoConfigureMockMvc(addFilters = false)

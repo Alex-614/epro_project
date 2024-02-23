@@ -13,6 +13,5 @@ import lombok.Setter;
 @PrimaryKeyJoinColumn(name = "keyresult_id")
 public class BusinessUnitKeyResult extends KeyResult {
 
-    
 
 }
