@@ -1,14 +1,21 @@
 package de.thbingen.epro.project.okrservice.entities.keyresults;
 
+import java.util.List;
+
+import de.thbingen.epro.project.okrservice.entities.BusinessUnit;
+import de.thbingen.epro.project.okrservice.entities.Unit;
 import de.thbingen.epro.project.okrservice.entities.objectives.Objective;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
@@ -56,7 +63,28 @@ public abstract class KeyResult {
     @OneToOne(mappedBy = "newKeyResult", optional = true)
     private KeyResultUpdate lastUpdate;
 
-
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "tbl_unit_contributes_keyresult",
+        joinColumns = @JoinColumn(
+            name = "keyresult_id", referencedColumnName = "id"
+        ),
+        inverseJoinColumns = {@JoinColumn(name = "unit_id", referencedColumnName = "id"), 
+                              @JoinColumn(name = "businessunit_id", referencedColumnName = "businessunit_id"), 
+                              @JoinColumn(name = "company_id", referencedColumnName = "company_id")}
+    )
+    private List<Unit> contributingUnits;
+    
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "tbl_businessunit_contributes_keyresult",
+        joinColumns = @JoinColumn(
+            name = "keyresult_id", referencedColumnName = "id"
+        ),
+        inverseJoinColumns = {@JoinColumn(name = "businessunit_id", referencedColumnName = "id"), 
+                              @JoinColumn(name = "company_id", referencedColumnName = "company_id")}
+    )
+    private List<BusinessUnit> contributingBusinessUnits;
 
 
 }

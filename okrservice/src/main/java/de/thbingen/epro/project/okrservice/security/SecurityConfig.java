@@ -97,6 +97,8 @@ public class SecurityConfig {
                         // CompanyKeyResult
                         .requestMatchers("/company/{companyId}/objective/{objectiveId}/keyresult", 
                                                 "/company/{companyId}/objective/{objectiveId}/keyresult/{keyResultId}",
+                                                "/company/{companyId}/objective/{objectiveId}/keyresult/{keyResultId}/contributing/units",
+                                                "/company/{companyId}/objective/{objectiveId}/keyresult/{keyResultId}/contributing/businuessunits",
                                                 "/company/{companyId}/objective/{objectiveId}/keyresult/{keyResultId}/updatehistory")
                                 .access(hasAnyCompanyAuthority(
                                         hasRole(Roles.CO_OKR_ADMIN)
@@ -119,6 +121,8 @@ public class SecurityConfig {
                         // BusinessUnitKeyResult
                         .requestMatchers("/company/{companyId}/businessunit/{businessUnitId}/objective/{objectiveId}/keyresult", 
                                                 "/company/{companyId}/businessunit/{businessUnitId}/objective/{objectiveId}/keyresult/{keyResultId}",
+                                                "/company/{companyId}/businessunit/{businessUnitId}/objective/{objectiveId}/keyresult/{keyResultId}/contributing/units",
+                                                "/company/{companyId}/businessunit/{businessUnitId}/objective/{objectiveId}/keyresult/{keyResultId}/contributing/businuessunits",
                                                 "/company/{companyId}/businessunit/{businessUnitId}/objective/{objectiveId}/keyresult/{keyResultId}/updatehistory")
                                 .access(hasAnyCompanyAuthority(
                                         hasRole(Roles.BUO_OKR_ADMIN)

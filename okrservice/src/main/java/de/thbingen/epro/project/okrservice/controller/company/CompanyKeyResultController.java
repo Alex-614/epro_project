@@ -22,9 +22,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import de.thbingen.epro.project.okrservice.controller.Utils;
+import de.thbingen.epro.project.okrservice.dtos.BusinessUnitDto;
 import de.thbingen.epro.project.okrservice.dtos.CompanyKeyResultDto;
 import de.thbingen.epro.project.okrservice.dtos.KeyResultPatchDto;
 import de.thbingen.epro.project.okrservice.dtos.KeyResultUpdateDto;
+import de.thbingen.epro.project.okrservice.dtos.UnitDto;
+import de.thbingen.epro.project.okrservice.entities.BusinessUnit;
+import de.thbingen.epro.project.okrservice.entities.Unit;
 import de.thbingen.epro.project.okrservice.entities.User;
 import de.thbingen.epro.project.okrservice.entities.keyresults.CompanyKeyResult;
 import de.thbingen.epro.project.okrservice.entities.keyresults.KeyResultType;
@@ -114,6 +118,22 @@ public class CompanyKeyResultController {
         return new ResponseEntity<>(new CompanyKeyResultDto(companyKeyResult), HttpStatus.OK);
     }
 
+
+
+    @GetMapping("{keyResultId}/contributing/units")
+    public ResponseEntity<List<UnitDto>> getContibutingUnits(@PathVariable @NonNull Number companyId,
+                                                              @PathVariable @NonNull Number objectiveId,
+                                                              @PathVariable @NonNull Number keyResultId) throws Exception {
+        CompanyKeyResult companyKeyResult = utils.getCompanyKeyResultFromRepository(companyId, objectiveId, keyResultId);
+        return new ResponseEntity<>(companyKeyResult.getContributingUnits().stream().map(UnitDto::new).collect(Collectors.toList()), HttpStatus.OK);
+    }
+    @GetMapping("{keyResultId}/contributing/businessunits")
+    public ResponseEntity<List<BusinessUnitDto>> getContibutingBusinessUnits(@PathVariable @NonNull Number companyId,
+                                                              @PathVariable @NonNull Number objectiveId,
+                                                              @PathVariable @NonNull Number keyResultId) throws Exception {
+        CompanyKeyResult companyKeyResult = utils.getCompanyKeyResultFromRepository(companyId, objectiveId, keyResultId);
+        return new ResponseEntity<>(companyKeyResult.getContributingBusinessUnits().stream().map(BusinessUnitDto::new).collect(Collectors.toList()), HttpStatus.OK);
+    }
 
 
 

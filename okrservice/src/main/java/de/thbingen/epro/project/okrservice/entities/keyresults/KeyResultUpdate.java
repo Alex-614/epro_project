@@ -2,6 +2,8 @@ package de.thbingen.epro.project.okrservice.entities.keyresults;
 
 import java.time.Instant;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import de.thbingen.epro.project.okrservice.entities.User;
 import de.thbingen.epro.project.okrservice.entities.ids.KeyResultUpdateId;
 import jakarta.persistence.AttributeOverride;
@@ -51,6 +53,7 @@ public class KeyResultUpdate {
     private String statusUpdate;
     
     @Column(name = "updatetimestamp")
+    @CreationTimestamp
     private Instant updateTimestamp;
 
     @OneToOne

@@ -94,7 +94,6 @@ public class CompanyObjectiveController {
         CompanyObjective objective = utils.getCompanyObjectiveFromRepository(companyId, objectiveId.longValue());
         User owner = null;
         if (objectiveDto.getOwnerId() != null) owner = utils.getUserFromRepository(objectiveDto.getOwnerId());
-        
         if (objectiveDto.getDeadline() != null) objective.setDeadline(objectiveDto.getDeadline());
         if (objectiveDto.getTitle() != null) objective.setTitle(objectiveDto.getTitle());
         if (objectiveDto.getDescription() != null) objective.setDescription(objectiveDto.getDescription());

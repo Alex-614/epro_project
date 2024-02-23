@@ -84,11 +84,11 @@ public class UserController {
     public ResponseEntity<UserDto> patchUser(@PathVariable @NonNull Number userId, @RequestBody UserDto userDto) throws Exception {
         User user = utils.getUserFromRepository(userId);
 
-        if (userDto.getEmail() != null) user.setEmail(userDto.getEmail());
-        if (userDto.getPassword() != null) user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        if (userDto.getUsername() != null) user.setUsername(userDto.getUsername());
-        if (userDto.getFirstname() != null) user.setFirstname(userDto.getFirstname());
-        if (userDto.getSurname() != null) user.setSurname(userDto.getSurname());
+        if (userDto.getEmail() != null && !userDto.getEmail().isEmpty()) user.setEmail(userDto.getEmail());
+        if (userDto.getPassword() != null && !userDto.getPassword().isEmpty()) user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        if (userDto.getUsername() != null && !userDto.getUsername().isEmpty()) user.setUsername(userDto.getUsername());
+        if (userDto.getFirstname() != null && !userDto.getFirstname().isEmpty()) user.setFirstname(userDto.getFirstname());
+        if (userDto.getSurname() != null && !userDto.getSurname().isEmpty()) user.setSurname(userDto.getSurname());
 
         userRepository.save(user);
         return new ResponseEntity<>(new UserDto(user), HttpStatus.OK);
