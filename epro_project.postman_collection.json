@@ -57,8 +57,7 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"var jsonData = pm.response.json();\r",
-							"pm.collectionVariables.set(\"companyId\", jsonData.id);"
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -105,8 +104,7 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"var jsonData = pm.response.json();\r",
-							"pm.collectionVariables.set(\"companyId\", jsonData.id);"
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -150,8 +148,7 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"var jsonData = pm.response.json();\r",
-							"pm.collectionVariables.set(\"companyId\", jsonData.id);"
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -458,13 +455,131 @@
 			"response": []
 		},
 		{
+			"name": "CompanyKeyResult ContributingUnits",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{epro_project}}/company/{{companyId}}/objective/{{companyObjectiveId}}/keyresult/{{companyKeyResultId}}/contributing/units",
+					"host": [
+						"{{epro_project}}"
+					],
+					"path": [
+						"company",
+						"{{companyId}}",
+						"objective",
+						"{{companyObjectiveId}}",
+						"keyresult",
+						"{{companyKeyResultId}}",
+						"contributing",
+						"units"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CompanyKeyResult ContributingBusinessUnits",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{epro_project}}/company/{{companyId}}/objective/{{companyObjectiveId}}/keyresult/{{companyKeyResultId}}/contributing/businessunits",
+					"host": [
+						"{{epro_project}}"
+					],
+					"path": [
+						"company",
+						"{{companyId}}",
+						"objective",
+						"{{companyObjectiveId}}",
+						"keyresult",
+						"{{companyKeyResultId}}",
+						"contributing",
+						"businessunits"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CompanyKeyResult UpdateHistory",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{epro_project}}/company/{{companyId}}/objective/{{companyObjectiveId}}/keyresult/{{companyKeyResultId}}/updatehistory",
+					"host": [
+						"{{epro_project}}"
+					],
+					"path": [
+						"company",
+						"{{companyId}}",
+						"objective",
+						"{{companyObjectiveId}}",
+						"keyresult",
+						"{{companyKeyResultId}}",
+						"updatehistory"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "CompanyKeyResult",
 			"request": {
 				"method": "PATCH",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n\r\n    \"title\": \"KR1\",\r\n    \"goal\": \"100\",\r\n    \"type\": \"numeric\",\r\n    \"description\": \"Erstes Company Key Result\",\r\n    \"representers\": [],\r\n\r\n    \"current\": \"60\",\r\n    \"confidenceLevel\": \"70\",\r\n    \"statusUpdate\": \"Das ist ein Status Update\"\r\n}",
+					"raw": "{\r\n    \"statusUpdate\": \"Das ist ein Status Update\",\r\n    \"keyResultDto\": {\r\n        \"current\": \"1430\",\r\n        \"confidenceLevel\": \"70\"\r\n    }\r\n}\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -540,6 +655,37 @@
 				"body": {
 					"mode": "raw",
 					"raw": "{\r\n    \"name\": \"Development\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{epro_project}}/company/{{companyId}}/businessunit",
+					"host": [
+						"{{epro_project}}"
+					],
+					"path": [
+						"company",
+						"{{companyId}}",
+						"businessunit"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "BusinessUnit All",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -871,13 +1017,126 @@
 			"response": []
 		},
 		{
+			"name": "BusinessUnitKeyResult ContributingUnits",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{epro_project}}/company/{{companyId}}/businessunit/{{businessUnitObjectiveId}}/objective/{{businessUnitObjectiveId}}/keyresult/{{businessUnitKeyResultId}}/contributing/units",
+					"host": [
+						"{{epro_project}}"
+					],
+					"path": [
+						"company",
+						"{{companyId}}",
+						"businessunit",
+						"{{businessUnitObjectiveId}}",
+						"objective",
+						"{{businessUnitObjectiveId}}",
+						"keyresult",
+						"{{businessUnitKeyResultId}}",
+						"contributing",
+						"units"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "BusinessUnitKeyResult ContributingBusinessUnits",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{epro_project}}/company/{{companyId}}/businessunit/{{businessUnitObjectiveId}}/objective/{{businessUnitObjectiveId}}/keyresult/{{businessUnitKeyResultId}}/contributing/businessunits",
+					"host": [
+						"{{epro_project}}"
+					],
+					"path": [
+						"company",
+						"{{companyId}}",
+						"businessunit",
+						"{{businessUnitObjectiveId}}",
+						"objective",
+						"{{businessUnitObjectiveId}}",
+						"keyresult",
+						"{{businessUnitKeyResultId}}",
+						"contributing",
+						"businessunits"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "BusinessUnitKeyResult UpdateHistory",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{epro_project}}/company/{{companyId}}/businessunit/{{businessUnitObjectiveId}}/objective/{{businessUnitObjectiveId}}/keyresult/{{businessUnitKeyResultId}}/updatehistory",
+					"host": [
+						"{{epro_project}}"
+					],
+					"path": [
+						"company",
+						"{{companyId}}",
+						"businessunit",
+						"{{businessUnitObjectiveId}}",
+						"objective",
+						"{{businessUnitObjectiveId}}",
+						"keyresult",
+						"{{businessUnitKeyResultId}}",
+						"updatehistory"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "BusinessUnitKeyResult",
 			"request": {
 				"method": "PATCH",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"current\": \"50\",\r\n    \"confidenceLevel\": \"50\",\r\n    \"statusUpdate\": \"Das ist ein Status Update\"\r\n}",
+					"raw": "{\r\n\r\n    \"statusUpdate\": \"Das ist ein Status Update\",\r\n    \"keyResultDto\": {\r\n        \"current\": \"123\",\r\n        \"confidenceLevel\": \"50\"\r\n    }\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -959,6 +1218,39 @@
 				"body": {
 					"mode": "raw",
 					"raw": "{\r\n    \"name\": \"Frontend\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{epro_project}}/company/{{companyId}}/businessunit/{{businessUnitId}}/unit",
+					"host": [
+						"{{epro_project}}"
+					],
+					"path": [
+						"company",
+						"{{companyId}}",
+						"businessunit",
+						"{{businessUnitId}}",
+						"unit"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Unit All",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -1072,26 +1364,6 @@
 						"{{businessUnitId}}",
 						"unit",
 						"{{unitId}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "OKR-Set",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{epro_project}}/company/{{companyId}}/okrset/",
-					"host": [
-						"{{epro_project}}"
-					],
-					"path": [
-						"company",
-						"{{companyId}}",
-						"okrset",
-						""
 					]
 				}
 			},
