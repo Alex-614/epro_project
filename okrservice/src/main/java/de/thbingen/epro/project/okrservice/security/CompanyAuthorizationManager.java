@@ -14,6 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.access.intercept.RequestAuthorizationContext;
 
 import de.thbingen.epro.project.okrservice.entities.User;
+import de.thbingen.epro.project.okrservice.exceptions.UserAlreadyExistsException;
 import de.thbingen.epro.project.okrservice.repositories.PrivilegeRepository;
 import de.thbingen.epro.project.okrservice.repositories.RoleRepository;
 import de.thbingen.epro.project.okrservice.repositories.UserRepository;
@@ -42,7 +43,12 @@ public class CompanyAuthorizationManager implements AuthorizationManager<Request
     @Override
     public AuthorizationDecision check(Supplier<Authentication> authentication, RequestAuthorizationContext context) {
         
-        User user = userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+        User user;
+        try {
+            user = userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(() -> new UserAlreadyExistsException());
+        } catch (UserAlreadyExistsException e) {
+            return new AuthorizationDecision(false);
+        }
         
         AuthorizationDecision decision = new AuthorizationDecision(false);
         int i = 0;

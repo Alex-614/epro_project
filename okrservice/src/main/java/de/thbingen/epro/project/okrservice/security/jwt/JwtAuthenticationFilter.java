@@ -1,4 +1,4 @@
-package de.thbingen.epro.project.okrservice.jwt;
+package de.thbingen.epro.project.okrservice.security.jwt;
 
 import java.io.IOException;
 
@@ -11,7 +11,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import de.thbingen.epro.project.okrservice.security.SecurityConstants;
-import de.thbingen.epro.project.okrservice.services.CustomUserDetailsService;
+import de.thbingen.epro.project.okrservice.services.impl.CustomUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

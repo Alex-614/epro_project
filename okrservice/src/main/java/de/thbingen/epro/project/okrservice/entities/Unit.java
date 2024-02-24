@@ -2,6 +2,7 @@ package de.thbingen.epro.project.okrservice.entities;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import de.thbingen.epro.project.okrservice.dtos.UnitDto;
 import de.thbingen.epro.project.okrservice.entities.ids.UnitId;
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
@@ -52,6 +53,8 @@ public class Unit {
     private String name;
 
     
-
+    public UnitDto toDto() {
+        return new UnitDto(this);
+    }
 
 }

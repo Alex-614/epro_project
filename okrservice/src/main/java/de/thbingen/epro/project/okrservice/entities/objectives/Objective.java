@@ -1,8 +1,11 @@
 package de.thbingen.epro.project.okrservice.entities.objectives;
 
 import java.time.Instant;
+import java.util.List;
 
+import de.thbingen.epro.project.okrservice.dtos.ObjectiveDto;
 import de.thbingen.epro.project.okrservice.entities.User;
+import de.thbingen.epro.project.okrservice.entities.keyresults.KeyResult;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -11,15 +14,14 @@ import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter
+@Setter
 @Table(name = "tbl_objective")
 @Inheritance(strategy = InheritanceType.JOINED)
 @Entity
@@ -40,10 +42,24 @@ public abstract class Objective {
     @JoinColumn(name = "user_id")
     private User owner;
     
+    @OneToMany(mappedBy = "objective")
+    private List<KeyResult> keyReslts;
+    
 
+    public int getAchivement() {
+        int result = 0;
+        if (getKeyReslts() != null) {
+            for (KeyResult k : getKeyReslts()) {
+                result += k.getAchivement();
+            }
+            // if there is at least one KeyResult
+            if (result != 0) {
+                result /= getKeyReslts().size();
+            }
+        }
+        return result;
+    }
 
-
-
-
+    public abstract <T extends ObjectiveDto> T toDto();
 
 }

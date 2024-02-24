@@ -74,7 +74,6 @@ public class KeyResultUpdate {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User updater;
     
-    
 
 
 

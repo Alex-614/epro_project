@@ -2,6 +2,7 @@ package de.thbingen.epro.project.okrservice.entities;
 
 import java.util.List;
 
+import de.thbingen.epro.project.okrservice.dtos.CompanyDto;
 import de.thbingen.epro.project.okrservice.entities.objectives.CompanyObjective;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -33,5 +34,10 @@ public class Company {
     @OneToMany(mappedBy = "company")
     private List<CompanyObjective> objectives;
     
+
+
+    public CompanyDto toDto() {
+        return new CompanyDto(this);
+    }
 
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import de.thbingen.epro.project.okrservice.dtos.BusinessUnitDto;
 import de.thbingen.epro.project.okrservice.entities.ids.BusinessUnitId;
 import de.thbingen.epro.project.okrservice.entities.objectives.BusinessUnitObjective;
 import jakarta.persistence.Column;
@@ -54,7 +55,9 @@ public class BusinessUnit {
     private List<BusinessUnitObjective> objectives;
 
 
-
+    public BusinessUnitDto toDto() {
+        return new BusinessUnitDto(this);
+    }
 
 
 

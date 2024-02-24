@@ -33,8 +33,8 @@ import com.google.gson.GsonBuilder;
 
 import de.thbingen.epro.project.okrservice.dtos.UserDto;
 import de.thbingen.epro.project.okrservice.entities.User;
-import de.thbingen.epro.project.okrservice.jwt.JwtGenerator;
 import de.thbingen.epro.project.okrservice.repositories.UserRepository;
+import de.thbingen.epro.project.okrservice.security.jwt.JwtGenerator;
 
 @WebMvcTest(UserController.class)
 @AutoConfigureMockMvc(addFilters = false)

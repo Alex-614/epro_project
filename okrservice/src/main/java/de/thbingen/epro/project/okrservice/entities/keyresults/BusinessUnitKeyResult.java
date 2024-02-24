@@ -1,5 +1,6 @@
 package de.thbingen.epro.project.okrservice.entities.keyresults;
 
+import de.thbingen.epro.project.okrservice.dtos.BusinessUnitKeyResultDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
@@ -13,5 +14,9 @@ import lombok.Setter;
 @PrimaryKeyJoinColumn(name = "keyresult_id")
 public class BusinessUnitKeyResult extends KeyResult {
 
+
+    public BusinessUnitKeyResultDto toDto() {
+        return new BusinessUnitKeyResultDto(this);
+    }
 
 }

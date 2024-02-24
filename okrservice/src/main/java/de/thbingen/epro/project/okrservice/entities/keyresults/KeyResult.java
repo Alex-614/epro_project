@@ -2,6 +2,7 @@ package de.thbingen.epro.project.okrservice.entities.keyresults;
 
 import java.util.List;
 
+import de.thbingen.epro.project.okrservice.dtos.KeyResultDto;
 import de.thbingen.epro.project.okrservice.entities.BusinessUnit;
 import de.thbingen.epro.project.okrservice.entities.Unit;
 import de.thbingen.epro.project.okrservice.entities.objectives.Objective;
@@ -86,5 +87,18 @@ public abstract class KeyResult {
     )
     private List<BusinessUnit> contributingBusinessUnits;
 
+
+
+    public int getAchivement() {
+        if (getGoal() == 0) {
+            return 0;
+        }
+        return getCurrent() / getGoal();
+    }
+
+
+    public abstract <T extends KeyResultDto> T toDto();
+
+    
 
 }

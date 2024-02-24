@@ -1,36 +1,37 @@
 package de.thbingen.epro.project.okrservice.dtos;
 
-import java.time.Instant;
-
 import de.thbingen.epro.project.okrservice.entities.objectives.Objective;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class ObjectiveDto {
+public abstract class ObjectiveDto {
 
     private Long id;
     
     @NotNull
-    private Instant deadline;
+    private Long deadline;
     
-    @NotEmpty
+    @NotBlank
     private String title;
     
-    @NotEmpty
+    @NotBlank
     private String description;
     
     @NotNull
     private Long ownerId;
 
+    public Integer achivement;
+
     public ObjectiveDto(Objective objective) {
         this.id = objective.getId();
-        this.deadline = objective.getDeadline();
+        this.deadline = objective.getDeadline().toEpochMilli();
         this.title = objective.getTitle();
         this.description = objective.getDescription();
         this.ownerId = objective.getOwner().getId();
+        this.achivement = objective.getAchivement();
     }
 }

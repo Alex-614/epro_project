@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import de.thbingen.epro.project.okrservice.entities.keyresults.CompanyKeyResult;
-import de.thbingen.epro.project.okrservice.entities.keyresults.KeyResult;
-import de.thbingen.epro.project.okrservice.entities.objectives.BusinessUnitObjective;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,10 +17,10 @@ public class CompanyKeyResultDto extends KeyResultDto {
 
     public CompanyKeyResultDto(CompanyKeyResult companyKeyResult) {
         super(companyKeyResult);
-        this.representers = companyKeyResult.getRepresenters().stream().map(mapper -> mapper.getId()).collect(Collectors.toList());
+        this.representers = companyKeyResult.getRepresenters().stream().map(mapper -> mapper.getId().longValue()).collect(Collectors.toList());
     }
-    public CompanyKeyResultDto(KeyResult keyResult, List<BusinessUnitObjective> representers) {
-        super(keyResult);
-        this.representers = representers.stream().map(mapper -> mapper.getId().longValue()).collect(Collectors.toList());
-    }
+    
+
+
+
 }

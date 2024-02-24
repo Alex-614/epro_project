@@ -1,7 +1,6 @@
 package de.thbingen.epro.project.okrservice.controller.company;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,12 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import de.thbingen.epro.project.okrservice.controller.Utils;
 import de.thbingen.epro.project.okrservice.dtos.CompanyObjectiveDto;
-import de.thbingen.epro.project.okrservice.entities.Company;
-import de.thbingen.epro.project.okrservice.entities.User;
 import de.thbingen.epro.project.okrservice.entities.objectives.CompanyObjective;
-import de.thbingen.epro.project.okrservice.repositories.CompanyObjectiveRepository;
+import de.thbingen.epro.project.okrservice.services.CompanyObjectiveService;
 import jakarta.validation.Valid;
 
 @RestController
@@ -30,14 +26,12 @@ public class CompanyObjectiveController {
 
 
 
-    private CompanyObjectiveRepository companyObjectiveRepository;
+    private CompanyObjectiveService companyObjectiveService;
 
-    private Utils utils;
 
     @Autowired
-    public CompanyObjectiveController(CompanyObjectiveRepository companyObjectiveRepository, Utils utils) {
-        this.companyObjectiveRepository = companyObjectiveRepository;
-        this.utils = utils;
+    public CompanyObjectiveController(CompanyObjectiveService companyObjectiveService) {
+        this.companyObjectiveService = companyObjectiveService;
     }
 
 
@@ -45,44 +39,24 @@ public class CompanyObjectiveController {
 
     @PostMapping
     public ResponseEntity<CompanyObjectiveDto> createCompanyObjective(@PathVariable @NonNull Number companyId,
-                                                          @RequestBody @Valid CompanyObjectiveDto companyObjectiveDto)
+                                                          @RequestBody @Valid CompanyObjectiveDto objectiveDto)
             throws Exception {
-        Company company = utils.getCompanyFromRepository(companyId);
-        User owner = utils.getUserFromRepository(companyObjectiveDto.getOwnerId());
-
-        if (company.getObjectives().size() >= 5) {
-            // Reached Max Commpany Objectives
-            return new ResponseEntity<>(companyObjectiveDto, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
-        CompanyObjective objective = new CompanyObjective();
-        objective.setCompany(company);
-        objective.setDeadline(companyObjectiveDto.getDeadline());
-        objective.setDescription(companyObjectiveDto.getDescription());
-        objective.setOwner(owner);
-        objective.setTitle(companyObjectiveDto.getTitle());
-
-        companyObjectiveRepository.save(objective);
-
-        companyObjectiveDto.setId(objective.getId());
-        return new ResponseEntity<>(companyObjectiveDto, HttpStatus.OK);
+        CompanyObjectiveDto response = companyObjectiveService.createObjective(companyId.longValue(), objectiveDto);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("{objectiveId}")
     public ResponseEntity<CompanyObjectiveDto> getCompanyObjective(@PathVariable Number companyId,
                                                                    @PathVariable Number objectiveId) throws Exception {
-        CompanyObjective companyObjective =
-        utils.getCompanyObjectiveFromRepository(companyId, objectiveId);
-        return new ResponseEntity<>(new CompanyObjectiveDto(companyObjective), HttpStatus.OK);
+        CompanyObjective companyObjective = companyObjectiveService.findObjective(objectiveId.longValue());
+        return new ResponseEntity<>(companyObjective.toDto(), HttpStatus.OK);
     }
 
 
     @GetMapping
     public ResponseEntity<List<CompanyObjectiveDto>> getAllCompanyObjectives(@PathVariable Number companyId) {
-        List<CompanyObjective> companyObjectives = companyObjectiveRepository.findByCompanyId(companyId.longValue());
-        return new ResponseEntity<>(companyObjectives.stream()
-                .map(CompanyObjectiveDto::new)
-                .collect(Collectors.toList()), HttpStatus.OK);
+        List<CompanyObjectiveDto> response = companyObjectiveService.findAllObjectives(companyId.longValue());
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 
@@ -91,16 +65,8 @@ public class CompanyObjectiveController {
     public ResponseEntity<CompanyObjectiveDto> patchCompanyObjective(
             @PathVariable Number companyId, @PathVariable Number objectiveId,
             @RequestBody CompanyObjectiveDto objectiveDto) throws Exception {
-        CompanyObjective objective = utils.getCompanyObjectiveFromRepository(companyId, objectiveId.longValue());
-        User owner = null;
-        if (objectiveDto.getOwnerId() != null) owner = utils.getUserFromRepository(objectiveDto.getOwnerId());
-        if (objectiveDto.getDeadline() != null) objective.setDeadline(objectiveDto.getDeadline());
-        if (objectiveDto.getTitle() != null) objective.setTitle(objectiveDto.getTitle());
-        if (objectiveDto.getDescription() != null) objective.setDescription(objectiveDto.getDescription());
-        if (owner != null) objective.setOwner(owner);
-
-        companyObjectiveRepository.save(objective);
-        return new ResponseEntity<>(new CompanyObjectiveDto(objective), HttpStatus.OK);
+        CompanyObjectiveDto response = companyObjectiveService.patchObjective(companyId.longValue(), objectiveDto);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 
@@ -108,8 +74,7 @@ public class CompanyObjectiveController {
     @DeleteMapping("{objectiveId}")
     public ResponseEntity<Void> deleteCompanyObjective(@PathVariable Number companyId,
                                                          @PathVariable Number objectiveId) throws Exception {
-        CompanyObjective companyObjective = utils.getCompanyObjectiveFromRepository(companyId, objectiveId);
-        companyObjectiveRepository.deleteById(objectiveId.longValue());
+        companyObjectiveService.deleteObjective(objectiveId.longValue());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

@@ -1,7 +1,6 @@
 package de.thbingen.epro.project.okrservice.controller.businessunit;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,32 +15,24 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import de.thbingen.epro.project.okrservice.controller.Utils;
 import de.thbingen.epro.project.okrservice.dtos.BusinessUnitDto;
 import de.thbingen.epro.project.okrservice.entities.BusinessUnit;
-import de.thbingen.epro.project.okrservice.entities.Company;
 import de.thbingen.epro.project.okrservice.exceptions.BusinessUnitAlreadyExistsException;
 import de.thbingen.epro.project.okrservice.exceptions.BusinessUnitNotFoundException;
 import de.thbingen.epro.project.okrservice.exceptions.CompanyNotFoundException;
-import de.thbingen.epro.project.okrservice.repositories.BusinessUnitRepository;
-import de.thbingen.epro.project.okrservice.repositories.CompanyRepository;
+import de.thbingen.epro.project.okrservice.services.BusinessUnitService;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/company/{companyId}/businessunit")
 public class BusinessUnitController {
 
-    private CompanyRepository companyRepository;
-
-    private BusinessUnitRepository businessUnitRepository;
-    private Utils utils;
+    private BusinessUnitService businessUnitService;
 
 
     @Autowired
-    public BusinessUnitController(CompanyRepository companyRepository, BusinessUnitRepository businessUnitRepository, Utils utils) {
-        this.companyRepository = companyRepository;
-        this.businessUnitRepository = businessUnitRepository;
-        this.utils = utils;
+    public BusinessUnitController(BusinessUnitService businessUnitService) {
+        this.businessUnitService = businessUnitService;
     }
 
 
@@ -51,34 +42,15 @@ public class BusinessUnitController {
     public ResponseEntity<BusinessUnitDto> createBusinessUnit(@PathVariable @NonNull Number companyId, 
                                                                 @RequestBody @Valid BusinessUnitDto businessUnitDto
     ) throws CompanyNotFoundException, BusinessUnitNotFoundException, BusinessUnitAlreadyExistsException {
-        if (!companyRepository.existsById(companyId.longValue())) {
-            // "Company not found!"
-            throw new CompanyNotFoundException();
-        }
-        Company company = companyRepository.findById(companyId.longValue()).get();
-        if (businessUnitRepository.existsByNameAndCompanyIdEquals(businessUnitDto.getName(), company.getId())) {
-            // "BusinessUnit already exists!"
-            throw new BusinessUnitAlreadyExistsException();
-        }
-
-
-        BusinessUnit businessUnit = new BusinessUnit();
-        businessUnit.setName(businessUnitDto.getName());
-        businessUnit.setCompany(company);
-        
-        businessUnitRepository.save(businessUnit);
-
-        businessUnitDto.setId(businessUnit.getId());
-        return new ResponseEntity<>(businessUnitDto, HttpStatus.OK);
+        BusinessUnitDto response = businessUnitService.createBusinessUnit(companyId.longValue(), businessUnitDto);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 
     @GetMapping
     public ResponseEntity<List<BusinessUnitDto>> getAllBusinessUnit(@PathVariable @NonNull Number companyId){
-        List<BusinessUnit> businessUnits = businessUnitRepository.findByCompanyId(companyId.longValue());
-        return new ResponseEntity<>(businessUnits.stream()
-                .map(BusinessUnitDto::new)
-                .collect(Collectors.toList()), HttpStatus.OK);
+        List<BusinessUnitDto> response = businessUnitService.findAllBusinessUnits(companyId.longValue());
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     
@@ -86,8 +58,8 @@ public class BusinessUnitController {
     public ResponseEntity<BusinessUnitDto> getBusinessUnit(@PathVariable @NonNull Number companyId,
                                               @PathVariable @NonNull Number businessUnitId)
             throws Exception {
-        BusinessUnit businessUnit = utils.getBusinessUnitFromRepository(companyId, businessUnitId);
-        return new ResponseEntity<>(new BusinessUnitDto(businessUnit), HttpStatus.OK);
+        BusinessUnit businessUnit = businessUnitService.findBusinessUnit(companyId.longValue(), businessUnitId.longValue());
+        return new ResponseEntity<>(businessUnit.toDto(), HttpStatus.OK);
     }
 
 
@@ -96,12 +68,8 @@ public class BusinessUnitController {
                                                               @PathVariable @NonNull Number businessUnitId,
                                                               @RequestBody BusinessUnitDto businessUnitDto
     ) throws Exception {
-        BusinessUnit businessUnit = utils.getBusinessUnitFromRepository(companyId, businessUnitId);
-
-        if (businessUnitDto.getName() != null) businessUnit.setName(businessUnitDto.getName());
-
-        businessUnitRepository.save(businessUnit);
-        return new ResponseEntity<>(new BusinessUnitDto(businessUnit), HttpStatus.OK);
+        BusinessUnitDto response = businessUnitService.patchBusinessUnit(companyId.longValue(), businessUnitId.longValue(), businessUnitDto);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 
@@ -109,8 +77,7 @@ public class BusinessUnitController {
     public ResponseEntity<Void> deleteBusinessUnit(@PathVariable @NonNull Number companyId,
                                            @PathVariable @NonNull Number businessUnitId)
             throws Exception {
-        BusinessUnit businessUnit = utils.getBusinessUnitFromRepository(companyId, businessUnitId);
-        businessUnitRepository.deleteById(businessUnit.getId());
+        businessUnitService.deleteBusinessUnit(companyId.longValue(), businessUnitId.longValue());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

@@ -1,4 +1,4 @@
-package de.thbingen.epro.project.okrservice.jwt;
+package de.thbingen.epro.project.okrservice.security.jwt;
 
 import java.io.IOException;
 

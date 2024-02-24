@@ -19,9 +19,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import de.thbingen.epro.project.okrservice.constants.Privileges;
 import de.thbingen.epro.project.okrservice.constants.Roles;
-import de.thbingen.epro.project.okrservice.jwt.JwtAuthEntryPoint;
-import de.thbingen.epro.project.okrservice.jwt.JwtAuthenticationFilter;
-import de.thbingen.epro.project.okrservice.services.CustomUserDetailsService;
+import de.thbingen.epro.project.okrservice.security.jwt.JwtAuthEntryPoint;
+import de.thbingen.epro.project.okrservice.security.jwt.JwtAuthenticationFilter;
+import de.thbingen.epro.project.okrservice.services.impl.CustomUserDetailsService;
 
 @Configuration
 @EnableWebSecurity

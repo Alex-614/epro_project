@@ -1,8 +1,6 @@
 package de.thbingen.epro.project.okrservice.controller.businessunit;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,31 +15,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import de.thbingen.epro.project.okrservice.controller.Utils;
 import de.thbingen.epro.project.okrservice.dtos.BusinessUnitObjectiveDto;
-import de.thbingen.epro.project.okrservice.dtos.ObjectiveDto;
-import de.thbingen.epro.project.okrservice.entities.BusinessUnit;
-import de.thbingen.epro.project.okrservice.entities.User;
-import de.thbingen.epro.project.okrservice.entities.ids.BusinessUnitId;
-import de.thbingen.epro.project.okrservice.entities.keyresults.CompanyKeyResult;
 import de.thbingen.epro.project.okrservice.entities.objectives.BusinessUnitObjective;
-import de.thbingen.epro.project.okrservice.exceptions.MaxCompanyObjectivesReachedException;
-import de.thbingen.epro.project.okrservice.repositories.BusinessUnitObjectiveRepository;
+import de.thbingen.epro.project.okrservice.services.BusinessUnitObjectiveService;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/company/{companyId}/businessunit/{businessUnitId}/objective")
 public class BusinessUnitObjectiveController {
 
-    private BusinessUnitObjectiveRepository businessUnitObjectiveRepository;
-
-    private Utils utils;
+    private BusinessUnitObjectiveService businessUnitObjectiveService;
 
 
     @Autowired
-    public BusinessUnitObjectiveController(BusinessUnitObjectiveRepository businessUnitObjectiveRepository, Utils utils) {
-        this.businessUnitObjectiveRepository = businessUnitObjectiveRepository;
-        this.utils = utils;
+    public BusinessUnitObjectiveController(BusinessUnitObjectiveService businessUnitObjectiveService) {
+        this.businessUnitObjectiveService = businessUnitObjectiveService;
     }
 
 
@@ -50,39 +38,19 @@ public class BusinessUnitObjectiveController {
 
 
     @PostMapping
-    public ResponseEntity<ObjectiveDto> createBusinessUnitObjective(@PathVariable @NonNull Number companyId, 
+    public ResponseEntity<BusinessUnitObjectiveDto> createBusinessUnitObjective(@PathVariable @NonNull Number companyId, 
                                                                         @PathVariable @NonNull Number businessUnitId, 
                                                                         @RequestBody @Valid BusinessUnitObjectiveDto objectiveDto
     ) throws Exception {
-        BusinessUnit businessUnit = utils.getBusinessUnitFromRepository(companyId, businessUnitId);
-        User owner = utils.getUserFromRepository(objectiveDto.getOwnerId());
-        if (businessUnit.getObjectives().size() >= 5) {
-            // Reached Max Company Objectives
-            throw new MaxCompanyObjectivesReachedException();
-        }
-        BusinessUnitObjective objective = new BusinessUnitObjective();
-        objective.setBusinessUnit(businessUnit);
-        objective.setDeadline(objectiveDto.getDeadline());
-        objective.setDescription(objectiveDto.getDescription());
-        objective.setOwner(owner);
-        objective.setTitle(objectiveDto.getTitle());
-        objective.setRepresented(new ArrayList<CompanyKeyResult>());
-
-        businessUnitObjectiveRepository.save(objective);
-
-        objectiveDto.setId(objective.getId());
-        return new ResponseEntity<>(objectiveDto, HttpStatus.OK);
+        BusinessUnitObjectiveDto response = businessUnitObjectiveService.createObjective(companyId.longValue(), businessUnitId.longValue(), objectiveDto);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping
-    public ResponseEntity<List<BusinessUnitObjectiveDto>> getAllBusinessUnitObjectives(
-            @PathVariable @NonNull Number companyId,
-            @PathVariable @NonNull Number businessUnitId){
-        BusinessUnitId businessUnitIdObject = new BusinessUnitId(businessUnitId.longValue(), companyId.longValue());
-        List<BusinessUnitObjective> businessUnitsObjectives = businessUnitObjectiveRepository.findByBusinessUnitId(businessUnitIdObject);
-        return new ResponseEntity<>(businessUnitsObjectives.stream()
-                .map(BusinessUnitObjectiveDto::new)
-                .collect(Collectors.toList()), HttpStatus.OK);
+    public ResponseEntity<List<BusinessUnitObjectiveDto>> getAllBusinessUnitObjectives(@PathVariable @NonNull Number companyId,
+                                                                        @PathVariable @NonNull Number businessUnitId){
+        List<BusinessUnitObjectiveDto> response = businessUnitObjectiveService.findAllObjectives(companyId.longValue(), businessUnitId.longValue());
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("{objectiveId}")
@@ -90,41 +58,26 @@ public class BusinessUnitObjectiveController {
                                                                              @PathVariable @NonNull Number businessUnitId,
                                                                              @PathVariable @NonNull Number objectiveId
     ) throws Exception {
-        BusinessUnitObjective businessUnitObjective =
-        utils.getBusinessUnitObjectiveFromRepository(companyId, businessUnitId, objectiveId);
-        return new ResponseEntity<>(new BusinessUnitObjectiveDto(businessUnitObjective), HttpStatus.OK);
+        BusinessUnitObjective response = businessUnitObjectiveService.findObjective(objectiveId.longValue());
+        return new ResponseEntity<>(response.toDto(), HttpStatus.OK);
     }
 
     @PatchMapping("{objectiveId}")
-    public ResponseEntity<ObjectiveDto> patchBusinessUnitObjective(@PathVariable @NonNull Number companyId,
+    public ResponseEntity<BusinessUnitObjectiveDto> patchBusinessUnitObjective(@PathVariable @NonNull Number companyId,
                                                                     @PathVariable @NonNull Number businessUnitId,
                                                                     @PathVariable @NonNull Number objectiveId,
                                                                     @RequestBody BusinessUnitObjectiveDto objectiveDto
     ) throws Exception {
-        BusinessUnitObjective objective = utils.getBusinessUnitObjectiveFromRepository(companyId, businessUnitId, objectiveId);
-        User owner = null;
-        if (objectiveDto.getOwnerId() != null) {
-            owner = utils.getUserFromRepository(objectiveDto.getOwnerId());
-        }
-
-        if (objectiveDto.getDeadline() != null) objective.setDeadline(objectiveDto.getDeadline());
-        if (objectiveDto.getTitle() != null) objective.setTitle(objectiveDto.getTitle());
-        if (objectiveDto.getDescription() != null) objective.setDescription(objectiveDto.getDescription());
-        if (owner != null) objective.setOwner(owner);
-
-        businessUnitObjectiveRepository.save(objective);
-        return new ResponseEntity<>(new BusinessUnitObjectiveDto(objective), HttpStatus.OK);
+        BusinessUnitObjectiveDto response = businessUnitObjectiveService.patchObjective(companyId.longValue(), businessUnitId.longValue(), objectiveId.longValue(), objectiveDto);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
     
     @DeleteMapping("{objectiveId}")
     public ResponseEntity<Void> deleteBusinessUnitObjective(@PathVariable @NonNull Number companyId,
                                                               @PathVariable @NonNull Number businessUnitId,
                                                               @PathVariable @NonNull Number objectiveId
-
-    )
-            throws Exception {
-        BusinessUnitObjective businessUnitObjective = utils.getBusinessUnitObjectiveFromRepository(companyId, businessUnitId, objectiveId);
-        businessUnitObjectiveRepository.deleteById(objectiveId.longValue());
+    ) throws Exception {
+        businessUnitObjectiveService.deleteObjective(objectiveId.longValue());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

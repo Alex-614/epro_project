@@ -2,6 +2,7 @@ package de.thbingen.epro.project.okrservice.entities;
 
 import java.util.List;
 
+import de.thbingen.epro.project.okrservice.dtos.UserDto;
 import de.thbingen.epro.project.okrservice.entities.objectives.BusinessUnitObjective;
 import de.thbingen.epro.project.okrservice.entities.objectives.CompanyObjective;
 import de.thbingen.epro.project.okrservice.entities.objectives.Objective;
@@ -72,8 +73,6 @@ public class User {
     private List<BusinessUnitObjective> ownedBusinessUnitObjectives;
 
 
-
-
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "tbl_company_employs_user",
@@ -91,6 +90,19 @@ public class User {
     public void removeCompany(Company company) {
         this.companies.remove(company);
     }
+
+
+
+
+    public UserDto toDto() {
+        return new UserDto(this);
+    }
+
+
+
+
+
+
 
 
 }

@@ -1,20 +1,18 @@
 package de.thbingen.epro.project.okrservice.dtos;
 
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
-public class KeyResultPatchDto<T extends KeyResultDto> {
+public class KeyResultPatchDto<T extends KeyResultDto> extends UpdateDto {
 
-    @NotEmpty
-    private String statusUpdate;
 
-    private Long updateTimestamp;
+    public KeyResultPatchDto(String statusUpdate, Long updateTimestamp, Long updaterId, T keyResultDto) {
+        super(statusUpdate, updateTimestamp, updaterId);
+        this.keyResultDto = keyResultDto;
+    }
 
     @NotNull
     private T keyResultDto;

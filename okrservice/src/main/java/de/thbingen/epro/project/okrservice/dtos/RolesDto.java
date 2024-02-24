@@ -9,7 +9,7 @@ import lombok.Data;
 public class RolesDto {
 
     @NotNull
-    List<Number> roleIds;
+    private List<Number> roleIds;
 
 
 

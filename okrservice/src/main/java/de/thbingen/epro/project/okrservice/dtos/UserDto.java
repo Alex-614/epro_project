@@ -2,7 +2,7 @@ package de.thbingen.epro.project.okrservice.dtos;
 
 import de.thbingen.epro.project.okrservice.entities.User;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,26 +12,25 @@ public class UserDto {
 
     private Long id;
 
-    @NotEmpty
+    @NotBlank
     @Email
     private String email;
 
-    @NotEmpty
+    @NotBlank
     private String password;
 
-    @NotEmpty
+    @NotBlank
     private String username;
 
-    @NotEmpty
+    @NotBlank
     private String firstname;
 
-    @NotEmpty
+    @NotBlank
     private String surname;
 
     public UserDto(User user) {
         this.id = user.getId();
         this.email = user.getEmail();
-        this.password = user.getPassword();
         this.username = user.getUsername();
         this.firstname = user.getFirstname();
         this.surname = user.getSurname();

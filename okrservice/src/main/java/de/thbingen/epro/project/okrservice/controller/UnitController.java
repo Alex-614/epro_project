@@ -1,7 +1,6 @@
 package de.thbingen.epro.project.okrservice.controller;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,25 +16,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import de.thbingen.epro.project.okrservice.dtos.UnitDto;
-import de.thbingen.epro.project.okrservice.entities.BusinessUnit;
 import de.thbingen.epro.project.okrservice.entities.Unit;
-import de.thbingen.epro.project.okrservice.entities.ids.BusinessUnitId;
-import de.thbingen.epro.project.okrservice.exceptions.UnitAlreadyExistsException;
-import de.thbingen.epro.project.okrservice.repositories.UnitRepository;
+import de.thbingen.epro.project.okrservice.services.UnitService;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/company/{companyId}/businessunit/{businessUnitId}/unit")
 public class UnitController {
 
-    private UnitRepository unitRepository;
-
-    private Utils utils;
+    private UnitService unitService;
 
     @Autowired
-    public UnitController(UnitRepository unitRepository, Utils utils) {
-        this.unitRepository = unitRepository;
-        this.utils = utils;
+    public UnitController(UnitService unitService) {
+        this.unitService = unitService;
     }
 
 
@@ -43,20 +36,8 @@ public class UnitController {
     public ResponseEntity<UnitDto> createUnit(@PathVariable @NonNull Number companyId, 
                                                 @PathVariable @NonNull Number businessUnitId, 
                                                 @RequestBody @Valid UnitDto unitDto) throws Exception {
-        BusinessUnit businessUnit = utils.getBusinessUnitFromRepository( companyId, businessUnitId);
-        if (unitRepository.existsByNameAndBusinessUnitIdEquals(unitDto.getName(), businessUnit.getId())) {
-            // "Unit already exists!"
-            throw new UnitAlreadyExistsException();
-        }
-
-        Unit unit = new Unit();
-        unit.setName(unitDto.getName());
-        unit.setBusinessUnit(businessUnit);
-
-        unitRepository.save(unit);
-
-        unitDto.setId(unit.getId());
-        return new ResponseEntity<>(unitDto, HttpStatus.OK);
+        UnitDto response = unitService.createUnit(companyId.longValue(), businessUnitId.longValue(), unitDto);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
     
 
@@ -65,19 +46,16 @@ public class UnitController {
     public ResponseEntity<UnitDto> getUnit(@PathVariable @NonNull Number companyId,
                                            @PathVariable @NonNull Number businessUnitId,
                                            @PathVariable @NonNull Number unitId) throws Exception{
-        Unit unit = utils.getUnitFromRepository(companyId, businessUnitId, unitId);
-        return new ResponseEntity<>(new UnitDto(unit), HttpStatus.OK);
+        Unit unit = unitService.findUnit(companyId.longValue(), businessUnitId.longValue(), unitId.longValue());
+        return new ResponseEntity<>(unit.toDto(), HttpStatus.OK);
     }
     
     
     @GetMapping
     public ResponseEntity<List<UnitDto>> getAllUnits(@PathVariable @NonNull Number companyId,
                                                      @PathVariable @NonNull Number businessUnitId) {
-        BusinessUnitId businessUnitIdObject = new BusinessUnitId(businessUnitId.longValue(), companyId.longValue());
-        List<Unit> units = unitRepository.findByBusinessUnitId(businessUnitIdObject);
-        return new ResponseEntity<>(units.stream()
-                .map(UnitDto::new)
-                .collect(Collectors.toList()), HttpStatus.OK);
+        List<UnitDto> response = unitService.findAllUnits(companyId.longValue(), businessUnitId.longValue());
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 
@@ -86,12 +64,8 @@ public class UnitController {
                                              @PathVariable @NonNull Number businessUnitId,
                                              @PathVariable @NonNull Number unitId,
                                              @RequestBody UnitDto unitDto) throws Exception {
-        Unit unit = utils.getUnitFromRepository(companyId, businessUnitId, unitId);
-
-        if (unitDto.getName() != null) unit.setName(unitDto.getName());
-
-        unitRepository.save(unit);
-        return new ResponseEntity<>(new UnitDto(unit), HttpStatus.OK);
+        UnitDto response = unitService.patchUnit(companyId.longValue(), businessUnitId.longValue(), unitId.longValue(), unitDto);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 
@@ -100,8 +74,10 @@ public class UnitController {
     public ResponseEntity<Void> deleteUnit(@PathVariable @NonNull Number companyId,
                                              @PathVariable @NonNull Number businessUnitId,
                                              @PathVariable @NonNull Number unitId) throws Exception{
-        Unit unit = utils.getUnitFromRepository(companyId, businessUnitId, unitId);
-        unitRepository.deleteById(unit.getId());
+        unitService.deleteUnit(companyId.longValue(), businessUnitId.longValue(), unitId.longValue());
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+
+
 }

@@ -1,7 +1,7 @@
 package de.thbingen.epro.project.okrservice.dtos;
 
 import de.thbingen.epro.project.okrservice.entities.Company;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,7 +11,7 @@ public class CompanyDto {
 
     private Long id;
     
-    @NotEmpty
+    @NotBlank
     private String name;
 
     public CompanyDto(Company company) {

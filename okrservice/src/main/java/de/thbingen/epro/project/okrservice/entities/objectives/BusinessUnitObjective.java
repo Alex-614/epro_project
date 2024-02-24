@@ -2,6 +2,7 @@ package de.thbingen.epro.project.okrservice.entities.objectives;
 
 import java.util.List;
 
+import de.thbingen.epro.project.okrservice.dtos.BusinessUnitObjectiveDto;
 import de.thbingen.epro.project.okrservice.entities.BusinessUnit;
 import de.thbingen.epro.project.okrservice.entities.keyresults.CompanyKeyResult;
 import jakarta.persistence.Entity;
@@ -47,6 +48,12 @@ public class BusinessUnitObjective extends Objective {
         )
     )
     private List<CompanyKeyResult> represented;
+
+
+    @Override
+    public BusinessUnitObjectiveDto toDto() {
+        return new BusinessUnitObjectiveDto(this);
+    }
 
 
 }

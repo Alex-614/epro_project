@@ -186,6 +186,37 @@
 			"response": []
 		},
 		{
+			"name": "Company GET all Objectives",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{epro_project}}/company/{{companyId}}/objective",
+					"host": [
+						"{{epro_project}}"
+					],
+					"path": [
+						"company",
+						"{{companyId}}",
+						"objective"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Company add User",
 			"request": {
 				"method": "POST",
@@ -266,7 +297,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"deadline\": \"2024-02-10T12:00:00Z\",\r\n    \"title\": \"CO1\",\r\n    \"description\": \"Erstes Company Objective\",\r\n    \"ownerId\": {{userId}}\r\n}",
+					"raw": "{\r\n    \"deadline\": 1708778383000,\r\n    \"title\": \"CO1\",\r\n    \"description\": \"Erstes Company Objective\",\r\n    \"ownerId\": {{userId}}\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -320,13 +351,46 @@
 			"response": []
 		},
 		{
+			"name": "CompanyObjective GET all KeyResults",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{epro_project}}/company/{{companyId}}/objective/{{companyObjectiveId}}/keyresult",
+					"host": [
+						"{{epro_project}}"
+					],
+					"path": [
+						"company",
+						"{{companyId}}",
+						"objective",
+						"{{companyObjectiveId}}",
+						"keyresult"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "CompanyObjective",
 			"request": {
 				"method": "PATCH",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"deadline\": \"2024-02-10T12:00:00Z\",\r\n    \"title\": \"Co1\",\r\n    \"description\": \"Erstes Company Objective, bearbeitet\",\r\n    \"ownerId\": {{userId}}\r\n}",
+					"raw": "{\r\n    \"deadline\": 1708778383000,\r\n    \"title\": \"Co1\",\r\n    \"description\": \"Erstes Company Objective, bearbeitet\",\r\n    \"ownerId\": {{userId}}\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -390,6 +454,15 @@
 						],
 						"type": "text/javascript"
 					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
 				}
 			],
 			"request": {
@@ -397,7 +470,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"title\": \"KR1\",\r\n    \"goal\": \"100\",\r\n    \"type\": \"numeric\",\r\n    \"description\": \"Erstes Company Key Result\",\r\n    \"current\": \"15\",\r\n    \"confidenceLevel\": \"50\",\r\n    \"representers\": []\r\n}",
+					"raw": "{\r\n    \"title\": \"KR1\",\r\n    \"goal\": \"100\",\r\n    \"type\": \"numeric\",\r\n    \"description\": \"Erstes Company Key Result\",\r\n    \"current\": \"15\",\r\n    \"confidenceLevel\": \"50\",\r\n    \"representers\": [{\"id\": {{businessUnitId}}, \"companyId\": {{companyId}}}],\r\n    \"contributingUnits\": [{\"id\": {{unitId}}, \"businessUnitId\": {\"id\": {{businessUnitId}}, \"companyId\": {{companyId}}}}],\r\n    \"contributingBusinessUnits\": []\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -579,7 +652,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"statusUpdate\": \"Das ist ein Status Update\",\r\n    \"keyResultDto\": {\r\n        \"current\": \"1430\",\r\n        \"confidenceLevel\": \"70\"\r\n    }\r\n}\r\n",
+					"raw": "{\r\n    \"statusUpdate\": \"Das ist ein Status Update\",\r\n    \"keyResultDto\": {\r\n        \"current\": \"102\",\r\n        \"confidenceLevel\": \"70\",\r\n        \"contributingUnits\": [{\"id\": {{unitId}}, \"businessUnitId\": {\"id\": {{businessUnitId}}, \"companyId\": {{companyId}}}}]\r\n    }\r\n}\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -816,7 +889,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"deadline\": \"2024-02-10T12:00:00Z\",\r\n    \"title\": \"BU1\",\r\n    \"description\": \"Erstes BusinessUnit Objective\",\r\n    \"ownerId\": {{userId}},\r\n    \"companyKeyResult_ID\": \"\"\r\n}",
+					"raw": "{\r\n    \"deadline\": 1708778383000,\r\n    \"title\": \"BU1\",\r\n    \"description\": \"Erstes BusinessUnit Objective\",\r\n    \"ownerId\": {{userId}},\r\n    \"companyKeyResult_ID\": \"\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -874,13 +947,46 @@
 			"response": []
 		},
 		{
+			"name": "BusinessUnitObjectives of BusinessUnit",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{epro_project}}/company/{{companyId}}/businessunit/{{businessUnitId}}/objective",
+					"host": [
+						"{{epro_project}}"
+					],
+					"path": [
+						"company",
+						"{{companyId}}",
+						"businessunit",
+						"{{businessUnitId}}",
+						"objective"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "BusinessUnitObjective",
 			"request": {
 				"method": "PATCH",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"deadline\": \"2024-02-10T12:00:00Z\",\r\n    \"title\": \"BU1\",\r\n    \"description\": \"Erstes BusinessUnit Objective, bearbeitet\",\r\n    \"ownerId\": {{userId}},\r\n    \"companyKeyResult_ID\": \"\"\r\n}",
+					"raw": "{\r\n    \"deadline\": 1708778383000,\r\n    \"title\": \"BU1\",\r\n    \"description\": \"Erstes BusinessUnit Objective, bearbeitet\",\r\n    \"ownerId\": {{userId}},\r\n    \"companyKeyResult_ID\": \"\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -955,7 +1061,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"title\": \"KR1\",\r\n    \"goal\": \"100\",\r\n    \"type\": \"numeric\",\r\n    \"description\": \"Erstes BusinessUnit Key Result\",\r\n    \"current\": \"15\",\r\n    \"confidenceLevel\": \"50\"\r\n}",
+					"raw": "{\r\n    \"title\": \"KR1\",\r\n    \"goal\": \"100\",\r\n    \"type\": \"numeric\",\r\n    \"description\": \"Erstes BusinessUnit Key Result\",\r\n    \"current\": \"15\",\r\n    \"confidenceLevel\": \"50\",\r\n    \"contributingUnits\": [],\r\n    \"contributingBusinessUnits\": []\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -1011,6 +1117,41 @@
 						"{{businessUnitObjectiveId}}",
 						"keyresult",
 						"{{businessUnitKeyResultId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "BusinessUnitKeyResults of Objective",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{epro_project}}/company/{{companyId}}/businessunit/{{businessUnitObjectiveId}}/objective/{{businessUnitObjectiveId}}/keyresult",
+					"host": [
+						"{{epro_project}}"
+					],
+					"path": [
+						"company",
+						"{{companyId}}",
+						"businessunit",
+						"{{businessUnitObjectiveId}}",
+						"objective",
+						"{{businessUnitObjectiveId}}",
+						"keyresult"
 					]
 				}
 			},
@@ -1241,7 +1382,7 @@
 			"response": []
 		},
 		{
-			"name": "Unit All",
+			"name": "Units of BusinessUnit",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -1491,7 +1632,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"\",\r\n    \"password\": \"\",\r\n    \"surname\": \"\",\r\n    \"firstname\": \"\"\r\n}",
+					"raw": "{\r\n    \"username\": \"awd\",\r\n    \"password\": \"test\",\r\n    \"surname\": \"\",\r\n    \"firstname\": \"\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"

@@ -8,7 +8,7 @@ import de.thbingen.epro.project.okrservice.entities.ids.BusinessUnitId;
 import de.thbingen.epro.project.okrservice.entities.ids.UnitId;
 import de.thbingen.epro.project.okrservice.entities.keyresults.KeyResult;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
@@ -16,15 +16,15 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class KeyResultDto {
+public abstract class KeyResultDto {
     private Long id;
 
     private Integer goal;
 
-    @NotEmpty
+    @NotBlank
     private String title;
 
-    @NotEmpty
+    @NotBlank
     private String description;
 
     private Integer current;
@@ -32,10 +32,11 @@ public class KeyResultDto {
     @NotNull
     private Integer confidenceLevel;
 
-    @NotEmpty
+    @NotBlank
     @Pattern(regexp = KeyResultTypes.NUMERIC_NAME + "|" + KeyResultTypes.PERCENTUAL_NAME + "|" + KeyResultTypes.BINARY_NAME)
     private String type;
 
+    private Long objectiveId;
 
     @Valid
     @NotNull
@@ -45,6 +46,7 @@ public class KeyResultDto {
     @NotNull
     private List<BusinessUnitId> contributingBusinessUnits;
 
+    private Integer achivement;
 
     public KeyResultDto(KeyResult keyResult) {
         this.id = keyResult.getId();
@@ -54,7 +56,9 @@ public class KeyResultDto {
         this.current = keyResult.getCurrent();
         this.confidenceLevel = keyResult.getConfidenceLevel();
         this.type = keyResult.getType().getName();
+        this.objectiveId = keyResult.getObjective().getId();
         this.contributingUnits = keyResult.getContributingUnits().stream().map(m -> m.getId()).collect(Collectors.toList());
         this.contributingBusinessUnits = keyResult.getContributingBusinessUnits().stream().map(m -> m.getId()).collect(Collectors.toList());
+        this.achivement = keyResult.getAchivement();
     }
 }

@@ -1,28 +1,19 @@
-package de.thbingen.epro.project.okrservice.controller;
+package de.thbingen.epro.project.okrservice.exceptions;
 
 import org.postgresql.util.PSQLException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import de.thbingen.epro.project.okrservice.exceptions.BusinessUnitAlreadyExistsException;
-import de.thbingen.epro.project.okrservice.exceptions.BusinessUnitNotFoundException;
-import de.thbingen.epro.project.okrservice.exceptions.CompanyNotFoundException;
-import de.thbingen.epro.project.okrservice.exceptions.KeyResultNotFoundException;
-import de.thbingen.epro.project.okrservice.exceptions.MaxCompanyObjectivesReachedException;
-import de.thbingen.epro.project.okrservice.exceptions.ObjectiveNotFoundException;
-import de.thbingen.epro.project.okrservice.exceptions.UnitAlreadyExistsException;
-import de.thbingen.epro.project.okrservice.exceptions.UnitNotFoundException;
-import de.thbingen.epro.project.okrservice.exceptions.UserAlreadyExistsException;
-import de.thbingen.epro.project.okrservice.exceptions.UserNotFoundException;
-
 @ControllerAdvice
-public class RequestExceptionHandler {
+public class GlobalExceptionHandler {
 
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -43,7 +34,17 @@ public class RequestExceptionHandler {
     @ExceptionHandler(PSQLException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     public ResponseEntity<String> psqlException(PSQLException  ex) {
-        return ResponseEntity.status(HttpStatus.CONFLICT).body("An unexpected Error occured, invalid Arguments!\n");
+        return ResponseEntity.status(HttpStatus.CONFLICT).body("An unexpected Error occured, invalid Request/Arguments!");
+    }
+    @ExceptionHandler(AuthenticationCredentialsNotFoundException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ResponseEntity<String> authenticationCredentialsNotFoundException(AuthenticationCredentialsNotFoundException  ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body("Invalid Session!");
+    }
+    @ExceptionHandler(UsernameNotFoundException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ResponseEntity<String> usernameNotFoundException(UsernameNotFoundException  ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body("Invalid Session!");
     }
 
 
@@ -104,10 +105,15 @@ public class RequestExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Key result not found!");
     }
 
-    @ExceptionHandler(MaxCompanyObjectivesReachedException.class)
+    @ExceptionHandler(MaxObjectivesReachedException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    public ResponseEntity<String> maxCompanyObjectivesReachedException(MaxCompanyObjectivesReachedException  ex) {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Maximal company objectives reached!");
+    public ResponseEntity<String> maxObjectivesReachedException(MaxObjectivesReachedException  ex) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Maximal objectives reached!");
+    }
+    @ExceptionHandler(MaxKeyResultsReachedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ResponseEntity<String> maxKeyResultsReachedException(MaxKeyResultsReachedException  ex) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Maximal key results reached!");
     }
 
     /*@ExceptionHandler(Exception.class)
