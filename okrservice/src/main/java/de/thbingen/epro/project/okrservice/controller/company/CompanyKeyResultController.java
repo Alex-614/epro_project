@@ -49,8 +49,6 @@ public class CompanyKeyResultController {
     public ResponseEntity<CompanyKeyResultDto> createCompanyKeyResult(@PathVariable @NonNull Number companyId,
                                                                     @PathVariable @NonNull Number objectiveId,
                                                                     @RequestBody @Valid CompanyKeyResultDto keyResultDto) throws Exception {
-        System.out.println("deffaultvalue: " + keyResultDto.getGoal());
-        System.out.println("deffaultvalue: " + keyResultDto.getCurrent());
         CompanyKeyResultDto companyKeyResultDto = companyKeyResultService.createKeyResult(objectiveId.longValue(), keyResultDto);
         return new ResponseEntity<>(companyKeyResultDto, HttpStatus.OK);
     }
@@ -61,6 +59,15 @@ public class CompanyKeyResultController {
                                                               @PathVariable @NonNull Number keyResultId) throws Exception {
         CompanyKeyResult companyKeyResult = companyKeyResultService.findKeyResult(keyResultId.longValue());
         return new ResponseEntity<>(companyKeyResult.toDto(), HttpStatus.OK);
+    }
+
+
+    @GetMapping
+    public ResponseEntity<List<CompanyKeyResultDto>> getAllBCompanyKeyResults(@PathVariable @NonNull Number companyId,
+                                                                    @PathVariable @NonNull Number objectiveId)
+        throws Exception {
+        List<CompanyKeyResultDto> companyKeyResultDtos = companyKeyResultService.findAllKeyResults(objectiveId.longValue());
+        return new ResponseEntity<>(companyKeyResultDtos, HttpStatus.OK);
     }
 
     @GetMapping("{keyResultId}/contributing/units")
