@@ -1,40 +1,33 @@
 package de.thbingen.epro.project.okrservice.controller;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import java.util.ArrayList;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import org.junit.jupiter.api.BeforeEach;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import de.thbingen.epro.project.okrservice.dtos.CompanyDto;
+import de.thbingen.epro.project.okrservice.dtos.UserDto;
+import de.thbingen.epro.project.okrservice.entities.Company;
+import de.thbingen.epro.project.okrservice.entities.User;
+import de.thbingen.epro.project.okrservice.services.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
+import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
-import de.thbingen.epro.project.okrservice.dtos.UserDto;
-import de.thbingen.epro.project.okrservice.entities.User;
-import de.thbingen.epro.project.okrservice.repositories.UserRepository;
-import de.thbingen.epro.project.okrservice.security.jwt.JwtGenerator;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(UserController.class)
 @AutoConfigureMockMvc(addFilters = false)
@@ -43,27 +36,38 @@ public class UserControllerTests {
     @Autowired
     private MockMvc mockMvc;
 
+    @InjectMocks
+    private UserController userController;
     @MockBean
-    private AuthenticationManager authenticationManager;
-    @MockBean
-    private UserRepository userRepository;
-    @MockBean
-    private PasswordEncoder passwordEncoder;
-    @MockBean
-    private JwtGenerator jwtGenerator;
+    private UserService userService;
 
-    Gson gson;
+    @Autowired
+    private ObjectMapper objectMapper;
 
-    private ArrayList<User> users;
-    private ArrayList<UserDto> userDtos;
+    @Test
+    public void UserController_Register_ReturnCreated() throws Exception {
+        User user = User.builder()
+                .id(1L)
+                .username("testuser")
+                .email("test@test.de")
+                .password("test")
+                .firstname("my first name")
+                .surname("sur").build();
+        UserDto userDto = user.toDto();
+        userDto.setPassword(user.getPassword());
+        given(userService.register(ArgumentMatchers.any())).willAnswer((invocation -> invocation.getArgument(0)));
 
-    @BeforeEach
-    public void init() {
-        gson = new GsonBuilder()
-                .serializeNulls()
-                .create();
+        ResultActions response = mockMvc.perform(post("/user")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(userDto)));
 
-        users = new ArrayList<User>();
+        response.andExpect(status().isOk())
+                .andExpect(content().string(objectMapper.writeValueAsString(userDto)));
+    }
+
+    @Test
+    public void UserController_GetAllUsers_ReturnResponseDto() throws Exception {
+        ArrayList<User> users = new ArrayList<User>();
         for(long i = 1; i < 11; i++) {
             User user = new User();
             user.setId(i);
@@ -75,105 +79,91 @@ public class UserControllerTests {
             users.add(user);
         }
 
-        userDtos = users.stream()
-                .map(UserDto::new)
-                .collect(Collectors.toCollection(ArrayList::new));
-    }
-    @Test
-    public void testPostUserEndpoint() throws Exception {
-        when(userRepository.save(any(User.class))).thenAnswer(invocationOnMock -> {
-            return users.getFirst();
-        });
+        ArrayList<UserDto> usersDtos = users.stream()
+                .map(User::toDto).collect(Collectors.toCollection(ArrayList::new));
 
-        String userJson = gson.toJson(userDtos.getFirst());
-        ResultActions resultActions = mockMvc.perform(post("/user")
+        when(userService.findAllUsers()).thenReturn(usersDtos);
+
+        ResultActions response = mockMvc.perform(get("/user"));
+
+        response.andExpect(status().isOk())
+                .andExpect(content().string(objectMapper.writeValueAsString(usersDtos)));
+    }
+
+    @Test
+    public void UserController_GetUser_ReturnUserDto() throws Exception {
+        User user = User.builder()
+                .id(1L)
+                .username("testuser")
+                .password("test")
+                .email("test@test.de")
+                .firstname("my first name")
+                .surname("sur").build();
+        UserDto userDto = new UserDto(user);
+
+        when(userService.findUser(user.getId())).thenReturn(user);
+
+        ResultActions response = mockMvc.perform(get("/user/1")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(userJson))
-                .andExpect(status().isOk())
-                .andExpect(content().string(userJson));
+                .content(objectMapper.writeValueAsString(userDto)));
+
+        response.andExpect(status().isOk())
+                .andExpect(content().string(objectMapper.writeValueAsString(userDto)));
     }
 
     @Test
-    @WithMockUser(username = "user", roles = "CO_OKR_ADMIN")
-    public void testPatchUserEndpoint() throws Exception {
-        when(userRepository.findById(1L)).thenAnswer(invocationOnMock -> {
-            return Optional.of(users.getFirst());
-        });
+    public void UserController_GetUserCompanies_ReturnUserDto() throws Exception {
+        User user = User.builder()
+                .id(1L)
+                .username("testuser")
+                .password("test")
+                .email("test@test.de")
+                .firstname("my first name")
+                .surname("sur").build();
+        UserDto userDto = new UserDto(user);
 
-        UserDto firstUser = userDtos.getFirst();
-        firstUser.setEmail("test123@test.de");
+        Company company = Company.builder()
+                .name("test-company")
+                .build();
+        List<CompanyDto> companyDtos = new ArrayList<>();
+        companyDtos.add(new CompanyDto(company));
 
-        String userJson = gson.toJson(firstUser);
+        when(userService.findUserCompanies(user.getId())).thenReturn(companyDtos);
 
-        mockMvc.perform(patch("/user/{userId}", 1L)
+        ResultActions response = mockMvc.perform(get("/user/1/companies")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"email\": \"test123@test.de\"}"))
-                .andExpect(status().isOk())
-                .andExpect(content().string(userJson));
+                .content(objectMapper.writeValueAsString(userDto)));
+
+        response.andExpect(status().isOk())
+                .andExpect(content().string(objectMapper.writeValueAsString(companyDtos)));
     }
 
     @Test
-    @WithMockUser(username = "user", roles = "CO_OKR_ADMIN")
-    public void testPatchNotExistingUserEndpoint() throws Exception {
-        mockMvc.perform(patch("/user/{userId}", 12L)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"email\": \"test123@test.de\"}"))
-                .andExpect(status().isNotFound())
-                .andExpect(content().string("User not found!"));
+    public void UserController_PatchUser_ReturnResponseDto() throws Exception {
+        User user = User.builder()
+                .id(1L)
+                .username("testuser")
+                .password("test")
+                .email("test@test.de")
+                .firstname("my first name")
+                .surname("sur").build();
+        UserDto userDto = new UserDto(user);
+
+        when(userService.patchUser(user.getId(), userDto)).thenReturn(userDto);
+
+        ResultActions response = mockMvc.perform(patch("/user/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(userDto)));
+
+        response.andExpect(status().isOk())
+                .andExpect(content().string(objectMapper.writeValueAsString(userDto)));
     }
 
     @Test
-    @WithMockUser(username = "user", roles = "CO_OKR_ADMIN")
-    public void testGetAllUsersEndpoint() throws Exception {
-        String userDtosJson = gson.toJson(userDtos);
-        when(userRepository.findAll()).thenAnswer(invocationOnMock -> {
-            return users;
-        });
+    public void UserController_DeleteUser_ReturnString() throws Exception {
+        ResultActions response = mockMvc.perform(delete("/user/1")
+                .contentType(MediaType.APPLICATION_JSON));
 
-        mockMvc.perform(get("/user"))
-                .andExpect(status().isOk())
-                .andExpect(content().string(userDtosJson));
-    }
-
-    @Test
-    @WithMockUser(username = "user", roles = "CO_OKR_ADMIN")
-    public void testGetUserEndpoint() throws Exception {
-        String userDtoJson = gson.toJson(userDtos.getFirst());
-        when(userRepository.findById(1L)).thenAnswer(invocationOnMock -> {
-            return Optional.of(users.getFirst());
-        });
-
-        mockMvc.perform(get("/user/{userId}", 1L))
-                .andExpect(status().isOk())
-                .andExpect(content().string(userDtoJson));
-    }
-
-    @Test
-    @WithMockUser(username = "user", roles = "CO_OKR_ADMIN")
-    public void testGetNotExistingUserEndpoint() throws Exception {
-        mockMvc.perform(get("/user/{userId}", 12L))
-                .andExpect(status().isNotFound())
-                .andExpect(content().string("User not found!"));
-    }
-
-    @Test
-    @WithMockUser(username = "user", roles = "CO_OKR_ADMIN")
-    public void testDeleteUserEndpoint() throws Exception {
-        String response = userDtos.getFirst().getUsername() + " deleted!";
-        when(userRepository.findById(1L)).thenAnswer(invocationOnMock -> {
-            return Optional.of(users.getFirst());
-        });
-
-        mockMvc.perform(delete("/user/{userId}", 1L))
-                .andExpect(status().isOk())
-                .andExpect(content().string(response));
-    }
-
-    @Test
-    @WithMockUser(username = "user", roles = "CO_OKR_ADMIN")
-    public void testDeleteNotExistingUserEndpoint() throws Exception {
-        mockMvc.perform(delete("/user/{userId}", 12L))
-                .andExpect(status().isNotFound())
-                .andExpect(content().string("User not found!"));
+        response.andExpect(status().isOk());
     }
 }

@@ -2,6 +2,7 @@ package de.thbingen.epro.project.okrservice.entities;
 
 import java.util.List;
 
+import lombok.Builder;
 import org.hibernate.annotations.GenericGenerator;
 
 import de.thbingen.epro.project.okrservice.dtos.BusinessUnitDto;
@@ -24,6 +25,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Table(name = "tbl_businessunit")
 @Entity
 public class BusinessUnit {

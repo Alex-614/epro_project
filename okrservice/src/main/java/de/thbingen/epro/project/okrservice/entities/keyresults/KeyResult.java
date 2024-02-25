@@ -24,10 +24,12 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@SuperBuilder
 @Table(name = "tbl_keyresult")
 @Inheritance(strategy = InheritanceType.JOINED)
 @Entity
