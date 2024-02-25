@@ -1,5 +1,6 @@
 package de.thbingen.epro.project.okrservice.entities;
 
+import lombok.Builder;
 import org.hibernate.annotations.GenericGenerator;
 
 import de.thbingen.epro.project.okrservice.dtos.UnitDto;
@@ -21,6 +22,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Table(name = "tbl_unit")
 @Entity
 public class Unit {
