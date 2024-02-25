@@ -87,7 +87,7 @@ public class CompanyControllerTests {
         ArrayList<CompanyDto> companyDtos = companies.stream()
                 .map(CompanyDto::new).collect(Collectors.toCollection(ArrayList::new));
 
-        when(companyService.getAllCompanies()).thenReturn(companyDtos);
+        when(companyService.findAllCompanies()).thenReturn(companyDtos);
 
         ResultActions response = mockMvc.perform(get("/company"));
 

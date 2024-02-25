@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+/**
+ * Central Exception Handler for all Controllers.
+ */
 @ControllerAdvice
 public class GlobalExceptionHandler {
 

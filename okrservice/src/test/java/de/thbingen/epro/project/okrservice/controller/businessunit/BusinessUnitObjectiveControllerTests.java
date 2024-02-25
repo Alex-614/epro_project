@@ -150,8 +150,8 @@ public class BusinessUnitObjectiveControllerTests {
 
         BusinessUnitObjectiveDto businessUnitObjectiveDto = new BusinessUnitObjectiveDto(businessUnitObjective);
 
-        given(businessUnitObjectiveService.patchObjective(1L, 1L, 1L, businessUnitObjectiveDto))
-                .willAnswer((invocation -> invocation.getArgument(3)));
+        given(businessUnitObjectiveService.patchObjective(1L, businessUnitObjectiveDto))
+                .willAnswer((invocation -> invocation.getArgument(1)));
 
         ResultActions response = mockMvc.perform(patch("/company/1/businessunit/1/objective/1")
                 .contentType(MediaType.APPLICATION_JSON)

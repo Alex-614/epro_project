@@ -72,7 +72,7 @@ public class CompanyKeyResultControllerTests {
         CompanyKeyResultDto companyKeyResultDto = new CompanyKeyResultDto(companyKeyResult);
 
 
-        given(companyKeyResultService.createKeyResult(1L, 1L, companyKeyResultDto)).willAnswer((invocation -> invocation.getArgument(2)));
+        given(companyKeyResultService.createKeyResult(1L, companyKeyResultDto)).willAnswer((invocation -> invocation.getArgument(1)));
 
         ResultActions response = mockMvc.perform(post("/company/1/objective/1/keyresult")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -157,7 +157,7 @@ public class CompanyKeyResultControllerTests {
         KeyResultPatchDto<CompanyKeyResultDto> keyResultPatchDto = new KeyResultPatchDto<>("update", 124412345L,
                 1L, companyKeyResultDto);
 
-        when(companyKeyResultService.patchKeyResult(1L, 1L, keyResultPatchDto)).thenReturn(companyKeyResultDto);
+        when(companyKeyResultService.patchKeyResult(1L, keyResultPatchDto)).thenReturn(companyKeyResultDto);
 
         ResultActions response = mockMvc.perform(patch("/company/1/objective/1/keyresult/1")
                 .contentType(MediaType.APPLICATION_JSON)

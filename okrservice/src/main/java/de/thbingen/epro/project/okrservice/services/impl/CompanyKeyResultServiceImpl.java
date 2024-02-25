@@ -49,7 +49,7 @@ public class CompanyKeyResultServiceImpl extends KeyResultServiceImpl<CompanyKey
 
 
     @Override
-    public CompanyKeyResultDto createKeyResult(long companyId, long objectiveId, CompanyKeyResultDto keyResultDto)
+    public CompanyKeyResultDto createKeyResult(long objectiveId, CompanyKeyResultDto keyResultDto)
             throws MaxKeyResultsReachedException, CompanyNotFoundException, UserNotFoundException, ObjectiveNotFoundException, KeyResultTypeNotFoundException {
         CompanyObjective objective = companyObjectiveService.findObjective(objectiveId);
         CompanyKeyResult companyKeyResult = new CompanyKeyResult();
@@ -66,9 +66,8 @@ public class CompanyKeyResultServiceImpl extends KeyResultServiceImpl<CompanyKey
     }
 
     
-
     @Override
-    public CompanyKeyResultDto patchKeyResult(long companyId, long keyResultId, KeyResultPatchDto<CompanyKeyResultDto> keyResultPatchDto)
+    public CompanyKeyResultDto patchKeyResult(long keyResultId, KeyResultPatchDto<CompanyKeyResultDto> keyResultPatchDto)
             throws KeyResultNotFoundException, UserNotFoundException, ObjectiveNotFoundException, KeyResultTypeNotFoundException {
 
         CompanyKeyResult keyResult = findKeyResult(keyResultId);

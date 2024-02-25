@@ -1,5 +1,14 @@
 package de.thbingen.epro.project.okrservice.constants;
 
+/**
+ * This Java code defines an enum called `Privileges` which represents different privileges in the system. 
+ * Each privilege has a corresponding name.
+ * <hr />
+ * <h3>This class does not validate or communicate with the database.</h4>
+ * <h4>It is a static final provision of `Privileges`</h3>
+ * <hr />
+ * @param name the custom name of the privilege, allegedly stored in the database
+ */
 public enum Privileges {
     CO_READ(Privileges.CO_READ_NAME),
     CO_WRITE(Privileges.CO_WRITE_NAME),

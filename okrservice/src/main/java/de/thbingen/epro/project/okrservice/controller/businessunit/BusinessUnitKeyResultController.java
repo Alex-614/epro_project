@@ -120,7 +120,7 @@ public class BusinessUnitKeyResultController {
         if (keyResultPatchDto.getUpdaterId() == null) {
             keyResultPatchDto.setUpdaterId(userService.findUserByEmail(userDetails.getUsername()).getId().longValue());
         }
-        BusinessUnitKeyResultDto businessUnitKeyResultDto = businessUnitKeyResultService.patchKeyResult(companyId.longValue(), businessUnitId.longValue(), keyResultId.longValue(), keyResultPatchDto);
+        BusinessUnitKeyResultDto businessUnitKeyResultDto = businessUnitKeyResultService.patchKeyResult(keyResultId.longValue(), keyResultPatchDto);
         return new ResponseEntity<>(businessUnitKeyResultDto, HttpStatus.OK);
     }
 

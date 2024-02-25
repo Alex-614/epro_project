@@ -1,5 +1,6 @@
 package de.thbingen.epro.project.okrservice.dtos;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,10 +19,13 @@ public class KeyResultUpdateDto<T extends KeyResultDto> extends UpdateDto {
         this.keyResult = keyResult;
     }
 
+    @NotNull
     private T newKeyResult;
-
+    
+    @NotNull
     private T oldKeyResult;
-
+    
+    @NotNull
     private T keyResult;
 
 

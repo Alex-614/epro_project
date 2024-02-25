@@ -11,14 +11,17 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
 public abstract class KeyResultDto {
+
     private Long id;
 
+    @PositiveOrZero
     private Integer goal;
 
     @NotBlank
@@ -27,6 +30,7 @@ public abstract class KeyResultDto {
     @NotBlank
     private String description;
 
+    @PositiveOrZero
     private Integer current;
 
     @NotNull
@@ -36,6 +40,7 @@ public abstract class KeyResultDto {
     @Pattern(regexp = KeyResultTypes.NUMERIC_NAME + "|" + KeyResultTypes.PERCENTUAL_NAME + "|" + KeyResultTypes.BINARY_NAME)
     private String type;
 
+    @PositiveOrZero
     private Long objectiveId;
 
     @Valid
@@ -46,6 +51,7 @@ public abstract class KeyResultDto {
     @NotNull
     private List<BusinessUnitId> contributingBusinessUnits;
 
+    @PositiveOrZero
     private Integer achivement;
 
     public KeyResultDto(KeyResult keyResult) {

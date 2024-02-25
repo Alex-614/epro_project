@@ -71,9 +71,8 @@ public class BusinessUnitKeyResultServiceImpl extends KeyResultServiceImpl<Busin
 
 
     @Override
-    public BusinessUnitKeyResultDto patchKeyResult(long companyId, long bussinesUnitId, long keyResultId,
-            KeyResultPatchDto<BusinessUnitKeyResultDto> keyResultPatchDto) throws KeyResultNotFoundException,
-            UserNotFoundException, ObjectiveNotFoundException, KeyResultTypeNotFoundException {
+    public BusinessUnitKeyResultDto patchKeyResult(long keyResultId,KeyResultPatchDto<BusinessUnitKeyResultDto> keyResultPatchDto) 
+            throws KeyResultNotFoundException, UserNotFoundException, ObjectiveNotFoundException, KeyResultTypeNotFoundException {
                 
         BusinessUnitKeyResult keyResult = findKeyResult(keyResultId);
 

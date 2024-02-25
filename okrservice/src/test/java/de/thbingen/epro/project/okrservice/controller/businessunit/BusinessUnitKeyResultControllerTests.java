@@ -215,7 +215,7 @@ public class BusinessUnitKeyResultControllerTests {
         KeyResultPatchDto<BusinessUnitKeyResultDto> keyResultPatchDto = new KeyResultPatchDto<>("update", 124412345L,
                 1L, businessUnitKeyResultDto);
 
-        when(businessUnitKeyResultService.patchKeyResult(1L, 1L, 1L, keyResultPatchDto))
+        when(businessUnitKeyResultService.patchKeyResult(1L, keyResultPatchDto))
                 .thenReturn(businessUnitKeyResultDto);
 
         ResultActions response = mockMvc.perform(patch("/company/1/businessunit/1/objective/1/keyresult/1")

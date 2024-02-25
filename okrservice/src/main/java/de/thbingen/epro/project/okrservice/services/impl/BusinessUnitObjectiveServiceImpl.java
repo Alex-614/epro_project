@@ -68,12 +68,10 @@ public class BusinessUnitObjectiveServiceImpl extends ObjectiveServiceImpl<Busin
 
 
     @Override
-    public BusinessUnitObjectiveDto patchObjective(long companyId, long businessUnitId, long objectiveId, BusinessUnitObjectiveDto objectiveDto) throws ObjectiveNotFoundException, BusinessUnitNotFoundException, UserNotFoundException {
-        BusinessUnit businessUnit = businessUnitService.findBusinessUnit(companyId, businessUnitId); 
+    public BusinessUnitObjectiveDto patchObjective(long objectiveId, BusinessUnitObjectiveDto objectiveDto) throws ObjectiveNotFoundException, BusinessUnitNotFoundException, UserNotFoundException {
         BusinessUnitObjective objective = findObjective(objectiveId);
 
         patchObjective(objective, objectiveDto);
-        objective.setBusinessUnit(businessUnit);
         objective.setRepresented(new ArrayList<CompanyKeyResult>());
 
         businessUnitObjectiveRepository.save(objective);

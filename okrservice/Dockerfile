@@ -14,9 +14,9 @@ RUN mvn dependency:go-offline
 COPY . .
 
 # Build the application & Test
-#RUN mvn package
+RUN mvn package
 # Build the application
-RUN mvn package -DskipTests
+#RUN mvn package -DskipTests
 
 # Create the final image
 FROM openjdk:21-jdk-slim

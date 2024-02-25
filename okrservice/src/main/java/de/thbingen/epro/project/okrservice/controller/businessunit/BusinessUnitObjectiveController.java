@@ -68,7 +68,7 @@ public class BusinessUnitObjectiveController {
                                                                     @PathVariable @NonNull Number objectiveId,
                                                                     @RequestBody BusinessUnitObjectiveDto objectiveDto
     ) throws Exception {
-        BusinessUnitObjectiveDto response = businessUnitObjectiveService.patchObjective(companyId.longValue(), businessUnitId.longValue(), objectiveId.longValue(), objectiveDto);
+        BusinessUnitObjectiveDto response = businessUnitObjectiveService.patchObjective(objectiveId.longValue(), objectiveDto);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
     

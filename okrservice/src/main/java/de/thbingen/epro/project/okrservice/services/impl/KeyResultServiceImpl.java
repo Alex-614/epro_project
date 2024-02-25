@@ -31,6 +31,10 @@ import de.thbingen.epro.project.okrservice.repositories.KeyResultUpdateRepositor
 import de.thbingen.epro.project.okrservice.services.KeyResultService;
 import de.thbingen.epro.project.okrservice.services.UserService;
 
+/**
+ * The `KeyResultServiceImpl` class is an abstract implementation of a service for managing KeyResults
+ * the OKR (Objectives and Key Results) system.
+ */
 @Service
 public abstract class KeyResultServiceImpl<T extends KeyResult, K extends KeyResultDto> implements KeyResultService<T, K> {
 
@@ -51,6 +55,14 @@ public abstract class KeyResultServiceImpl<T extends KeyResult, K extends KeyRes
         this.userService = userService;
     }
     
+    /**
+     * Updates a KeyResult object based on the provided KeyResultDto.
+     * The Change is NOT persisted.
+     * Only NonNull values are set.
+     * 
+     * @param keyResult the KeyResult that will be updated.
+     * @param keyResultDto the DTO, of which the values are retrieved from 
+     */
     protected void patchKeyResult(T keyResult, K keyResultDto) throws KeyResultTypeNotFoundException, ObjectiveNotFoundException { 
         if (keyResultDto.getType() != null && !keyResultDto.getType().trim().isEmpty()) {
             KeyResultType type = keyResultTypeRepository.findByName(keyResultDto.getType()).orElseThrow(() -> new KeyResultTypeNotFoundException());
@@ -75,6 +87,25 @@ public abstract class KeyResultServiceImpl<T extends KeyResult, K extends KeyRes
     }
 
 
+    /**
+     * 
+     * <h3>Creates a new KeyResultUpdate and persists it</h3>
+     * 
+     * <h4>To properly perform an Update/Patch to a KeyResult:</h4>
+     * <ol>
+     *      <li>create a deep copy of the current KeyResult (note to set the lastUpdate to null)</li>
+     *      <li>update the original KeyResult</li>
+     *      <li>persist the copy</li>
+     *      <li>call this method and set the keyResult & newKeyResult to the Original and the oldKeyResult should be the copy</li>
+     *      <li>persist the original KeyResult</li>
+     * </ol>
+     * 
+     * @param keyResult is the current key result that needs to be updated.
+     * @param oldKeyResult represents the previous state of a key result before it was updated.
+     * @param newKeyResult represents the updated key result.
+     * @param updateDto contains information related to the update being performed.
+     * @throws UserNotFoundException if the updater, set in the updateDto, is not found
+     */
     protected void updateKeyResultUpdateHistory(T keyResult, T oldKeyResult, T newKeyResult, UpdateDto updateDto) throws UserNotFoundException {
         KeyResultUpdate update = new KeyResultUpdate();
         update.setKeyResult(keyResult);
@@ -91,12 +122,14 @@ public abstract class KeyResultServiceImpl<T extends KeyResult, K extends KeyRes
         keyResultUpdateRepository.save(update);
     }
 
-
+    
+    
     @Override
     public T findKeyResult(long keyResultId) throws KeyResultNotFoundException {
         T companyKeyResult = keyResultRepository.findById(keyResultId).orElseThrow(() -> new KeyResultNotFoundException());
         return companyKeyResult;
     }
+    
     @Override
     public List<K> findAllKeyResults(long objectiveId) {
         List<T> keyResults = keyResultRepository.findByObjectiveId(objectiveId);
@@ -108,16 +141,19 @@ public abstract class KeyResultServiceImpl<T extends KeyResult, K extends KeyRes
     }
 
 
+
     @Override
     public List<BusinessUnitDto> findContributingBusinessUnits(long keyResultId) throws KeyResultNotFoundException {
         return findKeyResult(keyResultId).getContributingBusinessUnits().stream().map(m -> m.toDto()).collect(Collectors.toList());
     }
     
     
+
     @Override
     public List<UnitDto> findContributingUnits(long keyResultId) throws KeyResultNotFoundException {
         return findKeyResult(keyResultId).getContributingUnits().stream().map(m -> m.toDto()).collect(Collectors.toList());
     }
+
 
     @Override
     public LinkedList<KeyResultUpdateDto<K>> findKeyResultUpdateHistory(long keyResultId) throws KeyResultNotFoundException {
@@ -141,6 +177,7 @@ public abstract class KeyResultServiceImpl<T extends KeyResult, K extends KeyRes
         }
         return updateHistoryDto;        
     }
+
 
     @Override
     public void deleteKeyResult(long keyResultId) {

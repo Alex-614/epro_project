@@ -29,6 +29,7 @@ public class UserDto {
     private String surname;
 
     public UserDto(User user) {
+        this.password = null;
         this.id = user.getId();
         this.email = user.getEmail();
         this.username = user.getUsername();

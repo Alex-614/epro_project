@@ -3,6 +3,7 @@ package de.thbingen.epro.project.okrservice.dtos;
 import de.thbingen.epro.project.okrservice.entities.objectives.Objective;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -24,6 +25,7 @@ public abstract class ObjectiveDto {
     @NotNull
     private Long ownerId;
 
+    @PositiveOrZero
     public Integer achivement;
 
     public ObjectiveDto(Objective objective) {
