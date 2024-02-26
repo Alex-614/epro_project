@@ -78,9 +78,9 @@ public class BusinessUnitKeyResultServiceTests {
 
         BusinessUnitKeyResultDto businessUnitKeyResultDto = new BusinessUnitKeyResultDto(businessUnitKeyResult);
 
-        when(businessUnitService.findBusinessUnit(1L, 1L)).thenReturn(new BusinessUnit());
+        /*when(businessUnitService.findBusinessUnit(1L, 1L)).thenReturn(new BusinessUnit());
         when(businessUnitObjectiveService.findObjective(1L)).thenReturn(new BusinessUnitObjective());
-        when(keyResultTypeRepository.findByName("numeric")).thenReturn(Optional.of(new KeyResultType("numeric")));
+        when(keyResultTypeRepository.findByName("numeric")).thenReturn(Optional.of(new KeyResultType("numeric")));*/
 
         //toDo: Unsupported Operations Exception
         /*BusinessUnitKeyResultDto createdBusinessUnitKeyResultDto =
