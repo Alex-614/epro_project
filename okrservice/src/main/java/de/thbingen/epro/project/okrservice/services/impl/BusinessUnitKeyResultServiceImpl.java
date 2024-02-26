@@ -12,7 +12,6 @@ import de.thbingen.epro.project.okrservice.dtos.KeyResultPatchDto;
 import de.thbingen.epro.project.okrservice.dtos.ObjectiveDto;
 import de.thbingen.epro.project.okrservice.entities.BusinessUnit;
 import de.thbingen.epro.project.okrservice.entities.keyresults.BusinessUnitKeyResult;
-import de.thbingen.epro.project.okrservice.entities.objectives.BusinessUnitObjective;
 import de.thbingen.epro.project.okrservice.entities.objectives.Objective;
 import de.thbingen.epro.project.okrservice.exceptions.BusinessUnitNotFoundException;
 import de.thbingen.epro.project.okrservice.exceptions.CompanyNotFoundException;
@@ -36,7 +35,6 @@ public class BusinessUnitKeyResultServiceImpl extends KeyResultServiceImpl<Busin
 
 
     private BusinessUnitService businessUnitService;
-    private BusinessUnitObjectiveService businessUnitObjectiveService;
     private BusinessUnitKeyResultRepository businessUnitKeyResultRepository;
 
     @Autowired
@@ -47,7 +45,6 @@ public class BusinessUnitKeyResultServiceImpl extends KeyResultServiceImpl<Busin
         super(keyResultTypeRepository, userService, keyResultRepository, keyResultUpdateRepository, 
             (ObjectiveServiceImpl<? extends Objective, ? extends ObjectiveDto>) businessUnitObjectiveService);
         this.businessUnitService = businessUnitService;
-        this.businessUnitObjectiveService = businessUnitObjectiveService;
         this.businessUnitKeyResultRepository = businessUnitKeyResultRepository;
     }
 
@@ -55,16 +52,13 @@ public class BusinessUnitKeyResultServiceImpl extends KeyResultServiceImpl<Busin
     public BusinessUnitKeyResultDto createKeyResult(long companyId, long businessUnitId, long objectiveId,
             BusinessUnitKeyResultDto keyResultDto) throws MaxKeyResultsReachedException, CompanyNotFoundException,
             UserNotFoundException, ObjectiveNotFoundException, KeyResultTypeNotFoundException, BusinessUnitNotFoundException {
-        System.out.println(keyResultDto.getContributingBusinessUnits());
-
-        BusinessUnitObjective objective = businessUnitObjectiveService.findObjective(objectiveId);
         
         BusinessUnitKeyResult businessUnitKeyResult = new BusinessUnitKeyResult();
+        keyResultDto.setObjectiveId(objectiveId);
         patchKeyResult(businessUnitKeyResult, keyResultDto);
         List<BusinessUnit> bus = Collections.singletonList(businessUnitService.findBusinessUnit(companyId, businessUnitId));
         bus.addAll(keyResultDto.getContributingBusinessUnits().stream().map(BusinessUnit::new).collect(Collectors.toList()));
         businessUnitKeyResult.setContributingBusinessUnits(bus);
-        businessUnitKeyResult.setObjective(objective);
 
         businessUnitKeyResultRepository.save(businessUnitKeyResult);
         return businessUnitKeyResult.toDto();

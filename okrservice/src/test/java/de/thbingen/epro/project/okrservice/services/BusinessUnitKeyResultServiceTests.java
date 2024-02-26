@@ -1,35 +1,26 @@
 package de.thbingen.epro.project.okrservice.services;
 
-import de.thbingen.epro.project.okrservice.dtos.*;
-import de.thbingen.epro.project.okrservice.entities.BusinessUnit;
-import de.thbingen.epro.project.okrservice.entities.Company;
-import de.thbingen.epro.project.okrservice.entities.Unit;
-import de.thbingen.epro.project.okrservice.entities.ids.BusinessUnitId;
-import de.thbingen.epro.project.okrservice.entities.keyresults.BusinessUnitKeyResult;
-import de.thbingen.epro.project.okrservice.entities.keyresults.CompanyKeyResult;
-import de.thbingen.epro.project.okrservice.entities.keyresults.KeyResultType;
-import de.thbingen.epro.project.okrservice.entities.keyresults.KeyResultUpdate;
-import de.thbingen.epro.project.okrservice.entities.objectives.BusinessUnitObjective;
-import de.thbingen.epro.project.okrservice.entities.objectives.CompanyObjective;
-import de.thbingen.epro.project.okrservice.repositories.BusinessUnitKeyResultRepository;
-import de.thbingen.epro.project.okrservice.repositories.CompanyKeyResultRepository;
-import de.thbingen.epro.project.okrservice.repositories.KeyResultTypeRepository;
-import de.thbingen.epro.project.okrservice.repositories.KeyResultUpdateRepository;
-import de.thbingen.epro.project.okrservice.services.impl.*;
-import org.assertj.core.api.Assertions;
+import java.util.ArrayList;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.Mockito.when;
+import de.thbingen.epro.project.okrservice.dtos.BusinessUnitKeyResultDto;
+import de.thbingen.epro.project.okrservice.entities.BusinessUnit;
+import de.thbingen.epro.project.okrservice.entities.Company;
+import de.thbingen.epro.project.okrservice.entities.ids.BusinessUnitId;
+import de.thbingen.epro.project.okrservice.entities.keyresults.BusinessUnitKeyResult;
+import de.thbingen.epro.project.okrservice.entities.keyresults.KeyResultType;
+import de.thbingen.epro.project.okrservice.entities.keyresults.KeyResultUpdate;
+import de.thbingen.epro.project.okrservice.entities.objectives.CompanyObjective;
+import de.thbingen.epro.project.okrservice.repositories.BusinessUnitKeyResultRepository;
+import de.thbingen.epro.project.okrservice.repositories.KeyResultTypeRepository;
+import de.thbingen.epro.project.okrservice.repositories.KeyResultUpdateRepository;
+import de.thbingen.epro.project.okrservice.services.impl.BusinessUnitKeyResultServiceImpl;
+import de.thbingen.epro.project.okrservice.services.impl.BusinessUnitObjectiveServiceImpl;
 
 @ExtendWith(MockitoExtension.class)
 public class BusinessUnitKeyResultServiceTests {

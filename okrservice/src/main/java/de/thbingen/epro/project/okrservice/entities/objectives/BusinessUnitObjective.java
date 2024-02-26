@@ -1,5 +1,6 @@
 package de.thbingen.epro.project.okrservice.entities.objectives;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.thbingen.epro.project.okrservice.dtos.BusinessUnitObjectiveDto;
@@ -14,7 +15,10 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 @NoArgsConstructor
@@ -38,7 +42,7 @@ public class BusinessUnitObjective extends Objective {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-        name = "tbl_companykeyresult_represents_businessunitobjective",
+        name = "tbl_businessunitobjective_represents_companykeyresult",
         joinColumns = @JoinColumn(
             name = "businessunitobjective_id", referencedColumnName = "objective_id"
         ),
@@ -46,7 +50,8 @@ public class BusinessUnitObjective extends Objective {
             name = "companykeyresult_id", referencedColumnName = "keyresult_id"
         )
     )
-    private List<CompanyKeyResult> represented;
+    //@SQLRestriction(value = "tbl_keyresultupdate.new_keyresult_id = tbl_keyresultupdate.keyresult_id")
+    private List<CompanyKeyResult> represented = new ArrayList<>();
 
 
     @Override

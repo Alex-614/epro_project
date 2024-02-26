@@ -1,5 +1,6 @@
 package de.thbingen.epro.project.okrservice.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.thbingen.epro.project.okrservice.dtos.UserDto;
@@ -53,26 +54,18 @@ public class User {
 
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    private List<RoleAssignment> roleAssignments;
-    public void addAllRoleAssignment(List<RoleAssignment> roleAssignments) {
-        this.roleAssignments.addAll(roleAssignments);
-    }
-    public void addRoleAssignment(RoleAssignment roleAssignment) {
-        roleAssignments.add(roleAssignment);
-    }
-    public void removeRoleAssignment(RoleAssignment roleAssignment) {
-        roleAssignments.remove(roleAssignment);
-    }
+    private List<RoleAssignment> roleAssignments = new ArrayList<>();
 
     
     @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
-    private List<Objective> ownedObjectives;
+    private List<Objective> ownedObjectives = new ArrayList<>();
+    
     
     @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
-    private List<CompanyObjective> ownedCompanyObjectives;
+    private List<CompanyObjective> ownedCompanyObjectives = new ArrayList<>();
     
     @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
-    private List<BusinessUnitObjective> ownedBusinessUnitObjectives;
+    private List<BusinessUnitObjective> ownedBusinessUnitObjectives = new ArrayList<>();
 
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -85,7 +78,7 @@ public class User {
             name = "company_id", referencedColumnName = "id"
         )
     )
-    private List<Company> companies;
+    private List<Company> companies = new ArrayList<>();
     public void addCompany(Company company) {
         this.companies.add(company);
     }

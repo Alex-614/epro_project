@@ -42,7 +42,9 @@ public class CompanyServiceTests {
     @Test
     public void CompanyService_CreateCompany_ReturnCompanyDto() throws Exception {
         Company company = Company.builder()
-                .name("CompanyA").build();
+                .name("CompanyA")
+                .objectives(new ArrayList<>())
+                .build();
         CompanyDto companyDto = new CompanyDto(company);
 
         User user = User.builder()

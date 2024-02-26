@@ -1,5 +1,6 @@
 package de.thbingen.epro.project.okrservice.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Builder;
@@ -54,7 +55,7 @@ public class BusinessUnit {
     private String name;
 
     @OneToMany(mappedBy = "businessUnit")
-    private List<BusinessUnitObjective> objectives;
+    private List<BusinessUnitObjective> objectives = new ArrayList<>();
 
 
     public BusinessUnitDto toDto() {

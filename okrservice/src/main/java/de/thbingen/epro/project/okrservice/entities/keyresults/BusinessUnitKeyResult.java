@@ -18,7 +18,7 @@ import lombok.experimental.SuperBuilder;
 @PrimaryKeyJoinColumn(name = "keyresult_id")
 public class BusinessUnitKeyResult extends KeyResult {
 
-
+    @Override
     public BusinessUnitKeyResultDto toDto() {
         return new BusinessUnitKeyResultDto(this);
     }

@@ -1,6 +1,7 @@
 package de.thbingen.epro.project.okrservice.entities.objectives;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 import de.thbingen.epro.project.okrservice.dtos.ObjectiveDto;
@@ -47,14 +48,20 @@ public abstract class Objective {
     private User owner;
     
     @OneToMany(mappedBy = "objective")
-    private List<KeyResult> keyReslts;
+    private List<KeyResult> keyReslts = new ArrayList<>();
 
 
-    public int getAchivement() {
-        int result = 0;
+
+
+
+
+
+
+    public float getAchievement() {
+        float result = 0;
         if (getKeyReslts() != null) {
             for (KeyResult k : getKeyReslts()) {
-                result += k.getAchivement();
+                result += k.getAchievement();
             }
             // if there is at least one KeyResult
             if (result != 0) {

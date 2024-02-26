@@ -107,7 +107,6 @@ public class CompanyServiceImpl implements CompanyService {
         Company company = findCompany(companyId);
         User target = userService.findUser(userId);
         roleAssignmentRepository.deleteByCompanyAndUserEquals(company, target);
-        target.removeCompany(company);
     }
 
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import de.thbingen.epro.project.okrservice.dtos.BusinessUnitObjectiveDto;
 import de.thbingen.epro.project.okrservice.entities.objectives.BusinessUnitObjective;
 import de.thbingen.epro.project.okrservice.exceptions.BusinessUnitNotFoundException;
+import de.thbingen.epro.project.okrservice.exceptions.KeyResultNotFoundException;
 import de.thbingen.epro.project.okrservice.exceptions.MaxObjectivesReachedException;
 import de.thbingen.epro.project.okrservice.exceptions.ObjectiveNotFoundException;
 import de.thbingen.epro.project.okrservice.exceptions.UserNotFoundException;
@@ -22,9 +23,10 @@ public interface BusinessUnitObjectiveService extends ObjectiveService<BusinessU
      * @throws MaxObjectivesReachedException if the BusinessUnit already has 5 related Objectives
      * @throws BusinessUnitNotFoundException if the BusinessUnit was not found
      * @throws UserNotFoundException if the User was not found
+     * @throws KeyResultNotFoundException 
      */
     BusinessUnitObjectiveDto createObjective(long companyId, long businessUnitId, BusinessUnitObjectiveDto objectiveDto) 
-        throws MaxObjectivesReachedException, BusinessUnitNotFoundException, UserNotFoundException;
+        throws MaxObjectivesReachedException, BusinessUnitNotFoundException, UserNotFoundException, KeyResultNotFoundException;
 
 
 
@@ -51,9 +53,10 @@ public interface BusinessUnitObjectiveService extends ObjectiveService<BusinessU
      * @return the corresponding BusinessUnitObjective as DTO
      * @throws ObjectiveNotFoundException if the BusinessUnitObjective was not found
      * @throws UserNotFoundException if the User was not found
+     * @throws KeyResultNotFoundException 
      */
     BusinessUnitObjectiveDto patchObjective(long objectiveId, BusinessUnitObjectiveDto objectiveDto) 
-        throws ObjectiveNotFoundException, BusinessUnitNotFoundException, UserNotFoundException;
+        throws ObjectiveNotFoundException, BusinessUnitNotFoundException, UserNotFoundException, KeyResultNotFoundException;
 
 
 

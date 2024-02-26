@@ -1,6 +1,25 @@
 package de.thbingen.epro.project.okrservice.services;
 
-import de.thbingen.epro.project.okrservice.dtos.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import de.thbingen.epro.project.okrservice.dtos.BusinessUnitDto;
+import de.thbingen.epro.project.okrservice.dtos.CompanyKeyResultDto;
+import de.thbingen.epro.project.okrservice.dtos.KeyResultPatchDto;
+import de.thbingen.epro.project.okrservice.dtos.UnitDto;
 import de.thbingen.epro.project.okrservice.entities.BusinessUnit;
 import de.thbingen.epro.project.okrservice.entities.Unit;
 import de.thbingen.epro.project.okrservice.entities.keyresults.CompanyKeyResult;
@@ -12,21 +31,6 @@ import de.thbingen.epro.project.okrservice.repositories.KeyResultTypeRepository;
 import de.thbingen.epro.project.okrservice.repositories.KeyResultUpdateRepository;
 import de.thbingen.epro.project.okrservice.services.impl.CompanyKeyResultServiceImpl;
 import de.thbingen.epro.project.okrservice.services.impl.CompanyObjectiveServiceImpl;
-import de.thbingen.epro.project.okrservice.services.impl.ObjectiveServiceImpl;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class CompanyKeyResultServiceTests {
@@ -53,7 +57,7 @@ public class CompanyKeyResultServiceTests {
                 .description("it's a test key result")
                 .current(500)
                 .confidenceLevel(20)
-                .objective(new CompanyObjective())
+                .objective(CompanyObjective.builder().id(1L).build())
                 .type(new KeyResultType("numeric"))
                 .lastUpdate(new KeyResultUpdate())
                 .contributingUnits(new ArrayList<>())
@@ -63,7 +67,7 @@ public class CompanyKeyResultServiceTests {
 
         CompanyKeyResultDto companyKeyResultDto = new CompanyKeyResultDto(companyKeyResult);
 
-        when(companyObjectiveService.findObjective(1L)).thenReturn(new CompanyObjective());
+        when(companyObjectiveService.findObjective(1L)).thenReturn(CompanyObjective.builder().id(1L).build());
         when(keyResultTypeRepository.findByName("numeric")).thenReturn(Optional.of(new KeyResultType("numeric")));
 
         CompanyKeyResultDto createdCompanyKeyResultDto =
@@ -236,7 +240,7 @@ public class CompanyKeyResultServiceTests {
                 .description("it's a test key result")
                 .current(500)
                 .confidenceLevel(20)
-                .objective(new CompanyObjective())
+                .objective(CompanyObjective.builder().id(1L).build())
                 .type(new KeyResultType("numeric"))
                 .lastUpdate(new KeyResultUpdate())
                 .contributingUnits(new ArrayList<>())
@@ -252,6 +256,9 @@ public class CompanyKeyResultServiceTests {
         when(companyKeyResultRepository.findById(1L)).thenReturn(Optional.of(companyKeyResult));
         when(keyResultTypeRepository.findByName("numeric")).thenReturn(Optional.of(new KeyResultType("numeric")));
 
+        when(companyKeyResultRepository.save(Mockito.any()))
+                .thenReturn(companyKeyResult.getId() != null ? companyKeyResult : CompanyKeyResult.builder().id(2L).build());
+        
         CompanyKeyResultDto patchedCompanyObjectiveDto =
                 companyKeyResultService.patchKeyResult(1L, keyResultPatchDto);
 

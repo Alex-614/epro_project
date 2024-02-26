@@ -26,7 +26,7 @@ public abstract class ObjectiveDto {
     private Long ownerId;
 
     @PositiveOrZero
-    public Integer achivement;
+    public Float achievement;
 
     public ObjectiveDto(Objective objective) {
         this.id = objective.getId();
@@ -34,6 +34,6 @@ public abstract class ObjectiveDto {
         this.title = objective.getTitle();
         this.description = objective.getDescription();
         this.ownerId = objective.getOwner().getId();
-        this.achivement = objective.getAchivement();
+        this.achievement = objective.getAchievement();
     }
 }

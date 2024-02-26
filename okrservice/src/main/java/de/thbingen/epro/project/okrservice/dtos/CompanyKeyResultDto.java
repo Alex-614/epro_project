@@ -17,7 +17,7 @@ public class CompanyKeyResultDto extends KeyResultDto {
 
     public CompanyKeyResultDto(CompanyKeyResult companyKeyResult) {
         super(companyKeyResult);
-        this.representers = companyKeyResult.getRepresenters().stream().map(mapper -> mapper.getId().longValue()).collect(Collectors.toList());
+        this.representers = companyKeyResult.getRepresenters().stream().map(m -> m.getId().longValue()).collect(Collectors.toList());
     }
     
 

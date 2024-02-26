@@ -52,7 +52,7 @@ public abstract class KeyResultDto {
     private List<BusinessUnitId> contributingBusinessUnits;
 
     @PositiveOrZero
-    private Integer achivement;
+    private Float achievement;
 
     public KeyResultDto(KeyResult keyResult) {
         this.id = keyResult.getId();
@@ -65,6 +65,6 @@ public abstract class KeyResultDto {
         this.objectiveId = keyResult.getObjective().getId();
         this.contributingUnits = keyResult.getContributingUnits().stream().map(m -> m.getId()).collect(Collectors.toList());
         this.contributingBusinessUnits = keyResult.getContributingBusinessUnits().stream().map(m -> m.getId()).collect(Collectors.toList());
-        this.achivement = keyResult.getAchivement();
+        this.achievement = keyResult.getAchievement();
     }
 }

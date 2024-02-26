@@ -1,7 +1,10 @@
 package de.thbingen.epro.project.okrservice.entities.keyresults;
 
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 
+import de.thbingen.epro.project.okrservice.constants.GlobalConstants;
 import de.thbingen.epro.project.okrservice.dtos.KeyResultDto;
 import de.thbingen.epro.project.okrservice.entities.BusinessUnit;
 import de.thbingen.epro.project.okrservice.entities.Unit;
@@ -76,7 +79,7 @@ public abstract class KeyResult {
                               @JoinColumn(name = "businessunit_id", referencedColumnName = "businessunit_id"), 
                               @JoinColumn(name = "company_id", referencedColumnName = "company_id")}
     )
-    private List<Unit> contributingUnits;
+    private List<Unit> contributingUnits = new ArrayList<>();
     
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -87,15 +90,15 @@ public abstract class KeyResult {
         inverseJoinColumns = {@JoinColumn(name = "businessunit_id", referencedColumnName = "id"), 
                               @JoinColumn(name = "company_id", referencedColumnName = "company_id")}
     )
-    private List<BusinessUnit> contributingBusinessUnits;
+    private List<BusinessUnit> contributingBusinessUnits = new ArrayList<>();
 
 
 
-    public int getAchivement() {
+    public float getAchievement() {
         if (getGoal() == 0) {
             return 0;
         }
-        return getCurrent() / getGoal();
+        return Float.parseFloat(new DecimalFormat(GlobalConstants.ACHIEVEMENT_PATTERN).format((float) getCurrent() / (float) getGoal() * 100));
     }
 
 

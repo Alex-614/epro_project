@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import de.thbingen.epro.project.okrservice.constants.KeyResultTypes;
 import de.thbingen.epro.project.okrservice.dtos.BusinessUnitDto;
 import de.thbingen.epro.project.okrservice.dtos.KeyResultDto;
 import de.thbingen.epro.project.okrservice.dtos.KeyResultUpdateDto;
@@ -64,17 +65,24 @@ public abstract class KeyResultServiceImpl<T extends KeyResult, K extends KeyRes
      * @param keyResultDto the DTO, of which the values are retrieved from 
      */
     protected void patchKeyResult(T keyResult, K keyResultDto) throws KeyResultTypeNotFoundException, ObjectiveNotFoundException { 
-        if (keyResultDto.getType() != null && !keyResultDto.getType().trim().isEmpty()) {
+        if (keyResultDto.getType() != null && !keyResultDto.getType().isBlank()) {
             KeyResultType type = keyResultTypeRepository.findByName(keyResultDto.getType()).orElseThrow(() -> new KeyResultTypeNotFoundException());
             keyResult.setType(type);
+            if (keyResult.getType().getName().equals(KeyResultTypes.BINARY.getName())) {
+                keyResult.setGoal(1);
+            }
+            if (keyResult.getType().getName().equals(KeyResultTypes.PERCENTUAL.getName())) {
+                keyResult.setGoal(100);
+            }
         }
         if (keyResultDto.getObjectiveId() != null)
             keyResult.setObjective(objectiveService.findObjective(keyResultDto.getObjectiveId()));
-        if (keyResultDto.getGoal() != null) 
+        if (keyResultDto.getGoal() != null
+                && keyResult.getType().getName().equals(KeyResultTypes.NUMERIC.getName())) 
             keyResult.setGoal(keyResultDto.getGoal());
-        if (keyResultDto.getTitle() != null) 
+        if (keyResultDto.getTitle() != null && !keyResultDto.getTitle().isBlank()) 
             keyResult.setTitle(keyResultDto.getTitle());
-        if (keyResultDto.getDescription() != null) 
+        if (keyResultDto.getDescription() != null && !keyResultDto.getDescription().isBlank()) 
             keyResult.setDescription(keyResultDto.getDescription());
         if (keyResultDto.getCurrent() != null) 
             keyResult.setCurrent(keyResultDto.getCurrent());
@@ -110,6 +118,11 @@ public abstract class KeyResultServiceImpl<T extends KeyResult, K extends KeyRes
         KeyResultUpdate update = new KeyResultUpdate();
         update.setKeyResult(keyResult);
         update.setStatusUpdate(updateDto.getStatusUpdate());
+
+        oldKeyResult.setObjective(null);
+        oldKeyResult.setContributingBusinessUnits(null);
+        oldKeyResult.setContributingUnits(null);
+        
         update.setOldKeyResult(oldKeyResult);
         update.setNewKeyResult(keyResult);
         User updater = userService.findUser(updateDto.getUpdaterId());

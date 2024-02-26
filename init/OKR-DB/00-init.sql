@@ -215,7 +215,7 @@ CREATE TABLE tbl_KeyResult
   Current INT NOT NULL,
   ConfidenceLevel INT NOT NULL,
   ID BIGINT NOT NULL,
-  Objective_ID BIGINT NOT NULL,
+  Objective_ID BIGINT,
   PRIMARY KEY (ID),
   FOREIGN KEY (Objective_ID) REFERENCES tbl_Objective(ID)
     ON DELETE CASCADE 
@@ -303,11 +303,11 @@ CREATE TABLE tbl_BusinessUnit_contributes_KeyResult
 
 
 
-CREATE TABLE tbl_CompanyKeyResult_represents_BusinessUnitObjective
+CREATE TABLE tbl_BusinessUnitObjective_represents_CompanyKeyResult
 (
   CompanyKeyResult_ID BIGINT NOT NULL,
   BusinessUnitObjective_ID BIGINT NOT NULL,
-  PRIMARY KEY (CompanyKeyResult_ID),
+  PRIMARY KEY (CompanyKeyResult_ID, BusinessUnitObjective_ID),
   FOREIGN KEY (CompanyKeyResult_ID) REFERENCES tbl_CompanyKeyResult(KeyResult_ID)
     ON DELETE CASCADE 
     ON UPDATE CASCADE,

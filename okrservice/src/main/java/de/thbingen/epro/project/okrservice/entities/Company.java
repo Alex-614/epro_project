@@ -1,6 +1,9 @@
 package de.thbingen.epro.project.okrservice.entities;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import org.hibernate.annotations.Filter;
 
 import de.thbingen.epro.project.okrservice.dtos.CompanyDto;
 import de.thbingen.epro.project.okrservice.entities.objectives.CompanyObjective;
@@ -34,8 +37,9 @@ public class Company {
     private String name;
 
     @OneToMany(mappedBy = "company")
-    private List<CompanyObjective> objectives;
+    private List<CompanyObjective> objectives = new ArrayList<>();
     
+
 
 
     public CompanyDto toDto() {
