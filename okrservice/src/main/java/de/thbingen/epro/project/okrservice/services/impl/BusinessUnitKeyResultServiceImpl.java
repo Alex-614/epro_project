@@ -55,6 +55,8 @@ public class BusinessUnitKeyResultServiceImpl extends KeyResultServiceImpl<Busin
     public BusinessUnitKeyResultDto createKeyResult(long companyId, long businessUnitId, long objectiveId,
             BusinessUnitKeyResultDto keyResultDto) throws MaxKeyResultsReachedException, CompanyNotFoundException,
             UserNotFoundException, ObjectiveNotFoundException, KeyResultTypeNotFoundException, BusinessUnitNotFoundException {
+        System.out.println(keyResultDto.getContributingBusinessUnits());
+
         BusinessUnitObjective objective = businessUnitObjectiveService.findObjective(objectiveId);
         
         BusinessUnitKeyResult businessUnitKeyResult = new BusinessUnitKeyResult();

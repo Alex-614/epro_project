@@ -45,6 +45,7 @@ public class CompanyObjectiveServiceImpl extends ObjectiveServiceImpl<CompanyObj
         patchObjective(objective, objectiveDto);
         objective.setCompany(company);
 
+        //Todo: double save through save in patch method?
         companyObjectiveRepository.save(objective);
 
         return objective.toDto();
