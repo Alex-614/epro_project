@@ -1,0 +1,19 @@
+<main>
+    <img id="img_logo" src=".\assets\logo.png" alt="OKReady Logo">
+
+    <div class="login-container">
+        <h2>Login</h2>
+        <form [formGroup]="loginForm">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="text" id="email" name="email" formControlName="email">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" formControlName="password">
+            </div>
+            <button type="submit" (click)="login()">Login</button>
+            <p>No Account yet? <a [routerLink]="['/registration']">Click here to register!</a></p>
+        </form>
+    </div>
+</main>

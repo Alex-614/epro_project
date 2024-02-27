@@ -1,0 +1,93 @@
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.horizontal-flex {
+    display:flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.settings-container {
+    width: 90%;
+    border: 3px solid #ccc;
+    border-radius: 5px;
+}
+
+.tHead {
+    background-color: lightgray;
+}
+
+.bgGreen {
+    background-color: green;
+}
+
+.bgOrange {
+    background-color: orange;
+}
+
+.bgRed{
+    background-color: red;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+tr, td, th {
+    padding: 10px;
+    border: 2px solid;
+    font-weight: bold;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+}
+
+input {
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    height: 2rem;
+    margin-bottom: 4px;
+    margin-right: 4px;
+}
+
+button {
+    width: 15rem;
+    background-color: #0046A3;
+    margin-left: 3rem;
+    margin-bottom: 6px;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    height: 2rem;
+    font-weight: bold;
+    font-size: large;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+#coTitle{
+    width: 15rem;
+}
+
+#coDescription{
+    width: 50rem;
+}
+
+#coDeadline{
+    width: 15rem;
+}

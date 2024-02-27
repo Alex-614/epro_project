@@ -41,6 +41,17 @@ services:
       okr-db:
         condition: service_healthy
 
+  # Angular Frontend
+  angular-application:
+    container_name: angular-application
+    hostname: angular-application
+    networks:
+      - frontnet
+    build:
+      context: ./angularapp
+      dockerfile: Dockerfile
+    image: angular-application
+    restart: on-failure
 
 
   # API Gateway

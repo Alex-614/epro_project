@@ -1,0 +1,66 @@
+<main>
+    <h2>Your active company is: {{activeCompany}}</h2>
+    <div class="horizontal-flex">
+        <div class="settings-container">
+            <h2>Create Business Unit</h2>
+            <form [formGroup]="createBusinessUnit">
+                <div class="form-group">
+                    <label for="buName">Business Unit Name</label>
+                    <input type="text" id="buName" name="buName" formControlName="buName">
+                </div>
+                <button type="submit" (click)="btn_createBusinessUnit()">Submit</button>
+            </form>
+        </div>
+        <div class="settings-container">
+            <h2>Change Business Unit Name</h2>
+            <form [formGroup]="changeBuName">
+                <div class="form-group">
+                    <label for="buId">Business Unit ID</label>
+                    <input type="text" id="buId" name="buId" formControlName="buId">
+                </div>
+                <div class="form-group">
+                    <label for="newBuName">New Business Unit Name</label>
+                    <input type="text" id="newBuName" name="newBuName" formControlName="newBuName">
+                </div>
+                <button type="submit" (click)="btn_changeBuName()">Submit</button>
+            </form>
+        </div>
+        <div class="settings-container">
+            <h2>Delete Business Unit</h2>
+            <form [formGroup]="deleteBusinessUnit">
+                <div class="form-group">
+                    <label for="buId">Business Unit ID</label>
+                    <input type="text" id="buId" name="buId" formControlName="buId">
+                </div>
+                <button type="submit" (click)="btn_deleteBusinessUnit()">Submit</button>
+            </form>
+        </div>
+    </div>
+    <div class="horizontal-flex">
+        <div class="settings-container">
+            <h2>Create Unit</h2>
+            <form [formGroup]="createUnit">
+                <div class="form-group">
+                    <label for="ubuId">Business Unit ID</label>
+                    <input type="text" id="ubuId" name="ubuId" formControlName="ubuId">
+                </div>
+                <div class="form-group">
+                    <label for="uName">Unit Name</label>
+                    <input type="text" id="uName" name="uName" formControlName="uName">
+                </div>
+                <button type="submit" (click)="btn_createUnit()">Submit</button>
+            </form>
+        </div>
+        <div class="bu-list">
+            <h2>All Company Business Units:</h2>
+            <table>
+                <tbody>
+                    <tr *ngFor="let businessUnit of businessUnits">
+                        <td>{{businessUnit.id}}</td>
+                        <td>{{businessUnit.name}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>>

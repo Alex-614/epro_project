@@ -1,0 +1,170 @@
+<main>
+    <div>
+        <h2>Your active company is: {{activeCompany}}</h2>
+    </div>
+    <div class="settings-container">
+        <h2>Create new businessunit objective</h2>
+        <form [formGroup]="createBusinessunitObjective">
+            <div class="horizontal-flex">
+                <div class="form-group">
+                    <label for="buoBuId">Businessunit ID</label>
+                    <input type="text" id="buoBuId" name="buoBuId" formControlName="buoBuId">
+                </div>
+                <div class="form-group">
+                    <label for="buoTitle">Title</label>
+                    <input type="text" id="buoTitle" name="buoTitle" formControlName="buoTitle">
+                </div>
+                <div class="form-group">
+                    <label for="buoDescription">Description</label>
+                    <input type="text" id="buoDescription" name="buoDescription" formControlName="buoDescription">
+                </div>
+                <div class="form-group">
+                    <label for="buoDeadline">Deadline</label>
+                    <input type="datetime-local" id="buoDeadline" name="buoDeadline" formControlName="buoDeadline">
+                </div>
+                <div class="form-group">
+                    <label for="buoCkr">Corresponding Company Keyresult (optional)</label>
+                    <input type="text" id="buoCkr" name="buoCkr" formControlName="buoCkr">
+                </div>
+                <button type="submit" (click)="btn_createBusinessunitObjective()">Submit</button>
+            </div>
+        </form>
+    </div>
+    <div class="settings-container">
+        <h2>Create new businessunit keyresult</h2>
+        <form [formGroup]="createBusinessunitKeyresult">
+            <div class="horizontal-flex">
+                <div class="form-group">
+                    <label for="bukrBuId">Businessunit ID</label>
+                    <input type="text" id="bukrBuId" name="bukrBuId" formControlName="bukrBuId">
+                </div>
+                <div class="form-group">
+                    <label for="bukrBuoId">BU Objective ID</label>
+                    <input type="text" id="bukrBuoId" name="bukrBuoId" formControlName="bukrBuoId">
+                </div>
+                <div class="form-group">
+                    <label for="bukrTitle">Title</label>
+                    <input type="text" id="bukrTitle" name="bukrTitle" formControlName="bukrTitle">
+                </div>
+                <div class="form-group">
+                    <label for="bukrType">Type</label>
+                    <input type="text" id="bukrType" name="bukrType" formControlName="bukrType">
+                </div>
+                <div class="form-group">
+                    <label for="bukrCurrent">Current</label>
+                    <input type="text" id="bukrCurrent" name="bukrCurrent" formControlName="bukrCurrent">
+                </div>
+                <div class="form-group">
+                    <label for="bukrGoal">Goal</label>
+                    <input type="text" id="bukrGoal" name="bukrGoal" formControlName="bukrGoal">
+                </div>
+                <div class="form-group">
+                    <label for="bukrConfidenceLevel">ConfidenceLevel</label>
+                    <input type="text" id="bukrConfidenceLevel" name="bukrConfidenceLevel"
+                        formControlName="bukrConfidenceLevel">
+                </div>
+                <div class="form-group">
+                    <label for="bukrDescription">Description</label>
+                    <input type="text" id="bukrDescription" name="bukrDescription" formControlName="bukrDescription">
+                </div>
+                <div class="form-group">
+                    <label for="bukrContributingUnits">Contributing Units</label>
+                    <input type="text" id="bukrContributingUnits" name="bukrContributingUnits"
+                        formControlName="bukrContributingUnits">
+                </div>
+                <button type="submit" (click)="btn_createBusinessunitKeyresult()">Submit</button>
+            </div>
+        </form>
+    </div>
+    <div class="settings-container">
+        <h2>Update businessunit keyresult</h2>
+        <form [formGroup]="updateBusinessunitKeyresult">
+            <div class="horizontal-flex">
+                <div class="form-group">
+                    <label for="ubukrBuId">Businessunit ID</label>
+                    <input type="text" id="ubukrBuId" name="ubukrBuId" formControlName="ubukrBuId">
+                </div>
+                <div class="form-group">
+                    <label for="ubukrBuoId">BU Objective ID</label>
+                    <input type="text" id="ubukrBuoId" name="ubukrBuoId" formControlName="ubukrBuoId">
+                </div>
+                <div class="form-group">
+                    <label for="ubukrBuKrId">BU Keyresult ID</label>
+                    <input type="text" id="ubukrBuKrId" name="ubukrBuKrId" formControlName="ubukrBuKrId">
+                </div>
+                <div class="form-group">
+                    <label for="ubukrStatusUpdate">Status Update</label>
+                    <input type="text" id="ubukrStatusUpdate" name="ubukrStatusUpdate"
+                        formControlName="ubukrStatusUpdate">
+                </div>
+                <div class="form-group">
+                    <label for="ubukrCurrent">Current</label>
+                    <input type="text" id="ubukrCurrent" name="ubukrCurrent" formControlName="ubukrCurrent">
+                </div>
+                <div class="form-group">
+                    <label for="ubukrConfidenceLevel">Confidence Level</label>
+                    <input type="text" id="ubukrConfidenceLevel" name="ubukrConfidenceLevel"
+                        formControlName="ubukrConfidenceLevel">
+                </div>
+                <div class="form-group">
+                    <label for="ubukrContributingUnits">Contributing Units</label>
+                    <input type="text" id="ubukrContributingUnits" name="ubukrContributingUnits"
+                        formControlName="ubukrContributingUnits">
+                </div>
+                <button type="submit" (click)="btn_updateBusinessunitKeyresult()">Submit</button>
+            </div>
+        </form>
+    </div>
+    <div class="cokr-list">
+        <h2>All Businessunits objectives:</h2>
+       <table>
+            <tbody>
+                <tr class="tHead">
+                    <th>Businessunit</th>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Deadline</th>
+                    <th>Owner</th>
+                </tr>
+                <tr *ngFor="let buObjective of businessunitObjectives">
+                    <td>{{buObjective.buId}}</td>
+                    <td>{{buObjective.id}}</td>
+                    <td>{{buObjective.title}}</td>
+                    <td>{{buObjective.description}}</td>
+                    <td>{{buObjective.deadline}}</td>
+                    <td>{{buObjective.ownerId}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="cokr-list">
+        <h2>All Businessunit objectives and keyresults:</h2>
+        <table>
+            <tbody>
+                <tr class="tHead">
+                    <th>Overall</th>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Current</th>
+                    <th>Goal</th>
+                    <th>Confidence Level</th>
+                    <th>Owner</th>
+                    <th>Description</th>
+                    <th>Contributing Units</th>
+                </tr>
+                <tr *ngFor="let keyresult of businessunitKeyresults" class="krBody">
+                    <td class={{keyresult.overallColorClass}}>{{keyresult.overall}}</td>
+                    <td>{{keyresult.id}}</td>
+                    <td>{{keyresult.title}}</td>
+                    <td>{{keyresult.current}}</td>
+                    <td>{{keyresult.goal}}</td>
+                    <td>{{keyresult.confidenceLevel}}</td>
+                    <td>{{keyresult.owner}}</td>
+                    <td>{{keyresult.description}}</td>
+                    <td>{{keyresult.contributingUnits}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</main>

@@ -1,0 +1,91 @@
+<main>
+    <div class="horizontal-flex">
+        <div class="settings-container">
+            <h2>Create Company</h2>
+            <form [formGroup]="createCompany">
+                <div class="form-group">
+                    <label for="companyName">Company Name</label>
+                    <input type="text" id="companyName" name="companyName" formControlName="companyName">
+                </div>
+                <button type="submit" (click)="btn_createCompany()">Submit</button>
+            </form>
+        </div>
+        <div class="settings-container">
+            <h2>Change Company Name</h2>
+            <form [formGroup]="changeCompanyName">
+                <div class="form-group">
+                    <label for="companyId">Company ID</label>
+                    <input type="text" id="companyId" name="companyId" formControlName="companyId">
+                </div>
+                <div class="form-group">
+                    <label for="newCompanyName">New Company Name</label>
+                    <input type="text" id="newCompanyName" name="newCompanyName" formControlName="newCompanyName">
+                </div>
+                <button type="submit" (click)="btn_changeCompanyName()">Submit</button>
+            </form>
+        </div>
+        <div class="settings-container">
+            <h2>Set Active Company</h2>
+            <form [formGroup]="setActiveCompany">
+                <div class="form-group">
+                    <label for="companyId">Company ID</label>
+                    <input type="text" id="companyId" name="companyId" formControlName="companyId">
+                </div>
+                <button type="submit" (click)="btn_setActiveCompany()">Submit</button>
+            </form>
+        </div>
+    </div>
+    <div class="horizontal-flex">
+        <div class="settings-container">
+            <h2>Delete Company</h2>
+            <form [formGroup]="deleteCompany">
+                <div class="form-group">
+                    <label for="companyId">Company ID</label>
+                    <input type="text" id="companyId" name="companyId" formControlName="companyId">
+                </div>
+                <button type="submit" (click)="btn_deleteCompany()">Submit</button>
+            </form>
+        </div>
+        <div class="settings-container">
+            <!--//TODO add user to company or add user as company admin?-->
+            <h2>Add Company User</h2>
+            <form [formGroup]="addCompanyUser">
+                <div class="form-group">
+                    <label for="companyId">Company ID</label>
+                    <input type="text" id="companyId" name="companyId" formControlName="companyId">
+                </div>
+                <div class="form-group">
+                    <label for="userId">User ID</label>
+                    <input type="text" id="userId" name="userId" formControlName="userId">
+                </div>
+                <div class="form-group">
+                    <h3>Role:</h3>
+                    <label>
+                        <input type="radio" value="1" formControlName="role" class="radio">
+                          <span>CO_OKR_Admin (1)</span>
+                      </label>
+                      <label>
+                        <input type="radio" value="2" formControlName="role" class="radio">
+                          <span>BUO_OKR_Admin (2)</span>
+                      </label>
+                      <label>
+                        <input type="radio" value="3" formControlName="role" class="radio">
+                          <span>READ_Only_User (3)</span>
+                      </label>
+                </div>
+                <button type="submit" (click)="btn_addCompanyUser()">Submit</button>
+            </form>
+        </div>
+        <div class="company-list">
+            <h2>My Companies:</h2>
+            <table>
+                <tbody>
+                    <tr *ngFor="let company of companies">
+                        <td>{{company.id}}</td>
+                        <td>{{company.name}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>>

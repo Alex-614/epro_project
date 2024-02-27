@@ -1,0 +1,148 @@
+<main>
+    <div>
+        <h2>Your active company is: {{activeCompany}}</h2>
+    </div>
+    <div class="settings-container">
+        <h2>Create new company objective</h2>
+        <form [formGroup]="createCompanyObjective">
+            <div class="horizontal-flex">
+                <div class="form-group">
+                    <label for="coTitle">Title</label>
+                    <input type="text" id="coTitle" name="coTitle" formControlName="coTitle">
+                </div>
+                <div class="form-group">
+                    <label for="coDescription">Description</label>
+                    <input type="text" id="coDescription" name="coDescription" formControlName="coDescription">
+                </div>
+                <div class="form-group">
+                    <label for="coDeadline">Deadline</label>
+                    <input type="datetime-local" id="coDeadline" name="coDeadline" formControlName="coDeadline">
+                </div>
+                <button type="submit" (click)="btn_createCompanyObjective()">Submit</button>
+            </div>
+        </form>
+    </div>
+    <div class="settings-container">
+        <h2>Create new company keyresult</h2>
+        <form [formGroup]="createCompanyKeyresult">
+            <div class="horizontal-flex">
+                <div class="form-group">
+                    <label for="ckCoId">Companyobjective ID</label>
+                    <input type="text" id="ckCoId" name="ckCoId" formControlName="ckCoId">
+                </div>
+                <div class="form-group">
+                    <label for="ckTitle">Title</label>
+                    <input type="text" id="ckTitle" name="ckTitle" formControlName="ckTitle">
+                </div>
+                <div class="form-group">
+                    <label for="ckType">Type</label>
+                    <input type="text" id="ckType" name="ckType" formControlName="ckType">
+                </div>
+                <div class="form-group">
+                    <label for="ckCurrent">Current</label>
+                    <input type="text" id="ckCurrent" name="ckCurrent" formControlName="ckCurrent">
+                </div>
+                <div class="form-group">
+                    <label for="ckGoal">Goal</label>
+                    <input type="text" id="ckGoal" name="ckGoal" formControlName="ckGoal">
+                </div>
+                <div class="form-group">
+                    <label for="ckConfidenceLevel">ConfidenceLevel</label>
+                    <input type="text" id="ckConfidenceLevel" name="ckConfidenceLevel"
+                        formControlName="ckConfidenceLevel">
+                </div>
+                <div class="form-group">
+                    <label for="ckDescription">Description</label>
+                    <input type="text" id="ckDescription" name="ckDescription" formControlName="ckDescription">
+                </div>
+                <div class="form-group">
+                    <label for="ckContributingBusinessUnits">Contributing BUs</label>
+                    <input type="text" id="ckContributingBusinessUnits" name="ckContributingBusinessUnits" formControlName="ckContributingBusinessUnits">
+                </div>
+                <button type="submit" (click)="btn_createCompanyKeyresult()">Submit</button>
+            </div>
+        </form>
+    </div>
+    <div class="settings-container">
+        <h2>Update company keyresult</h2>
+        <form [formGroup]="updateKeyresult">
+            <div class="horizontal-flex">
+                <div class="form-group">
+                    <label for="ukrCoId">Company Objective ID</label>
+                    <input type="text" id="ukrCoId" name="ukrCoId" formControlName="ukrCoId">
+                </div>
+                <div class="form-group">
+                    <label for="ukrId">Company Keyresult ID</label>
+                    <input type="text" id="ukrId" name="ukrId" formControlName="ukrId">
+                </div>
+                <div class="form-group">
+                    <label for="ukrStatusUpdate">Status Update</label>
+                    <input type="text" id="ukrStatusUpdate" name="ukrStatusUpdate" formControlName="ukrStatusUpdate">
+                </div>
+                <div class="form-group">
+                    <label for="ukrCurrent">Current</label>
+                    <input type="text" id="ukrCurrent" name="ukrCurrent" formControlName="ukrCurrent">
+                </div>
+                <div class="form-group">
+                    <label for="ukrConfidenceLevel">Confidence Level</label>
+                    <input type="text" id="ukrConfidenceLevel" name="ukrConfidenceLevel" formControlName="ukrConfidenceLevel">
+                </div>
+                <div class="form-group">
+                    <label for="ukrContributingBusinessUnits">Contributing BUs</label>
+                    <input type="text" id="ukrContributingBusinessUnits" name="ukrContributingBusinessUnits" formControlName="ukrContributingBusinessUnits">
+                </div>
+                <button type="submit" (click)="btn_updateKeyresult()">Submit</button>
+            </div>
+        </form>
+    </div>
+    <div class="cokr-list">
+        <h2>All Company objectives:</h2>
+        <table>
+            <tbody>
+                <tr class="tHead">
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Deadline</th>
+                    <th>Owner</th>
+                </tr>
+                <tr *ngFor="let companyObjective of companyObjectives">
+                    <td>{{companyObjective.id}}</td>
+                    <td>{{companyObjective.title}}</td>
+                    <td>{{companyObjective.description}}</td>
+                    <td>{{companyObjective.deadline}}</td>
+                    <td>{{companyObjective.owner}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="cokr-list">
+        <h2>All Company objectives and keyresults:</h2>
+        <table>
+            <tbody>
+                <tr class="tHead">
+                    <th>Overall</th>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Current</th>
+                    <th>Goal</th>
+                    <th>Confidence Level</th>
+                    <th>Owner</th>
+                    <th>Description</th>
+                    <th>Contributing Units</th>
+                </tr>
+                <tr *ngFor="let keyresult of companyObjectiveKeyresults" class="krBody">
+                    <td class={{keyresult.overallColorClass}}>{{keyresult.overall}}</td>
+                    <td>{{keyresult.id}}</td>
+                    <td>{{keyresult.title}}</td>
+                    <td>{{keyresult.current}}</td>
+                    <td>{{keyresult.goal}}</td>
+                    <td>{{keyresult.confidenceLevel}}</td>
+                    <td>{{keyresult.owner}}</td>
+                    <td>{{keyresult.description}}</td>
+                    <td>{{keyresult.contributingUnits}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</main>

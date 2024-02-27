@@ -1,0 +1,36 @@
+<main>
+    <div class="settings-container">
+        <h2>Account Settings</h2>
+        <p>You can change the following user data of your account.</p>
+        <form [formGroup]="changeUsername">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" formControlName="username">
+            </div>            
+            <button type="submit" (click)="btn_changeUsername()">Submit</button>
+        </form>
+        <form [formGroup]="changePassword">
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" formControlName="password">
+            </div>
+            <div class="form-group">
+                <label for="passwordRetype">Retype Password</label>
+                <input type="password" id="passwordRetype" name="passwordRetype" formControlName="passwordRetype">
+            </div>
+            <button type="submit" (click)="btn_changePassword()">Submit</button>
+        </form>
+        <form [formGroup]="changeName">
+            <div class="form-group">
+                <label for="firstname">Firstname</label>
+                <input type="text" id="firstname" name="firstname" formControlName="firstname">
+            </div>
+            <div class="form-group">
+                <label for="surname">Surname</label>
+                <input type="text" id="surname" name="surname" formControlName="surname">
+            </div>
+            <button type="submit" (click)="btn_changeName()">Submit</button>
+        </form>
+        <button (click)="btn_deleteUser()">Delete Account</button>
+    </div>
+</main>>
