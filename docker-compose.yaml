@@ -53,7 +53,7 @@ services:
     build:
       context: ./okrgateway
       dockerfile: Dockerfile
-    image: translator-api-gateway
+    image: epro_project-okr-gateway
     ports:
       - "8080:8080"
     restart: on-failure
