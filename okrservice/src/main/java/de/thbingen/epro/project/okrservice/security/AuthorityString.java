@@ -6,13 +6,15 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * StringFormat: <prefix><privilege>_<companyId>_<businessUnitId>
  * 
- * <p>if no value is set the String will be empty</p>
+ * <p>Used to map from Role/Privilege names to the actually used Authorities</p>
+ * 
+ * StringFormat: {prefix}{privilege}_{companyId}_{businessUnitId};
+ * if no value is set the String will be empty.
  * 
  * <ui>
- *   <li>the default Spring security prefix is 'ROLE_'; it will be added if 'isRole' == true</li>
- *   <li>privilege will be replaced with authority</li>
+ *   <li>- the default Spring security prefix is 'ROLE_'; it will be added if 'isRole' == true</li>
+ *   <li>- privilege will be replaced with authority</li>
  * </ui>
  * 
  */
@@ -22,10 +24,25 @@ import lombok.Setter;
 @NoArgsConstructor
 public class AuthorityString {
 
-
+    /**
+     * Creates an AuthorityString based on a Role name
+     * 
+     * @param authority the name of the role
+     * @param companyId 
+     * @return the Role as AuthorityString
+     */
     public static AuthorityString Role(String authority, String companyId) {
         return new AuthorityString(true, authority, companyId, "");
     }
+    
+    
+    /**
+     * Creates an AuthorityString based on a Privilege name
+     * 
+     * @param authority the name of the privilege
+     * @param companyId 
+     * @return the Privilege as AuthorityString
+     */
     public static AuthorityString Privilege(String authority, String companyId) {
         return new AuthorityString(false, authority, companyId, "");
     }
@@ -38,6 +55,10 @@ public class AuthorityString {
     private String companyId = "";
     private String businessUnitId = "";
     
+    /**
+     * Only works properly, if at least one Attribure, except 'isRole', is set
+     */
+    @Deprecated
     public AuthorityString fromString(String authorityString) {
         boolean isRole = authorityString.startsWith(SecurityConstants.ROLE_PREFIX);
 

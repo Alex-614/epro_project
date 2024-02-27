@@ -5,6 +5,11 @@ import org.springframework.http.HttpMethod;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * Used to easily set and modify security needs.
+ * 
+ * @see AuthorityString
+ */
 @Getter
 @NoArgsConstructor
 public class CompanyAuthority {

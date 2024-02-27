@@ -13,6 +13,9 @@ import org.hibernate.jdbc.ReturningWork;
 
 import de.thbingen.epro.project.okrservice.entities.Unit;
 
+/**
+ * Custom Id generator, to properly generate partially unique identifiers for Units
+ */
 public class UnitIdGenerator implements IdentifierGenerator {
 
     @Override
