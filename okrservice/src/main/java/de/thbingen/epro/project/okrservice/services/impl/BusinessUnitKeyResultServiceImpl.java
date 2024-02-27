@@ -55,9 +55,8 @@ public class BusinessUnitKeyResultServiceImpl extends KeyResultServiceImpl<Busin
         BusinessUnitKeyResult businessUnitKeyResult = new BusinessUnitKeyResult();
         keyResultDto.setObjectiveId(objectiveId);
         patchKeyResult(businessUnitKeyResult, keyResultDto);
-        /*Collections.singleton(businessUnitService.findBusinessUnit(companyId, businessUnitId))*/
-        /*Collections.singleton(businessUnitService.findBusinessUnit(companyId, businessUnitId))*/
-        Set<BusinessUnit> bus = keyResultDto.getContributingBusinessUnits().stream().map(BusinessUnit::new).collect(Collectors.toCollection(LinkedHashSet<BusinessUnit>::new));
+        Set<BusinessUnit> bus = keyResultDto.getContributingBusinessUnits().stream().map(BusinessUnit::new)
+                .collect(Collectors.toCollection(LinkedHashSet<BusinessUnit>::new));
         businessUnitKeyResult.setContributingBusinessUnits(bus);
         
         businessUnitKeyResultRepository.save(businessUnitKeyResult);
