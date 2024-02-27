@@ -62,7 +62,7 @@ public abstract class KeyResultDto {
         this.current = keyResult.getCurrent();
         this.confidenceLevel = keyResult.getConfidenceLevel();
         this.type = keyResult.getType().getName();
-        this.objectiveId = keyResult.getObjective().getId();
+        this.objectiveId = (keyResult.getObjective() != null ? keyResult.getObjective().getId() : null);
         this.contributingUnits = keyResult.getContributingUnits().stream().map(m -> m.getId()).collect(Collectors.toList());
         this.contributingBusinessUnits = keyResult.getContributingBusinessUnits().stream().map(m -> m.getId()).collect(Collectors.toList());
         this.achievement = keyResult.getAchievement();
