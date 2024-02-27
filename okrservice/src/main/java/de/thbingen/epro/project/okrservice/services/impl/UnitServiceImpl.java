@@ -41,6 +41,10 @@ public class UnitServiceImpl implements UnitService {
     public UnitDto createUnit(long companyId, long businessUnitId, UnitDto unitDto) throws UnitAlreadyExistsException, BusinessUnitNotFoundException {
         BusinessUnit businessUnit = businessUnitService.findBusinessUnit(companyId, businessUnitId);
 
+        if (unitRepository.existsByNameAndBusinessUnitIdEquals(unitDto.getName(), businessUnit.getId())) {
+            throw new UnitAlreadyExistsException();
+        }
+
         Unit unit = new Unit();
         unit.setName(unitDto.getName());
         unit.setBusinessUnit(businessUnit);
@@ -66,7 +70,9 @@ public class UnitServiceImpl implements UnitService {
     public UnitDto patchUnit(long companyId, long businessUnitId, long unitId, UnitDto unitDto) throws UnitNotFoundException {
         Unit unit = findUnit(companyId, businessUnitId, unitId);
 
-        if (unitDto.getName() != null) unit.setName(unitDto.getName());
+        if (unitDto.getName() != null && !unitDto.getName().isBlank())
+            if (unitRepository.existsByNameAndBusinessUnitIdEquals(unitDto.getName(), unit.getBusinessUnit().getId()))
+                unit.setName(unitDto.getName());
 
         unitRepository.save(unit);
         return unit.toDto();

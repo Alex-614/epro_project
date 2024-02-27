@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.stream.Collectors;
 
 import static org.mockito.BDDMockito.given;
@@ -46,7 +47,7 @@ public class BusinessUnitControllerTests {
                 .id(new BusinessUnitId(1L, 1L))
                 .company(new Company())
                 .name("BU01")
-                .objectives(new ArrayList<>())
+                .objectives(new HashSet<>())
                 .build();
 
         BusinessUnitDto businessUnitDto = new BusinessUnitDto(businessUnit);
@@ -69,7 +70,7 @@ public class BusinessUnitControllerTests {
                     .id(new BusinessUnitId(i, 1L))
                     .company(new Company())
                     .name("BU01")
-                    .objectives(new ArrayList<>())
+                    .objectives(new HashSet<>())
                     .build();
             businessUnits.add(businessUnit);
         }
@@ -91,7 +92,7 @@ public class BusinessUnitControllerTests {
                 .id(new BusinessUnitId(1L, 1L))
                 .company(new Company())
                 .name("BU01")
-                .objectives(new ArrayList<>())
+                .objectives(new HashSet<>())
                 .build();
 
         BusinessUnitDto businessUnitDto = new BusinessUnitDto(businessUnit);
@@ -110,7 +111,7 @@ public class BusinessUnitControllerTests {
                 .id(new BusinessUnitId(1L, 1L))
                 .company(new Company())
                 .name("BU01")
-                .objectives(new ArrayList<>())
+                .objectives(new HashSet<>())
                 .build();
 
         BusinessUnitDto businessUnitDto = new BusinessUnitDto(businessUnit);

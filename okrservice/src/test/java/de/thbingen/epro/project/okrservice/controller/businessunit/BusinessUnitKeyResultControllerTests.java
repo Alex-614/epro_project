@@ -23,6 +23,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -60,8 +61,8 @@ public class BusinessUnitKeyResultControllerTests {
                 .objective(new CompanyObjective())
                 .type(new KeyResultType("numeric"))
                 .lastUpdate(new KeyResultUpdate())
-                .contributingUnits(new ArrayList<Unit>())
-                .contributingBusinessUnits(new ArrayList<BusinessUnit>())
+                .contributingUnits(new HashSet<Unit>())
+                .contributingBusinessUnits(new HashSet<BusinessUnit>())
                 .build();
 
         BusinessUnitKeyResultDto businessUnitKeyResultDto = new BusinessUnitKeyResultDto(businessUnitKeyResult);
@@ -91,8 +92,8 @@ public class BusinessUnitKeyResultControllerTests {
                     .objective(new CompanyObjective())
                     .type(new KeyResultType("numeric"))
                     .lastUpdate(new KeyResultUpdate())
-                    .contributingUnits(new ArrayList<Unit>())
-                    .contributingBusinessUnits(new ArrayList<BusinessUnit>())
+                    .contributingUnits(new HashSet<Unit>())
+                    .contributingBusinessUnits(new HashSet<BusinessUnit>())
                     .build();
             businessUnitKeyResults.add(businessUnitKeyResult);
         }
@@ -120,8 +121,8 @@ public class BusinessUnitKeyResultControllerTests {
                 .objective(new CompanyObjective())
                 .type(new KeyResultType("numeric"))
                 .lastUpdate(new KeyResultUpdate())
-                .contributingUnits(new ArrayList<Unit>())
-                .contributingBusinessUnits(new ArrayList<BusinessUnit>())
+                .contributingUnits(new HashSet<Unit>())
+                .contributingBusinessUnits(new HashSet<BusinessUnit>())
                 .build();
 
         BusinessUnitKeyResultDto businessUnitKeyResultDto = new BusinessUnitKeyResultDto(businessUnitKeyResult);
@@ -174,8 +175,8 @@ public class BusinessUnitKeyResultControllerTests {
                 .objective(new CompanyObjective())
                 .type(new KeyResultType("numeric"))
                 .lastUpdate(new KeyResultUpdate())
-                .contributingUnits(new ArrayList<Unit>())
-                .contributingBusinessUnits(new ArrayList<BusinessUnit>())
+                .contributingUnits(new HashSet<Unit>())
+                .contributingBusinessUnits(new HashSet<BusinessUnit>())
                 .build();
 
         BusinessUnitKeyResultDto businessUnitKeyResultDto = new BusinessUnitKeyResultDto(businessUnitKeyResult);
@@ -206,8 +207,8 @@ public class BusinessUnitKeyResultControllerTests {
                 .objective(new CompanyObjective())
                 .type(new KeyResultType("numeric"))
                 .lastUpdate(new KeyResultUpdate())
-                .contributingUnits(new ArrayList<Unit>())
-                .contributingBusinessUnits(new ArrayList<BusinessUnit>())
+                .contributingUnits(new HashSet<Unit>())
+                .contributingBusinessUnits(new HashSet<BusinessUnit>())
                 .build();
 
         BusinessUnitKeyResultDto businessUnitKeyResultDto = new BusinessUnitKeyResultDto(businessUnitKeyResult);

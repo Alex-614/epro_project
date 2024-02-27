@@ -2,16 +2,26 @@ package de.thbingen.epro.project.okrservice.security;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * StringFormat: <prefix><privilege>_<companyId>_<businessUnitId>
+ * 
+ * <p>if no value is set the String will be empty</p>
+ * 
+ * <ui>
+ *   <li>the default Spring security prefix is 'ROLE_'; it will be added if 'isRole' == true</li>
+ *   <li>privilege will be replaced with authority</li>
+ * </ui>
+ * 
+ */
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 public class AuthorityString {
 
-    /*
-     *   Format: <ROLE_><privilege>_<companyId>_<businessUnitId>
-     */
 
     public static AuthorityString Role(String authority, String companyId) {
         return new AuthorityString(true, authority, companyId, "");
@@ -23,10 +33,10 @@ public class AuthorityString {
 
     private static final String seperator = "_";
 
-    private boolean isRole;
-    private String authority;
-    private String companyId;
-    private String businessUnitId;
+    private boolean isRole = false;
+    private String authority = "";
+    private String companyId = "";
+    private String businessUnitId = "";
     
     public AuthorityString fromString(String authorityString) {
         boolean isRole = authorityString.startsWith(SecurityConstants.ROLE_PREFIX);
@@ -46,15 +56,22 @@ public class AuthorityString {
     @Override
     public String toString() {
         String authorityString = "";
+        String tempAuthority = authority != null ? authority : "";
+        String tempCompanyId = companyId != null ? companyId : "";
+        String tempBusinessUnitId = businessUnitId != null ? businessUnitId : "";
         if (isRole) {
             authorityString += SecurityConstants.ROLE_PREFIX;
+        } else {
+            if (tempAuthority.isEmpty() && tempCompanyId.isEmpty() && tempBusinessUnitId.isEmpty()) {
+                return "";
+            }
         }
         authorityString += String.format("%s%s%s%s%s", 
-                                            authority, 
+                                            tempAuthority, 
                                             seperator,
-                                            (companyId != null ? companyId : ""), 
+                                            tempCompanyId, 
                                             seperator,
-                                            (businessUnitId != null ? businessUnitId : ""));
+                                            tempBusinessUnitId);
         return authorityString;
     }
 

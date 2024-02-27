@@ -4,8 +4,10 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.assertj.core.api.Assertions;
@@ -60,14 +62,14 @@ public class CompanyKeyResultServiceTests {
                 .objective(CompanyObjective.builder().id(1L).build())
                 .type(new KeyResultType("numeric"))
                 .lastUpdate(new KeyResultUpdate())
-                .contributingUnits(new ArrayList<>())
-                .contributingBusinessUnits(new ArrayList<>())
-                .representers(new ArrayList<>())
+                .contributingUnits(new HashSet<>())
+                .contributingBusinessUnits(new HashSet<>())
+                .representers(new HashSet<>())
                 .build();
 
         CompanyKeyResultDto companyKeyResultDto = new CompanyKeyResultDto(companyKeyResult);
 
-        when(companyObjectiveService.findObjective(1L)).thenReturn(CompanyObjective.builder().id(1L).build());
+        when(companyObjectiveService.findObjective(1L)).thenReturn(CompanyObjective.builder().id(1L).keyReslts(new HashSet<>()).build());
         when(keyResultTypeRepository.findByName("numeric")).thenReturn(Optional.of(new KeyResultType("numeric")));
 
         CompanyKeyResultDto createdCompanyKeyResultDto =
@@ -89,9 +91,9 @@ public class CompanyKeyResultServiceTests {
                     .objective(new CompanyObjective())
                     .type(new KeyResultType("numeric"))
                     .lastUpdate(new KeyResultUpdate())
-                    .contributingUnits(new ArrayList<>())
-                    .contributingBusinessUnits(new ArrayList<>())
-                    .representers(new ArrayList<>())
+                    .contributingUnits(new HashSet<>())
+                    .contributingBusinessUnits(new HashSet<>())
+                    .representers(new HashSet<>())
                     .build();
             companyKeyResults.add(companyKeyResult);
         }
@@ -117,9 +119,9 @@ public class CompanyKeyResultServiceTests {
                 .objective(new CompanyObjective())
                 .type(new KeyResultType("numeric"))
                 .lastUpdate(new KeyResultUpdate())
-                .contributingUnits(new ArrayList<>())
-                .contributingBusinessUnits(new ArrayList<>())
-                .representers(new ArrayList<>())
+                .contributingUnits(new HashSet<>())
+                .contributingBusinessUnits(new HashSet<>())
+                .representers(new HashSet<>())
                 .build();
 
         when(companyKeyResultRepository.findById(1L)).thenReturn(Optional.ofNullable(companyKeyResult));
@@ -131,7 +133,7 @@ public class CompanyKeyResultServiceTests {
 
     @Test
     public void CompanyKeyResultService_FindContributingBusinessUnits_ReturnBusinessUnitDtoList() throws Exception {
-        List<BusinessUnit> businessUnits = new ArrayList<>();
+        Set<BusinessUnit> businessUnits = new HashSet<>();
         businessUnits.add(new BusinessUnit());
 
         List<BusinessUnitDto> businessUnitDtos = new ArrayList<>();
@@ -146,9 +148,9 @@ public class CompanyKeyResultServiceTests {
                 .objective(new CompanyObjective())
                 .type(new KeyResultType("numeric"))
                 .lastUpdate(new KeyResultUpdate())
-                .contributingUnits(new ArrayList<>())
-                .contributingBusinessUnits(new ArrayList<>())
-                .representers(new ArrayList<>())
+                .contributingUnits(new HashSet<>())
+                .contributingBusinessUnits(new HashSet<>())
+                .representers(new HashSet<>())
                 .contributingBusinessUnits(businessUnits)
                 .build();
 
@@ -161,7 +163,7 @@ public class CompanyKeyResultServiceTests {
 
     @Test
     public void CompanyKeyResultService_FindContributingUnits_ReturnUnitDtoList() throws Exception {
-        List<Unit> units = new ArrayList<>();
+        Set<Unit> units = new HashSet<>();
         units.add(new Unit());
 
         List<UnitDto> unitDtos = new ArrayList<>();
@@ -176,9 +178,9 @@ public class CompanyKeyResultServiceTests {
                 .objective(new CompanyObjective())
                 .type(new KeyResultType("numeric"))
                 .lastUpdate(new KeyResultUpdate())
-                .contributingUnits(new ArrayList<>())
-                .contributingBusinessUnits(new ArrayList<>())
-                .representers(new ArrayList<>())
+                .contributingUnits(new HashSet<>())
+                .contributingBusinessUnits(new HashSet<>())
+                .representers(new HashSet<>())
                 .contributingUnits(units)
                 .build();
 
@@ -243,9 +245,9 @@ public class CompanyKeyResultServiceTests {
                 .objective(CompanyObjective.builder().id(1L).build())
                 .type(new KeyResultType("numeric"))
                 .lastUpdate(new KeyResultUpdate())
-                .contributingUnits(new ArrayList<>())
-                .contributingBusinessUnits(new ArrayList<>())
-                .representers(new ArrayList<>())
+                .contributingUnits(new HashSet<>())
+                .contributingBusinessUnits(new HashSet<>())
+                .representers(new HashSet<>())
                 .build();
 
         CompanyKeyResultDto companyKeyResultDto = companyKeyResult.toDto();

@@ -19,6 +19,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -43,7 +44,7 @@ public class CompanyServiceTests {
     public void CompanyService_CreateCompany_ReturnCompanyDto() throws Exception {
         Company company = Company.builder()
                 .name("CompanyA")
-                .objectives(new ArrayList<>())
+                .objectives(new HashSet<>())
                 .build();
         CompanyDto companyDto = new CompanyDto(company);
 
@@ -54,7 +55,7 @@ public class CompanyServiceTests {
                 .email("test@test.de")
                 .firstname("my first name")
                 .surname("sur")
-                .companies(new ArrayList<>())
+                .companies(new HashSet<>())
                 .build();
 
         user.addCompany(company);
@@ -143,7 +144,7 @@ public class CompanyServiceTests {
                 .email("test@test.de")
                 .firstname("my first name")
                 .surname("sur")
-                .companies(new ArrayList<>())
+                .companies(new HashSet<>())
                 .build();
 
         user.addCompany(company);
@@ -180,7 +181,7 @@ public class CompanyServiceTests {
                 .email("test@test.de")
                 .firstname("my first name")
                 .surname("sur")
-                .companies(new ArrayList<>())
+                .companies(new HashSet<>())
                 .build();
 
         user.addCompany(company);

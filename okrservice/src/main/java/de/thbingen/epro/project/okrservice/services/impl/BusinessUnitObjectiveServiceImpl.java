@@ -1,7 +1,8 @@
 package de.thbingen.epro.project.okrservice.services.impl;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +52,7 @@ public class BusinessUnitObjectiveServiceImpl extends ObjectiveServiceImpl<Busin
         super.patchObjective(objective, objectiveDto);
         if (objectiveDto.getRepresents() != null) {
             objective.getRepresented().clear();
-            List<CompanyKeyResult> companyKeyResults = new ArrayList<>();
+            Set<CompanyKeyResult> companyKeyResults = new HashSet<>();
             for (Long id : objectiveDto.getRepresents()) {
                 try {
                     companyKeyResults.add(companyKeyResultService.findKeyResult(id));
@@ -67,7 +68,7 @@ public class BusinessUnitObjectiveServiceImpl extends ObjectiveServiceImpl<Busin
             BusinessUnitObjectiveDto objectiveDto) throws MaxObjectivesReachedException, BusinessUnitNotFoundException, UserNotFoundException, KeyResultNotFoundException {
         BusinessUnit businessUnit = businessUnitService.findBusinessUnit(companyId, businessUnitId);
 
-        // TODO just use SQL Count (new repository method) to not fetch all data 
+        // TODO just use SQL Count (new repository method) to not fetch all data - better performance
         if (businessUnit.getObjectives().size() >= 5) {
             throw new MaxObjectivesReachedException();
         }

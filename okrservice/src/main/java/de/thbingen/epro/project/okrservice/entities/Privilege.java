@@ -1,7 +1,7 @@
 package de.thbingen.epro.project.okrservice.entities;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -28,6 +28,6 @@ public class Privilege {
     private String name;
 
     @ManyToMany(mappedBy = "privileges", fetch = FetchType.EAGER)
-    private List<Role> roles = new ArrayList<>();
+    private Set<Role> roles = new HashSet<>();
 
 }

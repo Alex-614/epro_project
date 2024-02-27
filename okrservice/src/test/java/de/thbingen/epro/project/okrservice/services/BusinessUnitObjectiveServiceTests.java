@@ -17,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -51,12 +52,12 @@ public class BusinessUnitObjectiveServiceTests {
                 .title("company objective 01")
                 .description("It's a company objective")
                 .owner(user)
-                .keyReslts(new ArrayList<>())
+                .keyReslts(new HashSet<>())
                 .businessUnit(new BusinessUnit())
-                .represented(new ArrayList<>())
+                .represented(new HashSet<>())
                 .build();
 
-        ArrayList<BusinessUnitObjective> businessUnitObjectives = new ArrayList<>();
+        HashSet<BusinessUnitObjective> businessUnitObjectives = new HashSet<>();
         businessUnitObjectives.add(businessUnitObjective);
         BusinessUnit businessUnit = BusinessUnit.builder()
                 .objectives(businessUnitObjectives)
@@ -83,9 +84,9 @@ public class BusinessUnitObjectiveServiceTests {
                     .title("company objective 01")
                     .description("It's a company objective")
                     .owner(user)
-                    .keyReslts(new ArrayList<>())
+                    .keyReslts(new HashSet<>())
                     .businessUnit(new BusinessUnit())
-                    .represented(new ArrayList<>())
+                    .represented(new HashSet<>())
                     .build();
             businessUnitObjectives.add(businessUnitObjective);
         }
@@ -110,9 +111,9 @@ public class BusinessUnitObjectiveServiceTests {
                 .title("company objective 01")
                 .description("It's a company objective")
                 .owner(user)
-                .keyReslts(new ArrayList<>())
+                .keyReslts(new HashSet<>())
                 .businessUnit(new BusinessUnit())
-                .represented(new ArrayList<>())
+                .represented(new HashSet<>())
                 .build();
 
         when(businessUnitObjectiveRepository.findById(1L)).thenReturn(Optional.ofNullable(businessUnitObjective));
@@ -131,9 +132,9 @@ public class BusinessUnitObjectiveServiceTests {
                 .title("company objective 01")
                 .description("It's a company objective")
                 .owner(user)
-                .keyReslts(new ArrayList<>())
+                .keyReslts(new HashSet<>())
                 .businessUnit(new BusinessUnit())
-                .represented(new ArrayList<>())
+                .represented(new HashSet<>())
                 .build();
 
         BusinessUnitObjectiveDto businessUnitObjectiveDto = new BusinessUnitObjectiveDto(businessUnitObjective);

@@ -4,6 +4,7 @@ import de.thbingen.epro.project.okrservice.dtos.CompanyKeyResultDto;
 import de.thbingen.epro.project.okrservice.dtos.KeyResultPatchDto;
 import de.thbingen.epro.project.okrservice.entities.keyresults.CompanyKeyResult;
 import de.thbingen.epro.project.okrservice.exceptions.CompanyNotFoundException;
+import de.thbingen.epro.project.okrservice.exceptions.KeyResultDeprecatedException;
 import de.thbingen.epro.project.okrservice.exceptions.KeyResultNotFoundException;
 import de.thbingen.epro.project.okrservice.exceptions.KeyResultTypeNotFoundException;
 import de.thbingen.epro.project.okrservice.exceptions.MaxKeyResultsReachedException;
@@ -43,9 +44,10 @@ public interface CompanyKeyResultService extends KeyResultService<CompanyKeyResu
      * @throws UserNotFoundException if the updater was not found
      * @throws ObjectiveNotFoundException if the related Objective was not found
      * @throws KeyResultTypeNotFoundException if the Type was not found
+     * @throws KeyResultDeprecatedException 
      */
     CompanyKeyResultDto patchKeyResult(long keyResultId, KeyResultPatchDto<CompanyKeyResultDto> keyResultPatchDto) 
-        throws KeyResultNotFoundException, UserNotFoundException, ObjectiveNotFoundException, KeyResultTypeNotFoundException;
+        throws KeyResultNotFoundException, UserNotFoundException, ObjectiveNotFoundException, KeyResultTypeNotFoundException, KeyResultDeprecatedException;
     
 
 }

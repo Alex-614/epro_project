@@ -14,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -40,7 +41,7 @@ public class BusinessUnitServiceTests {
                 .id(new BusinessUnitId(1L, 1L))
                 .company(company)
                 .name("BU01")
-                .objectives(new ArrayList<>())
+                .objectives(new HashSet<>())
                 .build();
 
         BusinessUnitDto businessUnitDto = new BusinessUnitDto(businessUnit);
@@ -61,7 +62,7 @@ public class BusinessUnitServiceTests {
                     .id(new BusinessUnitId(i, 1L))
                     .company(new Company())
                     .name("BU01")
-                    .objectives(new ArrayList<>())
+                    .objectives(new HashSet<>())
                     .build();
             businessUnits.add(businessUnit);
         }
@@ -82,7 +83,7 @@ public class BusinessUnitServiceTests {
                 .id(new BusinessUnitId(1L, 1L))
                 .company(new Company())
                 .name("BU01")
-                .objectives(new ArrayList<>())
+                .objectives(new HashSet<>())
                 .build();
 
         when(businessUnitRepository.findById(new BusinessUnitId(1L, 1L)))
@@ -99,7 +100,7 @@ public class BusinessUnitServiceTests {
                 .id(new BusinessUnitId(1L, 1L))
                 .company(new Company())
                 .name("BU01")
-                .objectives(new ArrayList<>())
+                .objectives(new HashSet<>())
                 .build();
 
         BusinessUnitDto businessUnitDto = new BusinessUnitDto(businessUnit);

@@ -14,7 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.access.intercept.RequestAuthorizationContext;
 
 import de.thbingen.epro.project.okrservice.entities.User;
-import de.thbingen.epro.project.okrservice.exceptions.UserAlreadyExistsException;
+import de.thbingen.epro.project.okrservice.exceptions.UserNotFoundException;
 import de.thbingen.epro.project.okrservice.repositories.PrivilegeRepository;
 import de.thbingen.epro.project.okrservice.repositories.RoleRepository;
 import de.thbingen.epro.project.okrservice.repositories.UserRepository;
@@ -45,8 +45,8 @@ public class CompanyAuthorizationManager implements AuthorizationManager<Request
         
         User user;
         try {
-            user = userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(() -> new UserAlreadyExistsException());
-        } catch (UserAlreadyExistsException e) {
+            user = userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(() -> new UserNotFoundException());
+        } catch (UserNotFoundException e) {
             return new AuthorizationDecision(false);
         }
         
@@ -60,7 +60,8 @@ public class CompanyAuthorizationManager implements AuthorizationManager<Request
             
             AuthorityString reproducedAuthorityString = new AuthorityString(authorityString.isRole(), null, null, null);
             
-            if (methods.contains(context.getRequest().getMethod())) {    
+            if (methods.contains(context.getRequest().getMethod())) {
+
                 // translate Role/Privilege name to Id
                 if (authorityString.isRole()) {
                     reproducedAuthorityString.setAuthority(getRoleIdByName(authorityString.getAuthority()).toString());
@@ -80,16 +81,28 @@ public class CompanyAuthorizationManager implements AuthorizationManager<Request
                     reproducedAuthorityString.setBusinessUnitId(businessUnitId);
                 }
                 
-                decision = AuthorityAuthorizationManager.hasAuthority(reproducedAuthorityString.toString()).check(authentication, context);
+                if (authorityString.toString().isEmpty()) {
+                    decision = new AuthorizationDecision(true);
+                } else {
+                    decision = AuthorityAuthorizationManager.hasAuthority(reproducedAuthorityString.toString()).check(authentication, context);
+                }
+
                 if (decision.isGranted() && companyAuthority.isShouldOwnObjective()) {
                     // must be final to stream
                     final String objectiveId = context.getVariables().get("objectiveId") != null ? context.getVariables().get("objectiveId") : "";
-    
                     // if userOwnedObjectives not contains objectiveId
                     if (!user.getOwnedObjectives().stream().filter(obj -> obj.getId().toString().equals(objectiveId)).findFirst().isPresent()) {
                         decision = new AuthorizationDecision(false);
                     }
                 }
+
+                if (companyAuthority.isShouldBeUserHimself()) {
+                    final String userId = context.getVariables().get("userId") != null ? context.getVariables().get("userId") : "";
+                    if (user.getId() != Long.parseLong(userId)) {
+                        decision = new AuthorizationDecision(false);
+                    }
+                }
+
             }
 
             i++;

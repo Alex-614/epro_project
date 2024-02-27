@@ -1,7 +1,5 @@
 package de.thbingen.epro.project.okrservice.services.impl;
 
-import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +9,7 @@ import de.thbingen.epro.project.okrservice.dtos.KeyResultPatchDto;
 import de.thbingen.epro.project.okrservice.entities.keyresults.CompanyKeyResult;
 import de.thbingen.epro.project.okrservice.entities.objectives.CompanyObjective;
 import de.thbingen.epro.project.okrservice.exceptions.CompanyNotFoundException;
+import de.thbingen.epro.project.okrservice.exceptions.KeyResultDeprecatedException;
 import de.thbingen.epro.project.okrservice.exceptions.KeyResultNotFoundException;
 import de.thbingen.epro.project.okrservice.exceptions.KeyResultTypeNotFoundException;
 import de.thbingen.epro.project.okrservice.exceptions.MaxKeyResultsReachedException;
@@ -27,6 +26,8 @@ import de.thbingen.epro.project.okrservice.services.UserService;
 public class CompanyKeyResultServiceImpl extends KeyResultServiceImpl<CompanyKeyResult, CompanyKeyResultDto> implements CompanyKeyResultService {
 
     private CompanyKeyResultRepository companyKeyResultRepository;
+    private CompanyObjectiveService companyObjectiveService;
+    private KeyResultUpdateRepository keyResultUpdateRepository;
 
 
 
@@ -37,6 +38,8 @@ public class CompanyKeyResultServiceImpl extends KeyResultServiceImpl<CompanyKey
         super(keyResultTypeRepository, userService, companyKeyResultRepository,
             keyResultUpdateRepository, (ObjectiveServiceImpl<CompanyObjective, CompanyObjectiveDto>) companyObjectiveService);
         this.companyKeyResultRepository = companyKeyResultRepository;
+        this.companyObjectiveService = companyObjectiveService;
+        this.keyResultUpdateRepository = keyResultUpdateRepository;
     }
 
 
@@ -50,6 +53,9 @@ public class CompanyKeyResultServiceImpl extends KeyResultServiceImpl<CompanyKey
     @Override
     public CompanyKeyResultDto createKeyResult(long objectiveId, CompanyKeyResultDto keyResultDto)
             throws MaxKeyResultsReachedException, CompanyNotFoundException, UserNotFoundException, ObjectiveNotFoundException, KeyResultTypeNotFoundException {
+        if (companyObjectiveService.findObjective(objectiveId).getKeyReslts().size() >= 5) {
+            throw new MaxKeyResultsReachedException();
+        }
         CompanyKeyResult companyKeyResult = new CompanyKeyResult();
         keyResultDto.setObjectiveId(objectiveId);
         patchKeyResult(companyKeyResult, keyResultDto);
@@ -62,7 +68,11 @@ public class CompanyKeyResultServiceImpl extends KeyResultServiceImpl<CompanyKey
     
     @Override
     public CompanyKeyResultDto patchKeyResult(long keyResultId, KeyResultPatchDto<CompanyKeyResultDto> keyResultPatchDto)
-            throws KeyResultNotFoundException, UserNotFoundException, ObjectiveNotFoundException, KeyResultTypeNotFoundException {
+            throws KeyResultNotFoundException, UserNotFoundException, ObjectiveNotFoundException, KeyResultTypeNotFoundException, KeyResultDeprecatedException {
+        
+        if (keyResultUpdateRepository.existsByOldKeyResultId(keyResultId)) {
+            throw new KeyResultDeprecatedException();
+        }
 
         CompanyKeyResult keyResult = findKeyResult(keyResultId);
 
@@ -70,7 +80,7 @@ public class CompanyKeyResultServiceImpl extends KeyResultServiceImpl<CompanyKey
         CompanyKeyResult keyResultCopy = new CompanyKeyResult();
         patchKeyResult(keyResultCopy, keyResult.toDto());
         keyResultCopy.setLastUpdate(null);
-        keyResultCopy.setRepresenters(keyResult.getRepresenters().stream().collect(Collectors.toList())); // create copy
+        keyResultCopy.setRepresenters(null);
 
         // change original
         patchKeyResult(keyResultCopy, keyResultPatchDto.getKeyResultDto());

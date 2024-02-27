@@ -1,7 +1,9 @@
 package de.thbingen.epro.project.okrservice.entities;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import lombok.Builder;
 import org.hibernate.annotations.GenericGenerator;
@@ -55,7 +57,7 @@ public class BusinessUnit {
     private String name;
 
     @OneToMany(mappedBy = "businessUnit")
-    private List<BusinessUnitObjective> objectives = new ArrayList<>();
+    private Set<BusinessUnitObjective> objectives = new HashSet<>();
 
 
     public BusinessUnitDto toDto() {

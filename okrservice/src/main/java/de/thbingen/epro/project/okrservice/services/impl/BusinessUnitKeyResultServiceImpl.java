@@ -1,7 +1,7 @@
 package de.thbingen.epro.project.okrservice.services.impl;
 
 import java.util.Collections;
-import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +15,7 @@ import de.thbingen.epro.project.okrservice.entities.keyresults.BusinessUnitKeyRe
 import de.thbingen.epro.project.okrservice.entities.objectives.Objective;
 import de.thbingen.epro.project.okrservice.exceptions.BusinessUnitNotFoundException;
 import de.thbingen.epro.project.okrservice.exceptions.CompanyNotFoundException;
+import de.thbingen.epro.project.okrservice.exceptions.KeyResultDeprecatedException;
 import de.thbingen.epro.project.okrservice.exceptions.KeyResultNotFoundException;
 import de.thbingen.epro.project.okrservice.exceptions.KeyResultTypeNotFoundException;
 import de.thbingen.epro.project.okrservice.exceptions.MaxKeyResultsReachedException;
@@ -36,6 +37,8 @@ public class BusinessUnitKeyResultServiceImpl extends KeyResultServiceImpl<Busin
 
     private BusinessUnitService businessUnitService;
     private BusinessUnitKeyResultRepository businessUnitKeyResultRepository;
+    private BusinessUnitObjectiveService businessUnitObjectiveService;
+    private KeyResultUpdateRepository keyResultUpdateRepository;
 
     @Autowired
     public BusinessUnitKeyResultServiceImpl(KeyResultTypeRepository keyResultTypeRepository, UserService userService,
@@ -46,20 +49,24 @@ public class BusinessUnitKeyResultServiceImpl extends KeyResultServiceImpl<Busin
             (ObjectiveServiceImpl<? extends Objective, ? extends ObjectiveDto>) businessUnitObjectiveService);
         this.businessUnitService = businessUnitService;
         this.businessUnitKeyResultRepository = businessUnitKeyResultRepository;
+        this.businessUnitObjectiveService = businessUnitObjectiveService;
+        this.keyResultUpdateRepository = keyResultUpdateRepository;
     }
 
     @Override
     public BusinessUnitKeyResultDto createKeyResult(long companyId, long businessUnitId, long objectiveId,
             BusinessUnitKeyResultDto keyResultDto) throws MaxKeyResultsReachedException, CompanyNotFoundException,
             UserNotFoundException, ObjectiveNotFoundException, KeyResultTypeNotFoundException, BusinessUnitNotFoundException {
-        
+        if (businessUnitObjectiveService.findObjective(objectiveId).getKeyReslts().size() >= 5) {
+            throw new MaxKeyResultsReachedException();
+        }
         BusinessUnitKeyResult businessUnitKeyResult = new BusinessUnitKeyResult();
         keyResultDto.setObjectiveId(objectiveId);
         patchKeyResult(businessUnitKeyResult, keyResultDto);
-        List<BusinessUnit> bus = Collections.singletonList(businessUnitService.findBusinessUnit(companyId, businessUnitId));
+        Set<BusinessUnit> bus = Collections.singleton(businessUnitService.findBusinessUnit(companyId, businessUnitId));
         bus.addAll(keyResultDto.getContributingBusinessUnits().stream().map(BusinessUnit::new).collect(Collectors.toList()));
         businessUnitKeyResult.setContributingBusinessUnits(bus);
-
+        
         businessUnitKeyResultRepository.save(businessUnitKeyResult);
         return businessUnitKeyResult.toDto();
     }
@@ -68,8 +75,12 @@ public class BusinessUnitKeyResultServiceImpl extends KeyResultServiceImpl<Busin
 
     @Override
     public BusinessUnitKeyResultDto patchKeyResult(long keyResultId,KeyResultPatchDto<BusinessUnitKeyResultDto> keyResultPatchDto) 
-            throws KeyResultNotFoundException, UserNotFoundException, ObjectiveNotFoundException, KeyResultTypeNotFoundException {
+            throws KeyResultNotFoundException, UserNotFoundException, ObjectiveNotFoundException, KeyResultTypeNotFoundException, KeyResultDeprecatedException {
                 
+        if (keyResultUpdateRepository.existsByOldKeyResultId(keyResultId)) {
+            throw new KeyResultDeprecatedException();
+        }
+
         BusinessUnitKeyResult keyResult = findKeyResult(keyResultId);
 
         // create copy

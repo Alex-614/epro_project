@@ -1,11 +1,16 @@
 package de.thbingen.epro.project.okrservice.services;
 
-import de.thbingen.epro.project.okrservice.dtos.CompanyObjectiveDto;
-import de.thbingen.epro.project.okrservice.entities.Company;
-import de.thbingen.epro.project.okrservice.entities.User;
-import de.thbingen.epro.project.okrservice.entities.objectives.CompanyObjective;
-import de.thbingen.epro.project.okrservice.repositories.CompanyObjectiveRepository;
-import de.thbingen.epro.project.okrservice.services.impl.CompanyObjectiveServiceImpl;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.Mockito.when;
+
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,14 +19,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.Mockito.when;
+import de.thbingen.epro.project.okrservice.dtos.CompanyObjectiveDto;
+import de.thbingen.epro.project.okrservice.entities.Company;
+import de.thbingen.epro.project.okrservice.entities.User;
+import de.thbingen.epro.project.okrservice.entities.objectives.CompanyObjective;
+import de.thbingen.epro.project.okrservice.repositories.CompanyObjectiveRepository;
+import de.thbingen.epro.project.okrservice.services.impl.CompanyObjectiveServiceImpl;
 
 @ExtendWith(MockitoExtension.class)
 public class CompanyObjectiveServiceTests {
@@ -36,7 +39,7 @@ public class CompanyObjectiveServiceTests {
 
     private User user;
     private Company company;
-    private List<CompanyObjective> companyObjectives;
+    private Set<CompanyObjective> companyObjectives;
 
     @BeforeEach
     public void init() {
@@ -47,7 +50,7 @@ public class CompanyObjectiveServiceTests {
                 .email("test@test.de")
                 .firstname("my first name")
                 .surname("sur")
-                .companies(new ArrayList<>())
+                .companies(new HashSet<>())
                 .build();
 
         company = Company.builder()
@@ -55,7 +58,7 @@ public class CompanyObjectiveServiceTests {
                 .name("CompanyA").build();
 
         user.addCompany(company);
-        companyObjectives = new ArrayList<>();
+        companyObjectives = new HashSet<>();
         company.setObjectives(companyObjectives);
     }
 
@@ -95,7 +98,7 @@ public class CompanyObjectiveServiceTests {
         ArrayList<CompanyObjectiveDto> companyObjectiveDtos = companyObjectives.stream()
                 .map(CompanyObjectiveDto::new).collect(Collectors.toCollection(ArrayList::new));
 
-        when(companyObjectiveRepository.findByCompanyId(company.getId())).thenReturn(companyObjectives);
+        when(companyObjectiveRepository.findByCompanyId(company.getId())).thenReturn(companyObjectives.stream().collect(Collectors.toList()));
 
         List<CompanyObjectiveDto> foundCompanyObjectiveDtos =
                 companyObjectiveService.findAllObjectives(company.getId());

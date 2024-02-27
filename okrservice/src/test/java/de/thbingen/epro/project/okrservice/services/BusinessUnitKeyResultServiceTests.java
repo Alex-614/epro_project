@@ -1,6 +1,6 @@
 package de.thbingen.epro.project.okrservice.services;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -45,12 +45,12 @@ public class BusinessUnitKeyResultServiceTests {
 
     @Test
     public void BusinessUnitKeyResultController_PostBusinessUnitKeyResult_ReturnBusinessUnitKeyResultDto() throws Exception {
-        ArrayList<BusinessUnit> businessUnits = new ArrayList<>();
+        HashSet<BusinessUnit> businessUnits = new HashSet<>();
         BusinessUnit businessUnit = BusinessUnit.builder()
                 .id(new BusinessUnitId(1L, 1L))
                 .company(new Company())
                 .name("BU01")
-                .objectives(new ArrayList<>())
+                .objectives(new HashSet<>())
                 .build();
         businessUnits.add(businessUnit);
 
@@ -63,7 +63,7 @@ public class BusinessUnitKeyResultServiceTests {
                 .objective(new CompanyObjective())
                 .type(new KeyResultType("numeric"))
                 .lastUpdate(new KeyResultUpdate())
-                .contributingUnits(new ArrayList<>())
+                .contributingUnits(new HashSet<>())
                 .contributingBusinessUnits(businessUnits)
                 .build();
 

@@ -28,6 +28,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import static org.mockito.BDDMockito.given;
@@ -64,9 +65,9 @@ public class CompanyKeyResultControllerTests {
                 .objective(new CompanyObjective())
                 .type(new KeyResultType("numeric"))
                 .lastUpdate(new KeyResultUpdate())
-                .contributingUnits(new ArrayList<Unit>())
-                .contributingBusinessUnits(new ArrayList<BusinessUnit>())
-                .representers(new ArrayList<BusinessUnitObjective>())
+                .contributingUnits(new HashSet<Unit>())
+                .contributingBusinessUnits(new HashSet<BusinessUnit>())
+                .representers(new HashSet<BusinessUnitObjective>())
                 .build();
 
         CompanyKeyResultDto companyKeyResultDto = new CompanyKeyResultDto(companyKeyResult);
@@ -94,9 +95,9 @@ public class CompanyKeyResultControllerTests {
                 .objective(new CompanyObjective())
                 .type(new KeyResultType("numeric"))
                 .lastUpdate(new KeyResultUpdate())
-                .contributingUnits(new ArrayList<Unit>())
-                .contributingBusinessUnits(new ArrayList<BusinessUnit>())
-                .representers(new ArrayList<BusinessUnitObjective>())
+                .contributingUnits(new HashSet<Unit>())
+                .contributingBusinessUnits(new HashSet<BusinessUnit>())
+                .representers(new HashSet<BusinessUnitObjective>())
                 .build();
 
         CompanyKeyResultDto companyKeyResultDto = new CompanyKeyResultDto(companyKeyResult);
@@ -147,9 +148,9 @@ public class CompanyKeyResultControllerTests {
                 .objective(new CompanyObjective())
                 .type(new KeyResultType("numeric"))
                 .lastUpdate(new KeyResultUpdate())
-                .contributingUnits(new ArrayList<Unit>())
-                .contributingBusinessUnits(new ArrayList<BusinessUnit>())
-                .representers(new ArrayList<BusinessUnitObjective>())
+                .contributingUnits(new HashSet<Unit>())
+                .contributingBusinessUnits(new HashSet<BusinessUnit>())
+                .representers(new HashSet<BusinessUnitObjective>())
                 .build();
 
         CompanyKeyResultDto companyKeyResultDto = new CompanyKeyResultDto(companyKeyResult);
@@ -158,7 +159,7 @@ public class CompanyKeyResultControllerTests {
                 1L, companyKeyResultDto);
 
         when(companyKeyResultService.patchKeyResult(1L, keyResultPatchDto)).thenReturn(companyKeyResultDto);
-
+        
         ResultActions response = mockMvc.perform(patch("/company/1/objective/1/keyresult/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(keyResultPatchDto)));

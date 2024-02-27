@@ -118,6 +118,11 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> maxKeyResultsReachedException(MaxKeyResultsReachedException  ex) {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Maximal key results reached!");
     }
+    @ExceptionHandler(KeyResultDeprecatedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ResponseEntity<String> keyResultDeprecatedException(KeyResultDeprecatedException  ex) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("This KeyResult has already been patched! It is not the latest version.");
+    }
 
     /*@ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)

@@ -66,7 +66,9 @@ public class BusinessUnitServiceImpl implements BusinessUnitService {
     public BusinessUnitDto patchBusinessUnit(long companyId, long businessUnitId, BusinessUnitDto businessUnitDto) throws BusinessUnitNotFoundException {
         BusinessUnit businessUnit = findBusinessUnit(companyId, businessUnitId);
 
-        if (businessUnitDto.getName() != null) businessUnit.setName(businessUnitDto.getName());
+        if (businessUnitDto.getName() != null && !businessUnitDto.getName().isBlank()) 
+            if (!businessUnitRepository.existsByNameAndCompanyIdEquals(businessUnitDto.getName(), companyId))
+                businessUnit.setName(businessUnitDto.getName());
 
         businessUnitRepository.save(businessUnit);
         return businessUnit.toDto();

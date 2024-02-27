@@ -78,7 +78,7 @@ public class CompanyServiceImpl implements CompanyService {
     public CompanyDto patchCompany(long companyId, CompanyDto companyDto) throws CompanyNotFoundException {
         Company company = findCompany(companyId);
 
-        if (companyDto.getName() != null && !companyDto.getName().trim().isEmpty()) 
+        if (companyDto.getName() != null && !companyDto.getName().isBlank()) 
             company.setName(companyDto.getName());
 
         companyRepository.save(company);

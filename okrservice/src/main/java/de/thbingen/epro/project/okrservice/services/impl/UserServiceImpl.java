@@ -44,11 +44,12 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    
+    @Override
     public User findUser(long userId) throws UserNotFoundException {
         return userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException());
     }
 
+    @Override
     public User findUserByEmail(String email) throws UserNotFoundException {
         return userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException());
     }
@@ -96,11 +97,12 @@ public class UserServiceImpl implements UserService {
     public UserDto patchUser(long userId, UserDto userDto) throws UserNotFoundException {
         User user = findUser(userId);
         
-        if (userDto.getEmail() != null && !userDto.getEmail().isEmpty()) user.setEmail(userDto.getEmail());
-        if (userDto.getPassword() != null && !userDto.getPassword().isEmpty()) user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        if (userDto.getUsername() != null && !userDto.getUsername().isEmpty()) user.setUsername(userDto.getUsername());
-        if (userDto.getFirstname() != null && !userDto.getFirstname().isEmpty()) user.setFirstname(userDto.getFirstname());
-        if (userDto.getSurname() != null && !userDto.getSurname().isEmpty()) user.setSurname(userDto.getSurname());
+        if (userDto.getEmail() != null && !userDto.getEmail().isBlank()) 
+            if (!userRepository.existsByEmail(userDto.getEmail())) user.setEmail(userDto.getEmail());
+        if (userDto.getPassword() != null && !userDto.getPassword().isBlank()) user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        if (userDto.getUsername() != null && !userDto.getUsername().isBlank()) user.setUsername(userDto.getUsername());
+        if (userDto.getFirstname() != null && !userDto.getFirstname().isBlank()) user.setFirstname(userDto.getFirstname());
+        if (userDto.getSurname() != null && !userDto.getSurname().isBlank()) user.setSurname(userDto.getSurname());
         
         userRepository.save(user);
         return user.toDto();

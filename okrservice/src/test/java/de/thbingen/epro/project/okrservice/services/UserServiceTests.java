@@ -26,6 +26,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -161,7 +162,7 @@ public class UserServiceTests {
 
     @Test
     public void UserService_FindUserCompanies_ReturnUser() throws Exception {
-        ArrayList<Company> companies = new ArrayList<>();
+        HashSet<Company> companies = new HashSet<>();
         companies.add(Company.builder().name("test").build());
 
         ArrayList<CompanyDto> companieDtos = new ArrayList<>();

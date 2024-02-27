@@ -22,6 +22,7 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.stream.Collectors;
 
 import static org.mockito.BDDMockito.given;
@@ -54,7 +55,7 @@ public class BusinessUnitObjectiveControllerTests {
                 .email("test@test.de")
                 .firstname("my first name")
                 .surname("sur")
-                .companies(new ArrayList<Company>())
+                .companies(new HashSet<Company>())
                 .build();
     }
 
@@ -66,9 +67,9 @@ public class BusinessUnitObjectiveControllerTests {
                 .title("company objective 01")
                 .description("It's a company objective")
                 .owner(user)
-                .keyReslts(new ArrayList<>())
+                .keyReslts(new HashSet<>())
                 .businessUnit(new BusinessUnit())
-                .represented(new ArrayList<>())
+                .represented(new HashSet<>())
                 .build();
 
         BusinessUnitObjectiveDto businessUnitObjectiveDto = new BusinessUnitObjectiveDto(businessUnitObjective);
@@ -94,9 +95,9 @@ public class BusinessUnitObjectiveControllerTests {
                     .title("company objective 01")
                     .description("It's a company objective")
                     .owner(user)
-                    .keyReslts(new ArrayList<>())
+                    .keyReslts(new HashSet<>())
                     .businessUnit(new BusinessUnit())
-                    .represented(new ArrayList<>())
+                    .represented(new HashSet<>())
                     .build();
             businessUnitObjectives.add(businessUnitObjective);
         }
@@ -120,9 +121,9 @@ public class BusinessUnitObjectiveControllerTests {
                 .title("company objective 01")
                 .description("It's a company objective")
                 .owner(user)
-                .keyReslts(new ArrayList<>())
+                .keyReslts(new HashSet<>())
                 .businessUnit(new BusinessUnit())
-                .represented(new ArrayList<>())
+                .represented(new HashSet<>())
                 .build();
 
         BusinessUnitObjectiveDto businessUnitObjectiveDto = new BusinessUnitObjectiveDto(businessUnitObjective);
@@ -143,9 +144,9 @@ public class BusinessUnitObjectiveControllerTests {
                 .title("company objective 01")
                 .description("It's a company objective")
                 .owner(user)
-                .keyReslts(new ArrayList<>())
+                .keyReslts(new HashSet<>())
                 .businessUnit(new BusinessUnit())
-                .represented(new ArrayList<>())
+                .represented(new HashSet<>())
                 .build();
 
         BusinessUnitObjectiveDto businessUnitObjectiveDto = new BusinessUnitObjectiveDto(businessUnitObjective);

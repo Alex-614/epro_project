@@ -21,6 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -61,7 +62,7 @@ public class CompanyControllerTests {
                 .email("test@test.de")
                 .firstname("my first name")
                 .surname("sur")
-                .companies(new ArrayList<Company>())
+                .companies(new HashSet<Company>())
                 .build();
 
         user.addCompany(company);
@@ -81,7 +82,7 @@ public class CompanyControllerTests {
     public void CompanyController_GetAllCompanies_ReturnCompanyDto() throws Exception {
         List<Company> companies = new ArrayList<Company>();
         for(long i = 0L; i < 10L; i++) {
-            companies.add(new Company(i, "Company" + i, new ArrayList<CompanyObjective>()));
+            companies.add(new Company(i, "Company" + i, new HashSet<CompanyObjective>()));
         }
 
         ArrayList<CompanyDto> companyDtos = companies.stream()

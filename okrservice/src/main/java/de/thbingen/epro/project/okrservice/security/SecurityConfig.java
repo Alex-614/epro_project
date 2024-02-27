@@ -48,10 +48,12 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(req -> req
 
-                        // register
-                        .requestMatchers(HttpMethod.POST, "/user", "/user/{userId}").permitAll()
-                        // TODO check target == user
-                        .requestMatchers(HttpMethod.GET, "/user", "/user/{userId}/companies").authenticated()
+                        // user
+                        .requestMatchers(HttpMethod.POST, "/user").permitAll()
+                        .requestMatchers("/user/{userId}", "/user/{userId}/companies")
+                                .access(hasAnyCompanyAuthority(
+                                        new CompanyAuthority()
+                                                .shouldBeUserHimself(true)))
                         // login
                         .requestMatchers(HttpMethod.POST, "/login").permitAll()
 
@@ -176,6 +178,21 @@ public class SecurityConfig {
     public JwtAuthenticationFilter jwtAuthenticationFilter() {
         return new JwtAuthenticationFilter();
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 }
