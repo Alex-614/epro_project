@@ -186,37 +186,6 @@
 			"response": []
 		},
 		{
-			"name": "Company GET all Objectives",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{epro_project}}/company/{{companyId}}/objective",
-					"host": [
-						"{{epro_project}}"
-					],
-					"path": [
-						"company",
-						"{{companyId}}",
-						"objective"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "Company add User",
 			"request": {
 				"method": "POST",
@@ -319,6 +288,37 @@
 			"response": []
 		},
 		{
+			"name": "CompanyObjectives of Company",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{epro_project}}/company/{{companyId}}/objective",
+					"host": [
+						"{{epro_project}}"
+					],
+					"path": [
+						"company",
+						"{{companyId}}",
+						"objective"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "CompanyObjective",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
@@ -345,39 +345,6 @@
 						"{{companyId}}",
 						"objective",
 						"{{companyObjectiveId}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "CompanyObjective GET all KeyResults",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{epro_project}}/company/{{companyId}}/objective/{{companyObjectiveId}}/keyresult",
-					"host": [
-						"{{epro_project}}"
-					],
-					"path": [
-						"company",
-						"{{companyId}}",
-						"objective",
-						"{{companyObjectiveId}}",
-						"keyresult"
 					]
 				}
 			},
@@ -470,7 +437,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"title\": \"KR1\",\r\n    \"goal\": \"100\",\r\n    \"type\": \"numeric\",\r\n    \"description\": \"Erstes Company Key Result\",\r\n    \"current\": \"15\",\r\n    \"confidenceLevel\": \"50\",\r\n    \"representers\": [{\"id\": {{businessUnitId}}, \"companyId\": {{companyId}}}],\r\n    \"contributingUnits\": [{\"id\": {{unitId}}, \"businessUnitId\": {\"id\": {{businessUnitId}}, \"companyId\": {{companyId}}}}],\r\n    \"contributingBusinessUnits\": []\r\n}",
+					"raw": "{\r\n    \"title\": \"KR1\",\r\n    \"goal\": 100,\r\n    \"type\": \"numeric\",\r\n    \"description\": \"Erstes Company Key Result\",\r\n    \"current\": 0,\r\n    \"confidenceLevel\": 50,\r\n    \"contributingUnits\": [{\"id\": {{unitId}}, \"businessUnitId\": {\"id\": {{businessUnitId}}, \"companyId\": {{companyId}}}}],\r\n    \"contributingBusinessUnits\": []\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -522,6 +489,39 @@
 						"{{companyObjectiveId}}",
 						"keyresult",
 						"{{companyKeyResultId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CompanyKeyResults of Objective",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{epro_project}}/company/{{companyId}}/objective/{{companyObjectiveId}}/keyresult",
+					"host": [
+						"{{epro_project}}"
+					],
+					"path": [
+						"company",
+						"{{companyId}}",
+						"objective",
+						"{{companyObjectiveId}}",
+						"keyresult"
 					]
 				}
 			},
@@ -652,7 +652,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"statusUpdate\": \"Das ist ein Status Update\",\r\n    \"keyResultDto\": {\r\n        \"current\": \"102\",\r\n        \"confidenceLevel\": \"70\",\r\n        \"contributingUnits\": [{\"id\": {{unitId}}, \"businessUnitId\": {\"id\": {{businessUnitId}}, \"companyId\": {{companyId}}}}]\r\n    }\r\n}\r\n",
+					"raw": "{\r\n    \"statusUpdate\": \"Das ist ein Status Update\",\r\n    \"keyResultDto\": {\r\n        \"current\": 100,\r\n        \"confidenceLevel\": 70,\r\n        \"description\": \"\",\r\n        \"contributingUnits\": [{\"id\": {{unitId}}, \"businessUnitId\": {\"id\": {{businessUnitId}}, \"companyId\": {{companyId}}}}],\r\n        \"representers\": [{{businessUnitObjectiveId}}]\r\n    }\r\n}\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -889,7 +889,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"deadline\": 1708778383000,\r\n    \"title\": \"BU1\",\r\n    \"description\": \"Erstes BusinessUnit Objective\",\r\n    \"ownerId\": {{userId}},\r\n    \"companyKeyResult_ID\": \"\"\r\n}",
+					"raw": "{\r\n    \"deadline\": 1708778383000,\r\n    \"title\": \"BU1\",\r\n    \"description\": \"Erstes BusinessUnit Objective\",\r\n    \"ownerId\": {{userId}},\r\n    \"represents\": [{{companyKeyResultId}}]\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -1061,7 +1061,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"title\": \"KR1\",\r\n    \"goal\": \"100\",\r\n    \"type\": \"numeric\",\r\n    \"description\": \"Erstes BusinessUnit Key Result\",\r\n    \"current\": \"15\",\r\n    \"confidenceLevel\": \"50\",\r\n    \"contributingUnits\": [],\r\n    \"contributingBusinessUnits\": []\r\n}",
+					"raw": "{\r\n    \"title\": \"KR1\",\r\n    \"goal\": 100,\r\n    \"type\": \"numeric\",\r\n    \"description\": \"Erstes BusinessUnit Key Result\",\r\n    \"current\": 33,\r\n    \"confidenceLevel\": 50,\r\n    \"contributingUnits\": [],\r\n    \"contributingBusinessUnits\": []\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -1277,7 +1277,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n\r\n    \"statusUpdate\": \"Das ist ein Status Update\",\r\n    \"keyResultDto\": {\r\n        \"current\": \"123\",\r\n        \"confidenceLevel\": \"50\"\r\n    }\r\n}",
+					"raw": "{\r\n    \"statusUpdate\": \"Das ist ein Status Update\",\r\n    \"keyResultDto\": {\r\n        \"current\": 100,\r\n        \"confidenceLevel\": 50\r\n    }\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -1759,7 +1759,7 @@
 	"variable": [
 		{
 			"key": "epro_project",
-			"value": "127.0.0.1:8081",
+			"value": "127.0.0.1:8081/api",
 			"type": "string"
 		},
 		{
