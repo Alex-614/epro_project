@@ -1,29 +1,9 @@
 package de.thbingen.epro.project.okrservice.services;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
-
-import de.thbingen.epro.project.okrservice.dtos.BusinessUnitDto;
-import de.thbingen.epro.project.okrservice.dtos.CompanyKeyResultDto;
-import de.thbingen.epro.project.okrservice.dtos.KeyResultPatchDto;
-import de.thbingen.epro.project.okrservice.dtos.UnitDto;
+import de.thbingen.epro.project.okrservice.dtos.*;
 import de.thbingen.epro.project.okrservice.entities.BusinessUnit;
 import de.thbingen.epro.project.okrservice.entities.Unit;
+import de.thbingen.epro.project.okrservice.entities.User;
 import de.thbingen.epro.project.okrservice.entities.keyresults.CompanyKeyResult;
 import de.thbingen.epro.project.okrservice.entities.keyresults.KeyResultType;
 import de.thbingen.epro.project.okrservice.entities.keyresults.KeyResultUpdate;
@@ -33,6 +13,20 @@ import de.thbingen.epro.project.okrservice.repositories.KeyResultTypeRepository;
 import de.thbingen.epro.project.okrservice.repositories.KeyResultUpdateRepository;
 import de.thbingen.epro.project.okrservice.services.impl.CompanyKeyResultServiceImpl;
 import de.thbingen.epro.project.okrservice.services.impl.CompanyObjectiveServiceImpl;
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.time.Instant;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class CompanyKeyResultServiceTests {
@@ -191,10 +185,12 @@ public class CompanyKeyResultServiceTests {
         Assertions.assertThat(foundUnitDtos).isEqualTo(unitDtos);
     }
 
-    //toDo: add findKeyResultHistory test
-    /*@Test
+    @Test
     public void CompanyKeyResultService_FindKeyResultHistory_ReturnUnitDtoList() throws Exception {
-        CompanyKeyResult companyKeyResult = CompanyKeyResult.builder()
+        User user = User.builder().id(1L).build();
+
+        CompanyKeyResult oldCompanyKeyResult = CompanyKeyResult.builder()
+                .id(1L)
                 .goal(10000)
                 .title("test key result")
                 .description("it's a test key result")
@@ -202,37 +198,49 @@ public class CompanyKeyResultServiceTests {
                 .confidenceLevel(20)
                 .objective(new CompanyObjective())
                 .type(new KeyResultType("numeric"))
-                .contributingUnits(new ArrayList<Unit>())
-                .contributingBusinessUnits(new ArrayList<BusinessUnit>())
-                .representers(new ArrayList<BusinessUnitObjective>())
+                .lastUpdate(null)
+                .contributingUnits(new HashSet<>())
+                .contributingBusinessUnits(new HashSet<>())
+                .representers(new HashSet<>())
                 .build();
+        CompanyKeyResultDto oldCompanyResultDto = oldCompanyKeyResult.toDto();
 
+        CompanyKeyResult companyKeyResult = CompanyKeyResult.builder()
+                .id(2L)
+                .goal(10000)
+                .title("test key result")
+                .description("it's a test key result")
+                .current(500)
+                .confidenceLevel(20)
+                .objective(new CompanyObjective())
+                .type(new KeyResultType("numeric"))
+                .contributingUnits(new HashSet<>())
+                .contributingBusinessUnits(new HashSet<>())
+                .representers(new HashSet<>())
+                .build();
         CompanyKeyResultDto companyKeyResultDto = companyKeyResult.toDto();
 
-        User user = User.builder()
-                .id(1L).build();
+        KeyResultUpdate keyResultUpdate =
+                new KeyResultUpdate("update", Instant.ofEpochSecond(12332134L),
+                        companyKeyResult, oldCompanyKeyResult, companyKeyResult, user);
 
-        KeyResultUpdate keyResultUpdate = new KeyResultUpdate("update", Instant.ofEpochSecond(1233123345L),
-                companyKeyResult, companyKeyResult, companyKeyResult, user);
-
-        keyResultUpdate.setOldKeyResult(null);
+        KeyResultUpdateDto<CompanyKeyResultDto> keyResultUpdateDto =
+                new KeyResultUpdateDto<>("update", 12332134000L, user.getId(),
+                        companyKeyResultDto, oldCompanyResultDto, companyKeyResultDto);
 
         companyKeyResult.setLastUpdate(keyResultUpdate);
 
         LinkedList<KeyResultUpdateDto<CompanyKeyResultDto>> updateHistory = new LinkedList<>();
-        KeyResultUpdateDto<CompanyKeyResultDto> keyResultDtoKeyResultUpdateDto =
-                new KeyResultUpdateDto<>("update", 1233123345L, 1L,
-                        companyKeyResultDto, companyKeyResultDto, companyKeyResultDto);
-        keyResultDtoKeyResultUpdateDto.setOldKeyResult(null);
-        updateHistory.add(keyResultDtoKeyResultUpdateDto);
+        updateHistory.add(keyResultUpdateDto);
 
-        when(companyKeyResultRepository.findById(1L)).thenReturn(Optional.of(companyKeyResult));
+        when(companyKeyResultRepository.findById(1L)).thenReturn(Optional.of(oldCompanyKeyResult));
+        when(companyKeyResultRepository.findById(2L)).thenReturn(Optional.of(companyKeyResult));
 
         LinkedList<KeyResultUpdateDto<CompanyKeyResultDto>> foundUpdateHistory =
-                companyKeyResultService.findKeyResultUpdateHistory(1L);
+                companyKeyResultService.findKeyResultUpdateHistory(2L);
 
-        Assertions.assertThat(foundUpdateHistory).isEqualTo(updateHistory);
-    }*/
+        Assertions.assertThat(foundUpdateHistory).containsExactlyInAnyOrderElementsOf(updateHistory);
+    }
 
     @Test
     public void CompanyKeyResultService_PatchKeyResult_ReturnCompanyKeyResultDto() throws Exception {

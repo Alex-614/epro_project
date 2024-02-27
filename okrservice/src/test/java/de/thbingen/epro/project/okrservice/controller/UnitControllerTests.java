@@ -74,15 +74,15 @@ public class UnitControllerTests {
             units.add(unit);
         }
 
-        ArrayList<UnitDto> usersDtos = units.stream()
+        ArrayList<UnitDto> unitDtos = units.stream()
                 .map(Unit::toDto).collect(Collectors.toCollection(ArrayList::new));
 
-        when(unitService.findAllUnits(1L, 1L)).thenReturn(usersDtos);
+        when(unitService.findAllUnits(1L, 1L)).thenReturn(unitDtos);
 
         ResultActions response = mockMvc.perform(get("/company/1/businessunit/1/unit"));
 
         response.andExpect(status().isOk())
-                .andExpect(content().string(objectMapper.writeValueAsString(usersDtos)));
+                .andExpect(content().string(objectMapper.writeValueAsString(unitDtos)));
     }
 
     @Test
