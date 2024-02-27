@@ -4,6 +4,7 @@ version: "3.8"
 
 services:
 
+  # OKR Database - Postgres
   okr-db:
     container_name: okr-db
     hostname: okr-db
@@ -24,9 +25,8 @@ services:
       POSTGRES_DB: okr-db
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-    ports:
-      - "5432:5432"
 
+  # OKR Service
   okr-service:
     container_name: okr-service
     hostname: okr-service
@@ -40,9 +40,26 @@ services:
     depends_on:
       okr-db:
         condition: service_healthy
-    ports:
-      - "8081:8081"
 
+
+
+  # API Gateway
+  okr-gateway:
+    container_name: okr-gateway
+    hostname: okr-gateway
+    networks:
+      - backnet
+      - frontnet
+    build:
+      context: ./okrgateway
+      dockerfile: Dockerfile
+    image: translator-api-gateway
+    ports:
+      - "8080:8080"
+    restart: on-failure
+    depends_on:
+      okr-service:
+        condition: service_started
 
 volumes:
   okr-db:
