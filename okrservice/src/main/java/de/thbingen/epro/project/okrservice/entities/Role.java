@@ -1,7 +1,7 @@
 package de.thbingen.epro.project.okrservice.entities;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import de.thbingen.epro.project.okrservice.security.SecurityConstants;
 import jakarta.persistence.Column;
@@ -44,7 +44,7 @@ public class Role {
             name = "privilege_id", referencedColumnName = "id"
         )
     )
-    private Set<Privilege> privileges = new HashSet<>();
+    private List<Privilege> privileges = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -56,7 +56,7 @@ public class Role {
             name = "inherit_id", referencedColumnName = "id"
         )
     )
-    private Set<Role> inheritedRoles = new HashSet<>();
+    private List<Role> inheritedRoles = new ArrayList<>();
 
 
 }

@@ -1,9 +1,7 @@
 package de.thbingen.epro.project.okrservice.entities.keyresults;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import de.thbingen.epro.project.okrservice.dtos.CompanyKeyResultDto;
 import de.thbingen.epro.project.okrservice.entities.objectives.BusinessUnitObjective;
@@ -29,7 +27,7 @@ import lombok.experimental.SuperBuilder;
 public class CompanyKeyResult extends KeyResult {
     
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "represented")
-    private Set<BusinessUnitObjective> representers = new HashSet<>();
+    private List<BusinessUnitObjective> representers = new ArrayList<>();
 
 
 

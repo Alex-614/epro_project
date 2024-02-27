@@ -2,9 +2,7 @@ package de.thbingen.epro.project.okrservice.entities.objectives;
 
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import de.thbingen.epro.project.okrservice.dtos.ObjectiveDto;
 import de.thbingen.epro.project.okrservice.entities.User;
@@ -50,7 +48,7 @@ public abstract class Objective {
     private User owner;
     
     @OneToMany(mappedBy = "objective")
-    private Set<KeyResult> keyReslts = new HashSet<>();
+    private List<KeyResult> keyReslts = new ArrayList<>();
 
 
 

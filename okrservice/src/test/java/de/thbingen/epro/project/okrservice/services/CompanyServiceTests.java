@@ -1,5 +1,23 @@
 package de.thbingen.epro.project.okrservice.services;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
+
 import de.thbingen.epro.project.okrservice.dtos.CompanyDto;
 import de.thbingen.epro.project.okrservice.dtos.RolesDto;
 import de.thbingen.epro.project.okrservice.entities.Company;
@@ -10,22 +28,6 @@ import de.thbingen.epro.project.okrservice.repositories.CompanyRepository;
 import de.thbingen.epro.project.okrservice.repositories.RoleAssignmentRepository;
 import de.thbingen.epro.project.okrservice.repositories.RoleRepository;
 import de.thbingen.epro.project.okrservice.services.impl.CompanyServiceImpl;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class CompanyServiceTests {
@@ -44,7 +46,7 @@ public class CompanyServiceTests {
     public void CompanyService_CreateCompany_ReturnCompanyDto() throws Exception {
         Company company = Company.builder()
                 .name("CompanyA")
-                .objectives(new HashSet<>())
+                .objectives(new ArrayList<>())
                 .build();
         CompanyDto companyDto = new CompanyDto(company);
 
@@ -55,7 +57,7 @@ public class CompanyServiceTests {
                 .email("test@test.de")
                 .firstname("my first name")
                 .surname("sur")
-                .companies(new HashSet<>())
+                .companies(new ArrayList<>())
                 .build();
 
         user.addCompany(company);
@@ -144,7 +146,7 @@ public class CompanyServiceTests {
                 .email("test@test.de")
                 .firstname("my first name")
                 .surname("sur")
-                .companies(new HashSet<>())
+                .companies(new ArrayList<>())
                 .build();
 
         user.addCompany(company);
@@ -181,7 +183,7 @@ public class CompanyServiceTests {
                 .email("test@test.de")
                 .firstname("my first name")
                 .surname("sur")
-                .companies(new HashSet<>())
+                .companies(new ArrayList<>())
                 .build();
 
         user.addCompany(company);

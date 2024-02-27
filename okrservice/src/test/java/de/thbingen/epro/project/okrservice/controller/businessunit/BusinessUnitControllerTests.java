@@ -1,11 +1,17 @@
 package de.thbingen.epro.project.okrservice.controller.businessunit;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import de.thbingen.epro.project.okrservice.dtos.BusinessUnitDto;
-import de.thbingen.epro.project.okrservice.entities.BusinessUnit;
-import de.thbingen.epro.project.okrservice.entities.Company;
-import de.thbingen.epro.project.okrservice.entities.ids.BusinessUnitId;
-import de.thbingen.epro.project.okrservice.services.BusinessUnitService;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.ArrayList;
+import java.util.stream.Collectors;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -18,15 +24,13 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.stream.Collectors;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import de.thbingen.epro.project.okrservice.dtos.BusinessUnitDto;
+import de.thbingen.epro.project.okrservice.entities.BusinessUnit;
+import de.thbingen.epro.project.okrservice.entities.Company;
+import de.thbingen.epro.project.okrservice.entities.ids.BusinessUnitId;
+import de.thbingen.epro.project.okrservice.services.BusinessUnitService;
 
 @WebMvcTest(BusinessUnitController.class)
 @AutoConfigureMockMvc(addFilters = false)
@@ -47,7 +51,7 @@ public class BusinessUnitControllerTests {
                 .id(new BusinessUnitId(1L, 1L))
                 .company(new Company())
                 .name("BU01")
-                .objectives(new HashSet<>())
+                .objectives(new ArrayList<>())
                 .build();
 
         BusinessUnitDto businessUnitDto = new BusinessUnitDto(businessUnit);
@@ -70,7 +74,7 @@ public class BusinessUnitControllerTests {
                     .id(new BusinessUnitId(i, 1L))
                     .company(new Company())
                     .name("BU01")
-                    .objectives(new HashSet<>())
+                    .objectives(new ArrayList<>())
                     .build();
             businessUnits.add(businessUnit);
         }
@@ -92,7 +96,7 @@ public class BusinessUnitControllerTests {
                 .id(new BusinessUnitId(1L, 1L))
                 .company(new Company())
                 .name("BU01")
-                .objectives(new HashSet<>())
+                .objectives(new ArrayList<>())
                 .build();
 
         BusinessUnitDto businessUnitDto = new BusinessUnitDto(businessUnit);
@@ -111,7 +115,7 @@ public class BusinessUnitControllerTests {
                 .id(new BusinessUnitId(1L, 1L))
                 .company(new Company())
                 .name("BU01")
-                .objectives(new HashSet<>())
+                .objectives(new ArrayList<>())
                 .build();
 
         BusinessUnitDto businessUnitDto = new BusinessUnitDto(businessUnit);

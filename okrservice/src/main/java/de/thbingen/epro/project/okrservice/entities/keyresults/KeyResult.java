@@ -2,9 +2,7 @@ package de.thbingen.epro.project.okrservice.entities.keyresults;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import de.thbingen.epro.project.okrservice.constants.GlobalConstants;
 import de.thbingen.epro.project.okrservice.dtos.KeyResultDto;
@@ -81,7 +79,7 @@ public abstract class KeyResult {
                               @JoinColumn(name = "businessunit_id", referencedColumnName = "businessunit_id"), 
                               @JoinColumn(name = "company_id", referencedColumnName = "company_id")}
     )
-    private Set<Unit> contributingUnits = new HashSet<>();
+    private List<Unit> contributingUnits = new ArrayList<>();
     
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -92,7 +90,7 @@ public abstract class KeyResult {
         inverseJoinColumns = {@JoinColumn(name = "businessunit_id", referencedColumnName = "id"), 
                               @JoinColumn(name = "company_id", referencedColumnName = "company_id")}
     )
-    private Set<BusinessUnit> contributingBusinessUnits = new HashSet<>();
+    private List<BusinessUnit> contributingBusinessUnits = new ArrayList<>();
 
 
 

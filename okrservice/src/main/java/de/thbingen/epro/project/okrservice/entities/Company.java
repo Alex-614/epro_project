@@ -1,7 +1,7 @@
 package de.thbingen.epro.project.okrservice.entities;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import de.thbingen.epro.project.okrservice.dtos.CompanyDto;
 import de.thbingen.epro.project.okrservice.entities.objectives.CompanyObjective;
@@ -35,7 +35,7 @@ public class Company {
     private String name;
 
     @OneToMany(mappedBy = "company")
-    private Set<CompanyObjective> objectives = new HashSet<>();
+    private List<CompanyObjective> objectives = new ArrayList<>();
     
 
 

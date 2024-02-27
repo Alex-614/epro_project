@@ -1,8 +1,7 @@
 package de.thbingen.epro.project.okrservice.services.impl;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +51,7 @@ public class BusinessUnitObjectiveServiceImpl extends ObjectiveServiceImpl<Busin
         super.patchObjective(objective, objectiveDto);
         if (objectiveDto.getRepresents() != null) {
             objective.getRepresented().clear();
-            Set<CompanyKeyResult> companyKeyResults = new HashSet<>();
+            List<CompanyKeyResult> companyKeyResults = new ArrayList<>();
             for (Long id : objectiveDto.getRepresents()) {
                 try {
                     companyKeyResults.add(companyKeyResultService.findKeyResult(id));

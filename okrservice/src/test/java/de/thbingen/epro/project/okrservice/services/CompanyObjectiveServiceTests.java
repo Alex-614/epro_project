@@ -5,10 +5,8 @@ import static org.mockito.Mockito.when;
 
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.assertj.core.api.Assertions;
@@ -39,7 +37,7 @@ public class CompanyObjectiveServiceTests {
 
     private User user;
     private Company company;
-    private Set<CompanyObjective> companyObjectives;
+    private List<CompanyObjective> companyObjectives;
 
     @BeforeEach
     public void init() {
@@ -50,7 +48,7 @@ public class CompanyObjectiveServiceTests {
                 .email("test@test.de")
                 .firstname("my first name")
                 .surname("sur")
-                .companies(new HashSet<>())
+                .companies(new ArrayList<>())
                 .build();
 
         company = Company.builder()
@@ -58,7 +56,7 @@ public class CompanyObjectiveServiceTests {
                 .name("CompanyA").build();
 
         user.addCompany(company);
-        companyObjectives = new HashSet<>();
+        companyObjectives = new ArrayList<>();
         company.setObjectives(companyObjectives);
     }
 

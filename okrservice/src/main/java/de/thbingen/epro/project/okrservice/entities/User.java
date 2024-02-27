@@ -1,9 +1,7 @@
 package de.thbingen.epro.project.okrservice.entities;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import de.thbingen.epro.project.okrservice.dtos.UserDto;
 import de.thbingen.epro.project.okrservice.entities.objectives.BusinessUnitObjective;
@@ -80,7 +78,7 @@ public class User {
             name = "company_id", referencedColumnName = "id"
         )
     )
-    private Set<Company> companies = new HashSet<>();
+    private List<Company> companies = new ArrayList<>();
     public void addCompany(Company company) {
         this.companies.add(company);
     }

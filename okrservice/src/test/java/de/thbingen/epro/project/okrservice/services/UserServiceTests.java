@@ -1,16 +1,13 @@
 package de.thbingen.epro.project.okrservice.services;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import de.thbingen.epro.project.okrservice.dtos.AuthResponseDto;
-import de.thbingen.epro.project.okrservice.dtos.CompanyDto;
-import de.thbingen.epro.project.okrservice.dtos.LoginDto;
-import de.thbingen.epro.project.okrservice.dtos.UserDto;
-import de.thbingen.epro.project.okrservice.entities.Company;
-import de.thbingen.epro.project.okrservice.entities.User;
-import de.thbingen.epro.project.okrservice.repositories.UserRepository;
-import de.thbingen.epro.project.okrservice.security.SecurityConstants;
-import de.thbingen.epro.project.okrservice.security.jwt.JwtGenerator;
-import de.thbingen.epro.project.okrservice.services.impl.UserServiceImpl;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,14 +22,18 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.Mockito.when;
+import de.thbingen.epro.project.okrservice.dtos.AuthResponseDto;
+import de.thbingen.epro.project.okrservice.dtos.CompanyDto;
+import de.thbingen.epro.project.okrservice.dtos.LoginDto;
+import de.thbingen.epro.project.okrservice.dtos.UserDto;
+import de.thbingen.epro.project.okrservice.entities.Company;
+import de.thbingen.epro.project.okrservice.entities.User;
+import de.thbingen.epro.project.okrservice.repositories.UserRepository;
+import de.thbingen.epro.project.okrservice.security.SecurityConstants;
+import de.thbingen.epro.project.okrservice.security.jwt.JwtGenerator;
+import de.thbingen.epro.project.okrservice.services.impl.UserServiceImpl;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTests {
@@ -162,7 +163,7 @@ public class UserServiceTests {
 
     @Test
     public void UserService_FindUserCompanies_ReturnUser() throws Exception {
-        HashSet<Company> companies = new HashSet<>();
+        ArrayList<Company> companies = new ArrayList<>();
         companies.add(Company.builder().name("test").build());
 
         ArrayList<CompanyDto> companieDtos = new ArrayList<>();

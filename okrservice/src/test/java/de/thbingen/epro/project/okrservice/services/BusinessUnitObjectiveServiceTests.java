@@ -1,12 +1,14 @@
 package de.thbingen.epro.project.okrservice.services;
 
-import de.thbingen.epro.project.okrservice.dtos.BusinessUnitObjectiveDto;
-import de.thbingen.epro.project.okrservice.entities.BusinessUnit;
-import de.thbingen.epro.project.okrservice.entities.User;
-import de.thbingen.epro.project.okrservice.entities.ids.BusinessUnitId;
-import de.thbingen.epro.project.okrservice.entities.objectives.BusinessUnitObjective;
-import de.thbingen.epro.project.okrservice.repositories.BusinessUnitObjectiveRepository;
-import de.thbingen.epro.project.okrservice.services.impl.BusinessUnitObjectiveServiceImpl;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.Mockito.when;
+
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,15 +17,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.Mockito.when;
+import de.thbingen.epro.project.okrservice.dtos.BusinessUnitObjectiveDto;
+import de.thbingen.epro.project.okrservice.entities.BusinessUnit;
+import de.thbingen.epro.project.okrservice.entities.User;
+import de.thbingen.epro.project.okrservice.entities.ids.BusinessUnitId;
+import de.thbingen.epro.project.okrservice.entities.objectives.BusinessUnitObjective;
+import de.thbingen.epro.project.okrservice.repositories.BusinessUnitObjectiveRepository;
+import de.thbingen.epro.project.okrservice.services.impl.BusinessUnitObjectiveServiceImpl;
 
 @ExtendWith(MockitoExtension.class)
 public class BusinessUnitObjectiveServiceTests {
@@ -52,12 +52,12 @@ public class BusinessUnitObjectiveServiceTests {
                 .title("company objective 01")
                 .description("It's a company objective")
                 .owner(user)
-                .keyReslts(new HashSet<>())
+                .keyReslts(new ArrayList<>())
                 .businessUnit(new BusinessUnit())
-                .represented(new HashSet<>())
+                .represented(new ArrayList<>())
                 .build();
 
-        HashSet<BusinessUnitObjective> businessUnitObjectives = new HashSet<>();
+        ArrayList<BusinessUnitObjective> businessUnitObjectives = new ArrayList<>();
         businessUnitObjectives.add(businessUnitObjective);
         BusinessUnit businessUnit = BusinessUnit.builder()
                 .objectives(businessUnitObjectives)
@@ -84,9 +84,9 @@ public class BusinessUnitObjectiveServiceTests {
                     .title("company objective 01")
                     .description("It's a company objective")
                     .owner(user)
-                    .keyReslts(new HashSet<>())
+                    .keyReslts(new ArrayList<>())
                     .businessUnit(new BusinessUnit())
-                    .represented(new HashSet<>())
+                    .represented(new ArrayList<>())
                     .build();
             businessUnitObjectives.add(businessUnitObjective);
         }
@@ -111,9 +111,9 @@ public class BusinessUnitObjectiveServiceTests {
                 .title("company objective 01")
                 .description("It's a company objective")
                 .owner(user)
-                .keyReslts(new HashSet<>())
+                .keyReslts(new ArrayList<>())
                 .businessUnit(new BusinessUnit())
-                .represented(new HashSet<>())
+                .represented(new ArrayList<>())
                 .build();
 
         when(businessUnitObjectiveRepository.findById(1L)).thenReturn(Optional.ofNullable(businessUnitObjective));
@@ -132,9 +132,9 @@ public class BusinessUnitObjectiveServiceTests {
                 .title("company objective 01")
                 .description("It's a company objective")
                 .owner(user)
-                .keyReslts(new HashSet<>())
+                .keyReslts(new ArrayList<>())
                 .businessUnit(new BusinessUnit())
-                .represented(new HashSet<>())
+                .represented(new ArrayList<>())
                 .build();
 
         BusinessUnitObjectiveDto businessUnitObjectiveDto = new BusinessUnitObjectiveDto(businessUnitObjective);

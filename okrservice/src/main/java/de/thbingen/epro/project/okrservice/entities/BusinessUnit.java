@@ -1,11 +1,8 @@
 package de.thbingen.epro.project.okrservice.entities;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-import lombok.Builder;
 import org.hibernate.annotations.GenericGenerator;
 
 import de.thbingen.epro.project.okrservice.dtos.BusinessUnitDto;
@@ -22,6 +19,7 @@ import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -57,7 +55,7 @@ public class BusinessUnit {
     private String name;
 
     @OneToMany(mappedBy = "businessUnit")
-    private Set<BusinessUnitObjective> objectives = new HashSet<>();
+    private List<BusinessUnitObjective> objectives = new ArrayList<>();
 
 
     public BusinessUnitDto toDto() {

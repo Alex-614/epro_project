@@ -54,23 +54,23 @@ public class BusinessUnitKeyResultServiceTests {
 
     @Test
     public void BusinessUnitKeyResultController_PostBusinessUnitKeyResult_ReturnBusinessUnitKeyResultDto() throws Exception {
-        HashSet<BusinessUnit> businessUnits = new HashSet<>();
+        ArrayList<BusinessUnit> businessUnits = new ArrayList<>();
         BusinessUnit businessUnit01 = BusinessUnit.builder()
                 .id(new BusinessUnitId(1L, 1L))
                 .company(new Company())
                 .name("BU01")
-                .objectives(new HashSet<>())
+                .objectives(new ArrayList<>())
                 .build();
         businessUnits.add(businessUnit01);
         BusinessUnit businessUnit02 = BusinessUnit.builder()
                 .id(new BusinessUnitId(2L, 1L))
                 .company(new Company())
                 .name("BU02")
-                .objectives(new HashSet<>())
+                .objectives(new ArrayList<>())
                 .build();
         businessUnits.add(businessUnit02);
 
-        BusinessUnitObjective businessUnitObjective = BusinessUnitObjective.builder().id(1L).keyReslts(new HashSet<>()).build();
+        BusinessUnitObjective businessUnitObjective = BusinessUnitObjective.builder().id(1L).keyReslts(new ArrayList<>()).build();
 
         BusinessUnitKeyResult businessUnitKeyResult = BusinessUnitKeyResult.builder()
                 .goal(10000)
@@ -81,7 +81,7 @@ public class BusinessUnitKeyResultServiceTests {
                 .objective(businessUnitObjective)
                 .type(new KeyResultType("numeric"))
                 .lastUpdate(new KeyResultUpdate())
-                .contributingUnits(new HashSet<>())
+                .contributingUnits(new ArrayList<>())
                 .contributingBusinessUnits(businessUnits)
                 .build();
 
@@ -111,8 +111,8 @@ public class BusinessUnitKeyResultServiceTests {
                     .objective(new CompanyObjective())
                     .type(new KeyResultType("numeric"))
                     .lastUpdate(new KeyResultUpdate())
-                    .contributingUnits(new HashSet<Unit>())
-                    .contributingBusinessUnits(new HashSet<BusinessUnit>())
+                    .contributingUnits(new ArrayList<Unit>())
+                    .contributingBusinessUnits(new ArrayList<BusinessUnit>())
                     .build();
             businessUnitKeyResults.add(businessUnitKeyResult);
         }
@@ -140,8 +140,8 @@ public class BusinessUnitKeyResultServiceTests {
                 .objective(new CompanyObjective())
                 .type(new KeyResultType("numeric"))
                 .lastUpdate(new KeyResultUpdate())
-                .contributingUnits(new HashSet<Unit>())
-                .contributingBusinessUnits(new HashSet<BusinessUnit>())
+                .contributingUnits(new ArrayList<Unit>())
+                .contributingBusinessUnits(new ArrayList<BusinessUnit>())
                 .build();
 
         when(businessUnitKeyResultRepository.findById(1L)).thenReturn(Optional.ofNullable(businessUnitKeyResult));
@@ -154,10 +154,10 @@ public class BusinessUnitKeyResultServiceTests {
 
     @Test
     public void BusinessUnitKeyResultController_FindContributingBusinessUnits_ReturnBusinessUnitDtoList() throws KeyResultNotFoundException {
-        Set<BusinessUnit> businessUnits = new HashSet<>();
+        List<BusinessUnit> businessUnits = new ArrayList<>();
         businessUnits.add(new BusinessUnit());
 
-        Set<BusinessUnitDto> businessUnitDtos = new HashSet<>();
+        List<BusinessUnitDto> businessUnitDtos = new ArrayList<>();
         businessUnitDtos.add(new BusinessUnitDto());
 
         BusinessUnitKeyResult businessUnitKeyResult = BusinessUnitKeyResult.builder()
@@ -170,7 +170,7 @@ public class BusinessUnitKeyResultServiceTests {
                 .objective(new CompanyObjective())
                 .type(new KeyResultType("numeric"))
                 .lastUpdate(new KeyResultUpdate())
-                .contributingUnits(new HashSet<Unit>())
+                .contributingUnits(new ArrayList<Unit>())
                 .contributingBusinessUnits(businessUnits)
                 .build();
 
@@ -183,10 +183,10 @@ public class BusinessUnitKeyResultServiceTests {
 
     @Test
     public void BusinessUnitKeyResultController_FindContributingUnits_ReturnUnitDtoList() throws KeyResultNotFoundException {
-        Set<Unit> units = new HashSet<>();
+        List<Unit> units = new ArrayList<>();
         units.add(new Unit());
 
-        Set<UnitDto> unitDtos = new HashSet<>();
+        List<UnitDto> unitDtos = new ArrayList<>();
         unitDtos.add(new UnitDto());
 
         BusinessUnitKeyResult businessUnitKeyResult = BusinessUnitKeyResult.builder()
@@ -200,7 +200,7 @@ public class BusinessUnitKeyResultServiceTests {
                 .type(new KeyResultType("numeric"))
                 .lastUpdate(new KeyResultUpdate())
                 .contributingUnits(units)
-                .contributingBusinessUnits(new HashSet<BusinessUnit>())
+                .contributingBusinessUnits(new ArrayList<BusinessUnit>())
                 .build();
 
         when(businessUnitKeyResultRepository.findById(1L)).thenReturn(Optional.ofNullable(businessUnitKeyResult));
@@ -224,8 +224,8 @@ public class BusinessUnitKeyResultServiceTests {
                 .objective(new CompanyObjective())
                 .type(new KeyResultType("numeric"))
                 .lastUpdate(null)
-                .contributingUnits(new HashSet<>())
-                .contributingBusinessUnits(new HashSet<>())
+                .contributingUnits(new ArrayList<>())
+                .contributingBusinessUnits(new ArrayList<>())
                 .build();
         BusinessUnitKeyResultDto oldBusinessUnitKeyResultDto = oldBusinessUnitKeyResult.toDto();
 
@@ -238,8 +238,8 @@ public class BusinessUnitKeyResultServiceTests {
                 .confidenceLevel(20)
                 .objective(new CompanyObjective())
                 .type(new KeyResultType("numeric"))
-                .contributingUnits(new HashSet<>())
-                .contributingBusinessUnits(new HashSet<>())
+                .contributingUnits(new ArrayList<>())
+                .contributingBusinessUnits(new ArrayList<>())
                 .build();
         BusinessUnitKeyResultDto businessUnitKeyResultDto = businessUnitKeyResult.toDto();
 
@@ -277,8 +277,8 @@ public class BusinessUnitKeyResultServiceTests {
                 .objective(new CompanyObjective())
                 .type(new KeyResultType("numeric"))
                 .lastUpdate(new KeyResultUpdate())
-                .contributingUnits(new HashSet<Unit>())
-                .contributingBusinessUnits(new HashSet<BusinessUnit>())
+                .contributingUnits(new ArrayList<Unit>())
+                .contributingBusinessUnits(new ArrayList<BusinessUnit>())
                 .build();
         BusinessUnitKeyResultDto businessUnitKeyResultDto = businessUnitKeyResult.toDto();
 
@@ -291,8 +291,8 @@ public class BusinessUnitKeyResultServiceTests {
                 .objective(null)
                 .type(new KeyResultType("numeric"))
                 .lastUpdate(null)
-                .contributingUnits(new HashSet<Unit>())
-                .contributingBusinessUnits(new HashSet<BusinessUnit>())
+                .contributingUnits(new ArrayList<Unit>())
+                .contributingBusinessUnits(new ArrayList<BusinessUnit>())
                 .build();
 
         BusinessUnitKeyResult copyBusinessUnitKeyResult = BusinessUnitKeyResult.builder()
@@ -305,8 +305,8 @@ public class BusinessUnitKeyResultServiceTests {
                 .objective(new CompanyObjective())
                 .type(new KeyResultType("numeric"))
                 .lastUpdate(new KeyResultUpdate())
-                .contributingUnits(new HashSet<Unit>())
-                .contributingBusinessUnits(new HashSet<BusinessUnit>())
+                .contributingUnits(new ArrayList<Unit>())
+                .contributingBusinessUnits(new ArrayList<BusinessUnit>())
                 .build();
 
         KeyResultPatchDto<BusinessUnitKeyResultDto> keyResultPatchDto = new KeyResultPatchDto<>("update", 124412345L,

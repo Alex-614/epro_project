@@ -11,8 +11,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -52,7 +51,7 @@ public class CompanyObjectiveControllerTests {
 
     private User user;
     private Company company;
-    private Set<CompanyObjective> companyObjectives;
+    private List<CompanyObjective> companyObjectives;
 
     @BeforeEach
     public void init() {
@@ -63,7 +62,7 @@ public class CompanyObjectiveControllerTests {
                 .email("test@test.de")
                 .firstname("my first name")
                 .surname("sur")
-                .companies(new HashSet<Company>())
+                .companies(new ArrayList<Company>())
                 .build();
 
         company = Company.builder()
@@ -71,7 +70,7 @@ public class CompanyObjectiveControllerTests {
                 .name("CompanyA").build();
 
         user.addCompany(company);
-        companyObjectives = new HashSet<>();
+        companyObjectives = new ArrayList<>();
         company.setObjectives(companyObjectives);
     }
 

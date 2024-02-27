@@ -1,15 +1,19 @@
 package de.thbingen.epro.project.okrservice.controller.businessunit;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import de.thbingen.epro.project.okrservice.dtos.*;
-import de.thbingen.epro.project.okrservice.entities.BusinessUnit;
-import de.thbingen.epro.project.okrservice.entities.Unit;
-import de.thbingen.epro.project.okrservice.entities.keyresults.BusinessUnitKeyResult;
-import de.thbingen.epro.project.okrservice.entities.keyresults.KeyResultType;
-import de.thbingen.epro.project.okrservice.entities.keyresults.KeyResultUpdate;
-import de.thbingen.epro.project.okrservice.entities.objectives.CompanyObjective;
-import de.thbingen.epro.project.okrservice.services.BusinessUnitKeyResultService;
-import de.thbingen.epro.project.okrservice.services.UserService;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -22,17 +26,21 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.stream.Collectors;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import de.thbingen.epro.project.okrservice.dtos.BusinessUnitDto;
+import de.thbingen.epro.project.okrservice.dtos.BusinessUnitKeyResultDto;
+import de.thbingen.epro.project.okrservice.dtos.KeyResultPatchDto;
+import de.thbingen.epro.project.okrservice.dtos.KeyResultUpdateDto;
+import de.thbingen.epro.project.okrservice.dtos.UnitDto;
+import de.thbingen.epro.project.okrservice.entities.BusinessUnit;
+import de.thbingen.epro.project.okrservice.entities.Unit;
+import de.thbingen.epro.project.okrservice.entities.keyresults.BusinessUnitKeyResult;
+import de.thbingen.epro.project.okrservice.entities.keyresults.KeyResultType;
+import de.thbingen.epro.project.okrservice.entities.keyresults.KeyResultUpdate;
+import de.thbingen.epro.project.okrservice.entities.objectives.CompanyObjective;
+import de.thbingen.epro.project.okrservice.services.BusinessUnitKeyResultService;
+import de.thbingen.epro.project.okrservice.services.UserService;
 
 @WebMvcTest(BusinessUnitKeyResultController.class)
 @AutoConfigureMockMvc(addFilters = false)
@@ -61,8 +69,8 @@ public class BusinessUnitKeyResultControllerTests {
                 .objective(new CompanyObjective())
                 .type(new KeyResultType("numeric"))
                 .lastUpdate(new KeyResultUpdate())
-                .contributingUnits(new HashSet<Unit>())
-                .contributingBusinessUnits(new HashSet<BusinessUnit>())
+                .contributingUnits(new ArrayList<Unit>())
+                .contributingBusinessUnits(new ArrayList<BusinessUnit>())
                 .build();
 
         BusinessUnitKeyResultDto businessUnitKeyResultDto = new BusinessUnitKeyResultDto(businessUnitKeyResult);
@@ -92,8 +100,8 @@ public class BusinessUnitKeyResultControllerTests {
                     .objective(new CompanyObjective())
                     .type(new KeyResultType("numeric"))
                     .lastUpdate(new KeyResultUpdate())
-                    .contributingUnits(new HashSet<Unit>())
-                    .contributingBusinessUnits(new HashSet<BusinessUnit>())
+                    .contributingUnits(new ArrayList<Unit>())
+                    .contributingBusinessUnits(new ArrayList<BusinessUnit>())
                     .build();
             businessUnitKeyResults.add(businessUnitKeyResult);
         }
@@ -121,8 +129,8 @@ public class BusinessUnitKeyResultControllerTests {
                 .objective(new CompanyObjective())
                 .type(new KeyResultType("numeric"))
                 .lastUpdate(new KeyResultUpdate())
-                .contributingUnits(new HashSet<Unit>())
-                .contributingBusinessUnits(new HashSet<BusinessUnit>())
+                .contributingUnits(new ArrayList<Unit>())
+                .contributingBusinessUnits(new ArrayList<BusinessUnit>())
                 .build();
 
         BusinessUnitKeyResultDto businessUnitKeyResultDto = new BusinessUnitKeyResultDto(businessUnitKeyResult);
@@ -175,8 +183,8 @@ public class BusinessUnitKeyResultControllerTests {
                 .objective(new CompanyObjective())
                 .type(new KeyResultType("numeric"))
                 .lastUpdate(new KeyResultUpdate())
-                .contributingUnits(new HashSet<Unit>())
-                .contributingBusinessUnits(new HashSet<BusinessUnit>())
+                .contributingUnits(new ArrayList<Unit>())
+                .contributingBusinessUnits(new ArrayList<BusinessUnit>())
                 .build();
 
         BusinessUnitKeyResultDto businessUnitKeyResultDto = new BusinessUnitKeyResultDto(businessUnitKeyResult);
@@ -207,8 +215,8 @@ public class BusinessUnitKeyResultControllerTests {
                 .objective(new CompanyObjective())
                 .type(new KeyResultType("numeric"))
                 .lastUpdate(new KeyResultUpdate())
-                .contributingUnits(new HashSet<Unit>())
-                .contributingBusinessUnits(new HashSet<BusinessUnit>())
+                .contributingUnits(new ArrayList<Unit>())
+                .contributingBusinessUnits(new ArrayList<BusinessUnit>())
                 .build();
 
         BusinessUnitKeyResultDto businessUnitKeyResultDto = new BusinessUnitKeyResultDto(businessUnitKeyResult);

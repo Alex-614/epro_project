@@ -1,12 +1,18 @@
 package de.thbingen.epro.project.okrservice.controller.company;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import de.thbingen.epro.project.okrservice.dtos.CompanyDto;
-import de.thbingen.epro.project.okrservice.entities.Company;
-import de.thbingen.epro.project.okrservice.entities.User;
-import de.thbingen.epro.project.okrservice.entities.objectives.CompanyObjective;
-import de.thbingen.epro.project.okrservice.services.CompanyService;
-import de.thbingen.epro.project.okrservice.services.UserService;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -20,16 +26,14 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.stream.Collectors;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import de.thbingen.epro.project.okrservice.dtos.CompanyDto;
+import de.thbingen.epro.project.okrservice.entities.Company;
+import de.thbingen.epro.project.okrservice.entities.User;
+import de.thbingen.epro.project.okrservice.entities.objectives.CompanyObjective;
+import de.thbingen.epro.project.okrservice.services.CompanyService;
+import de.thbingen.epro.project.okrservice.services.UserService;
 
 @WebMvcTest(CompanyController.class)
 @AutoConfigureMockMvc(addFilters = false)
@@ -62,7 +66,7 @@ public class CompanyControllerTests {
                 .email("test@test.de")
                 .firstname("my first name")
                 .surname("sur")
-                .companies(new HashSet<Company>())
+                .companies(new ArrayList<Company>())
                 .build();
 
         user.addCompany(company);
@@ -82,7 +86,7 @@ public class CompanyControllerTests {
     public void CompanyController_GetAllCompanies_ReturnCompanyDto() throws Exception {
         List<Company> companies = new ArrayList<Company>();
         for(long i = 0L; i < 10L; i++) {
-            companies.add(new Company(i, "Company" + i, new HashSet<CompanyObjective>()));
+            companies.add(new Company(i, "Company" + i, new ArrayList<CompanyObjective>()));
         }
 
         ArrayList<CompanyDto> companyDtos = companies.stream()

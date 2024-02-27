@@ -89,9 +89,9 @@ public abstract class KeyResultServiceImpl<T extends KeyResult, K extends KeyRes
         if (keyResultDto.getConfidenceLevel() != null) 
             keyResult.setConfidenceLevel(keyResultDto.getConfidenceLevel());
         if (keyResultDto.getContributingUnits() != null) 
-            keyResult.setContributingUnits(keyResultDto.getContributingUnits().stream().map(Unit::new).collect(Collectors.toSet()));
+            keyResult.setContributingUnits(keyResultDto.getContributingUnits().stream().map(Unit::new).collect(Collectors.toList()));
         if (keyResultDto.getContributingBusinessUnits() != null) 
-            keyResult.setContributingBusinessUnits(keyResultDto.getContributingBusinessUnits().stream().map(BusinessUnit::new).collect(Collectors.toSet()));
+            keyResult.setContributingBusinessUnits(keyResultDto.getContributingBusinessUnits().stream().map(BusinessUnit::new).collect(Collectors.toList()));
     }
 
 

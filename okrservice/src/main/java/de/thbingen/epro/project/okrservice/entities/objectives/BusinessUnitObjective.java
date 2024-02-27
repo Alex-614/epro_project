@@ -1,7 +1,7 @@
 package de.thbingen.epro.project.okrservice.entities.objectives;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import de.thbingen.epro.project.okrservice.dtos.BusinessUnitObjectiveDto;
 import de.thbingen.epro.project.okrservice.entities.BusinessUnit;
@@ -50,7 +50,7 @@ public class BusinessUnitObjective extends Objective {
             name = "companykeyresult_id", referencedColumnName = "keyresult_id"
         )
     )
-    private Set<CompanyKeyResult> represented = new HashSet<>();
+    private List<CompanyKeyResult> represented = new ArrayList<>();
 
 
     @Override

@@ -1,11 +1,13 @@
 package de.thbingen.epro.project.okrservice.services;
 
-import de.thbingen.epro.project.okrservice.dtos.BusinessUnitDto;
-import de.thbingen.epro.project.okrservice.entities.BusinessUnit;
-import de.thbingen.epro.project.okrservice.entities.Company;
-import de.thbingen.epro.project.okrservice.entities.ids.BusinessUnitId;
-import de.thbingen.epro.project.okrservice.repositories.BusinessUnitRepository;
-import de.thbingen.epro.project.okrservice.services.impl.BusinessUnitServiceImpl;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,14 +15,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.mockito.Mockito.when;
+import de.thbingen.epro.project.okrservice.dtos.BusinessUnitDto;
+import de.thbingen.epro.project.okrservice.entities.BusinessUnit;
+import de.thbingen.epro.project.okrservice.entities.Company;
+import de.thbingen.epro.project.okrservice.entities.ids.BusinessUnitId;
+import de.thbingen.epro.project.okrservice.repositories.BusinessUnitRepository;
+import de.thbingen.epro.project.okrservice.services.impl.BusinessUnitServiceImpl;
 
 @ExtendWith(MockitoExtension.class)
 public class BusinessUnitServiceTests {
@@ -41,7 +41,7 @@ public class BusinessUnitServiceTests {
                 .id(new BusinessUnitId(1L, 1L))
                 .company(company)
                 .name("BU01")
-                .objectives(new HashSet<>())
+                .objectives(new ArrayList<>())
                 .build();
 
         BusinessUnitDto businessUnitDto = new BusinessUnitDto(businessUnit);
@@ -62,7 +62,7 @@ public class BusinessUnitServiceTests {
                     .id(new BusinessUnitId(i, 1L))
                     .company(new Company())
                     .name("BU01")
-                    .objectives(new HashSet<>())
+                    .objectives(new ArrayList<>())
                     .build();
             businessUnits.add(businessUnit);
         }
@@ -83,7 +83,7 @@ public class BusinessUnitServiceTests {
                 .id(new BusinessUnitId(1L, 1L))
                 .company(new Company())
                 .name("BU01")
-                .objectives(new HashSet<>())
+                .objectives(new ArrayList<>())
                 .build();
 
         when(businessUnitRepository.findById(new BusinessUnitId(1L, 1L)))
@@ -100,7 +100,7 @@ public class BusinessUnitServiceTests {
                 .id(new BusinessUnitId(1L, 1L))
                 .company(new Company())
                 .name("BU01")
-                .objectives(new HashSet<>())
+                .objectives(new ArrayList<>())
                 .build();
 
         BusinessUnitDto businessUnitDto = new BusinessUnitDto(businessUnit);

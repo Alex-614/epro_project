@@ -1,19 +1,17 @@
 package de.thbingen.epro.project.okrservice.controller.company;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import de.thbingen.epro.project.okrservice.dtos.BusinessUnitDto;
-import de.thbingen.epro.project.okrservice.dtos.CompanyKeyResultDto;
-import de.thbingen.epro.project.okrservice.dtos.KeyResultPatchDto;
-import de.thbingen.epro.project.okrservice.dtos.UnitDto;
-import de.thbingen.epro.project.okrservice.entities.BusinessUnit;
-import de.thbingen.epro.project.okrservice.entities.Unit;
-import de.thbingen.epro.project.okrservice.entities.keyresults.CompanyKeyResult;
-import de.thbingen.epro.project.okrservice.entities.keyresults.KeyResultType;
-import de.thbingen.epro.project.okrservice.entities.keyresults.KeyResultUpdate;
-import de.thbingen.epro.project.okrservice.entities.objectives.BusinessUnitObjective;
-import de.thbingen.epro.project.okrservice.entities.objectives.CompanyObjective;
-import de.thbingen.epro.project.okrservice.services.CompanyKeyResultService;
-import de.thbingen.epro.project.okrservice.services.UserService;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -27,15 +25,21 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import de.thbingen.epro.project.okrservice.dtos.BusinessUnitDto;
+import de.thbingen.epro.project.okrservice.dtos.CompanyKeyResultDto;
+import de.thbingen.epro.project.okrservice.dtos.KeyResultPatchDto;
+import de.thbingen.epro.project.okrservice.dtos.UnitDto;
+import de.thbingen.epro.project.okrservice.entities.BusinessUnit;
+import de.thbingen.epro.project.okrservice.entities.Unit;
+import de.thbingen.epro.project.okrservice.entities.keyresults.CompanyKeyResult;
+import de.thbingen.epro.project.okrservice.entities.keyresults.KeyResultType;
+import de.thbingen.epro.project.okrservice.entities.keyresults.KeyResultUpdate;
+import de.thbingen.epro.project.okrservice.entities.objectives.BusinessUnitObjective;
+import de.thbingen.epro.project.okrservice.entities.objectives.CompanyObjective;
+import de.thbingen.epro.project.okrservice.services.CompanyKeyResultService;
+import de.thbingen.epro.project.okrservice.services.UserService;
 
 @WebMvcTest(CompanyKeyResultController.class)
 @AutoConfigureMockMvc(addFilters = false)
@@ -65,9 +69,9 @@ public class CompanyKeyResultControllerTests {
                 .objective(new CompanyObjective())
                 .type(new KeyResultType("numeric"))
                 .lastUpdate(new KeyResultUpdate())
-                .contributingUnits(new HashSet<Unit>())
-                .contributingBusinessUnits(new HashSet<BusinessUnit>())
-                .representers(new HashSet<BusinessUnitObjective>())
+                .contributingUnits(new ArrayList<Unit>())
+                .contributingBusinessUnits(new ArrayList<BusinessUnit>())
+                .representers(new ArrayList<BusinessUnitObjective>())
                 .build();
 
         CompanyKeyResultDto companyKeyResultDto = new CompanyKeyResultDto(companyKeyResult);
@@ -95,9 +99,9 @@ public class CompanyKeyResultControllerTests {
                 .objective(new CompanyObjective())
                 .type(new KeyResultType("numeric"))
                 .lastUpdate(new KeyResultUpdate())
-                .contributingUnits(new HashSet<Unit>())
-                .contributingBusinessUnits(new HashSet<BusinessUnit>())
-                .representers(new HashSet<BusinessUnitObjective>())
+                .contributingUnits(new ArrayList<Unit>())
+                .contributingBusinessUnits(new ArrayList<BusinessUnit>())
+                .representers(new ArrayList<BusinessUnitObjective>())
                 .build();
 
         CompanyKeyResultDto companyKeyResultDto = new CompanyKeyResultDto(companyKeyResult);
@@ -148,9 +152,9 @@ public class CompanyKeyResultControllerTests {
                 .objective(new CompanyObjective())
                 .type(new KeyResultType("numeric"))
                 .lastUpdate(new KeyResultUpdate())
-                .contributingUnits(new HashSet<Unit>())
-                .contributingBusinessUnits(new HashSet<BusinessUnit>())
-                .representers(new HashSet<BusinessUnitObjective>())
+                .contributingUnits(new ArrayList<Unit>())
+                .contributingBusinessUnits(new ArrayList<BusinessUnit>())
+                .representers(new ArrayList<BusinessUnitObjective>())
                 .build();
 
         CompanyKeyResultDto companyKeyResultDto = new CompanyKeyResultDto(companyKeyResult);
