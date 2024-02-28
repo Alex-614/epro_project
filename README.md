@@ -3,12 +3,5 @@
 ### "Ein Backend für das Objective Key Results (OKR) Framework bauen."
 
 
-### Ressourcen
-* Spring Framework
-    * Spring MVC
-    * Spring JPA/Postgres
-    * Spring Security
-* Docker
-    * Docker Desktop + Docker Compose
 
 
