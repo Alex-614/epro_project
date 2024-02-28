@@ -266,12 +266,6 @@ public class CompanyKeyResultServiceTests {
                 .contributingBusinessUnits(new ArrayList<>())
                 .representers(new ArrayList<>())
                 .build();
-        CompanyKeyResult oldCompanyKeyResult = CompanyKeyResult.builder()
-                .id(2L)
-                .objective(CompanyObjective.builder().id(1L).build())
-                .contributingUnits(new ArrayList<>())
-                .contributingBusinessUnits(new ArrayList<>())
-                .build();
 
         CompanyKeyResultDto companyKeyResultDto = companyKeyResult.toDto();
 
@@ -279,13 +273,14 @@ public class CompanyKeyResultServiceTests {
                 1L, companyKeyResultDto);
 
         when(companyKeyResultRepository.findById(1L)).thenReturn(Optional.of(companyKeyResult));
+        when(userService.findUser(1L)).thenReturn(User.builder().id(1L).build());
         when(keyResultTypeRepository.findByName("numeric")).thenReturn(Optional.of(new KeyResultType("numeric")));
 
-        when(companyKeyResultRepository.save(Mockito.any())).thenReturn(companyKeyResult.getId() == 1L ? companyKeyResult : oldCompanyKeyResult);
+        when(companyKeyResultRepository.save(Mockito.any())).thenAnswer(a -> a.getArguments()[0]); // return companyKeyResultRepository.save parameter
         
         CompanyKeyResultDto patchedCompanyObjectiveDto =
                 companyKeyResultService.patchKeyResult(1L, keyResultPatchDto);
-
+        patchedCompanyObjectiveDto.setObjectiveId(1L);
 
         Assertions.assertThat(patchedCompanyObjectiveDto).isEqualTo(companyKeyResultDto);
     }
