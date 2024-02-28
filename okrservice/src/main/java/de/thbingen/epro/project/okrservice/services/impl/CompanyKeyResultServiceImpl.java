@@ -75,7 +75,7 @@ public class CompanyKeyResultServiceImpl extends KeyResultServiceImpl<CompanyKey
         }
 
         CompanyKeyResult keyResult = findKeyResult(keyResultId);
-
+        
         // create copy
         CompanyKeyResult keyResultCopy = new CompanyKeyResult();
         patchKeyResult(keyResultCopy, keyResult.toDto());
@@ -83,8 +83,7 @@ public class CompanyKeyResultServiceImpl extends KeyResultServiceImpl<CompanyKey
         keyResultCopy.setRepresenters(null);
 
         // change original
-        patchKeyResult(keyResultCopy, keyResultPatchDto.getKeyResultDto());
-
+        patchKeyResult(keyResult, keyResultPatchDto.getKeyResultDto());
         keyResultCopy = companyKeyResultRepository.save(keyResultCopy);
 
         // persist the update

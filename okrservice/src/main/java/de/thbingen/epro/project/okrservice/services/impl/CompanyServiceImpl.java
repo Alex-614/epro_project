@@ -61,6 +61,9 @@ public class CompanyServiceImpl implements CompanyService {
         Role role = roleRepository.findByName(Roles.CO_OKR_ADMIN.getName());
         roleAssignmentRepository.save(new RoleAssignment(user, role, company));
 
+        role = roleRepository.findByName(Roles.BUO_OKR_ADMIN.getName());
+        roleAssignmentRepository.save(new RoleAssignment(user, role, company));
+
         return company.toDto();
     }
 
