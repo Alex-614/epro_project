@@ -1,10 +1,8 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Businessunit } from '../businessunit';
 import { Router } from '@angular/router';
 import { BusinessunitService } from '../businessunit.service';
 import { NgFor } from '@angular/common';
-import { Unit } from '../unit';
 
 @Component({
   selector: 'app-bu-management',

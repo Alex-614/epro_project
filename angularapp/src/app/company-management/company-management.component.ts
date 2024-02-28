@@ -2,7 +2,6 @@ import { AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserService } from '../user.service';
 import { CompanyService } from '../company.service';
-import { Router } from '@angular/router';
 import { NgFor } from '@angular/common';
 import { Company } from '../company';
 
@@ -24,8 +23,7 @@ export class CompanyManagementComponent implements AfterViewInit{
   constructor(
     private fb: FormBuilder,
     private userService: UserService,
-    private companyService: CompanyService,
-    private router: Router
+    private companyService: CompanyService
   ) {
     this.createCompany = this.fb.group({
       companyName: ['', Validators.required]

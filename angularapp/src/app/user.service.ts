@@ -28,6 +28,7 @@ export class UserService {
     localStorage.clear();
   }
 
+  //check if saved timeout time is over
   public isLoggedIn() {
     const tokenExpire = parseInt(localStorage.getItem("tokenExpire")!);
     if (tokenExpire) {

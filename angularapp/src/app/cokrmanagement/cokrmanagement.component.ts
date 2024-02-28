@@ -6,8 +6,6 @@ import { NgFor } from '@angular/common';
 import { Companykeyresult } from '../companykeyresult';
 import { Cokrtable } from '../cokrtable';
 import { Objectivetable } from '../objectivetable';
-import { UserService } from '../user.service';
-import { Businessunit } from '../businessunit';
 
 @Component({
   selector: 'app-cokrmanagement',
@@ -165,6 +163,7 @@ export class CokrmanagementComponent implements OnInit {
     });
   }
 
+  //get table color of the percentual value of achievement
   getOverallColorClass(achivment: number) {
     var result = "";
     if (achivment >= 66) {

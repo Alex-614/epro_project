@@ -29,6 +29,8 @@ export class HomescreenComponent implements AfterViewInit {
     });
   }
 
+  //always check if user is logged in
+
   btn_accountSettings() {
     if (this.userService.isLoggedIn()) {
       this.router.navigateByUrl('/homescreen/account-settings');

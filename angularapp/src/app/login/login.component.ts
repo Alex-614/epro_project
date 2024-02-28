@@ -24,6 +24,7 @@ export class LoginComponent {
     });
   }
 
+  //save timeout time in local storage
   login() {
     const val = this.loginForm.value;
     if (val.email && val.password) {
