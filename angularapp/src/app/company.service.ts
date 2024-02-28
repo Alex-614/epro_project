@@ -49,6 +49,21 @@ export class CompanyService {
       headers: new HttpHeaders()
         .set("Authorization", "Bearer " + localStorage.getItem("accessToken"))
     };
-    return this.http.post(this.url + "/company/" + companyId + "/user/" + userId + "/add", { "roleIds": [roleId] }, header);
+    var rolearray: number[] = [];
+    //1 = COadmin
+    //2 = BUAdmin
+    //3 = ReadOnly
+    if (roleId == 3){
+      rolearray = [3];
+    }else {
+      if (roleId == 2){
+        rolearray = [2, 3];
+      }else {
+        if (roleId == 1){
+          rolearray = [1, 2, 3];
+        }
+      }
+    }
+    return this.http.post(this.url + "/company/" + companyId + "/user/" + userId + "/add", { "roleIds": rolearray }, header);
   }
 }
