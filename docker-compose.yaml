@@ -50,7 +50,7 @@ services:
     build:
       context: ./angularapp
       dockerfile: Dockerfile
-    image: angular-application
+    image: epro_project-angular-application
     restart: on-failure
 
 

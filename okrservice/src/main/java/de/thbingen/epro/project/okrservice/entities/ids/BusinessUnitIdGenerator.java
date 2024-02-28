@@ -13,6 +13,10 @@ import org.hibernate.jdbc.ReturningWork;
 
 import de.thbingen.epro.project.okrservice.entities.BusinessUnit;
 
+
+/**
+ * Custom Id generator, to properly generate partially unique identifiers for BusinessUnits
+ */
 public class BusinessUnitIdGenerator implements IdentifierGenerator {
 
     @Override

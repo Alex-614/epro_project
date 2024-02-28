@@ -21,6 +21,11 @@ import de.thbingen.epro.project.okrservice.repositories.UserRepository;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Used for custom permission validation.
+ * 
+ * @see CompanyAuthority
+ */
 @NoArgsConstructor
 @Data
 public class CompanyAuthorizationManager implements AuthorizationManager<RequestAuthorizationContext> {
