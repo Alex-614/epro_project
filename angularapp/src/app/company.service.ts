@@ -28,7 +28,6 @@ export class CompanyService {
     return this.http.patch<Company>(this.url + "/company/" + companyId, { "name": newCompanyName }, header);
   }
 
-  //TODO: remove Delete Type from rest answer
   public deleteCompany(companyId: string) {
     var header = {
       headers: new HttpHeaders()
@@ -45,7 +44,6 @@ export class CompanyService {
     return this.http.get<Company>(this.url + "/company/" + companyId, header);
   }
 
-  //TODO When assigning new role: delete old role?
   public addCompanyUser(companyId: string, userId: string, roleId: number) {
     var header = {
       headers: new HttpHeaders()

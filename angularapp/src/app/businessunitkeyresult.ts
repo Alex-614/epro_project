@@ -8,7 +8,7 @@ export interface Businessunitkeyresult {
     description: string,
     current: number,
     confidenceLevel: number,
-    achievement: number //TODO change name with "e",
+    achievement: number,
     contributingUnits: { id: number, businessUnitId: {id: number, companyId: number} }[],
     contributingBusinessUnits: []
 }

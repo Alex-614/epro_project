@@ -97,7 +97,6 @@ export class UserService {
     });
   }
 
-  //TODO: remove Delete Type from rest answer
   public deleteUser() {
     const userId = localStorage.getItem("userId");
     var header = {

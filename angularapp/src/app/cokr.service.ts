@@ -55,7 +55,7 @@ export class CokrService {
       headers: new HttpHeaders()
         .set("Authorization", "Bearer " + localStorage.getItem("accessToken"))
     };
-    console.log(unitArray);
+    console.log(krCurrent);
     return this.http.patch(this.url + "/company/" + localStorage.getItem("activeCompanyId") + "/objective/" + coId + "/keyresult/" + krId,
       {
         statusUpdate: krStatusUpdate,

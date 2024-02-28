@@ -31,7 +31,6 @@ export class BusinessunitService {
     return this.http.patch<Businessunit>(this.url + "/company/" + activeCompanyId + "/businessunit/" + buId, { "name": newBuName }, header);
   }
 
-  //TODO: remove Delete Type from rest answer
   public deleteBusinessUnit(buId: string){
     const activeCompanyId = localStorage.getItem("activeCompanyId");
     var header = {

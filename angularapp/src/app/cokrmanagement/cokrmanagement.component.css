@@ -21,6 +21,10 @@ main {
     background-color: lightgray;
 }
 
+.tBody{
+    background-color: white;
+}
+
 .bgGreen {
     background-color: green;
 }

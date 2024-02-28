@@ -26,8 +26,7 @@ export class CokrmanagementComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private cokrService: CokrService,
-    private userService: UserService
+    private cokrService: CokrService
   ) {
     this.createCompanyObjective = this.fb.group({
       coTitle: ['', Validators.required],
@@ -51,7 +50,7 @@ export class CokrmanagementComponent implements OnInit {
       ukrCurrent: ['', Validators.required],
       ukrConfidenceLevel: ['', Validators.required],
       ukrContributingBusinessUnits: ['', Validators.required]
-    })
+    });
   }
 
   ngOnInit() {
@@ -96,7 +95,7 @@ export class CokrmanagementComponent implements OnInit {
         }
         dummyCokr.push({
           overallColorClass: this.getOverallColorClass(ckr.achievement),
-          overall: ckr.achievement + "%", //TODO test if it works
+          overall: ckr.achievement + "%",
           id: ">KR: " + ckr.id,
           title: ckr.title,
           current: ckr.current.toString(),

@@ -8,7 +8,6 @@ export interface Companykeyresult {
     description: string,
     current: number,
     confidenceLevel: number,
-    achievement: number //TODO change name with "e",
+    achievement: number,
     contributingBusinessUnits: { id: number, companyId: string}[]
 }
-//TODO: add owner to keyresult
